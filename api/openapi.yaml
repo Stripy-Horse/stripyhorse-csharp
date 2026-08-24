@@ -989,6 +989,14 @@ components:
           - 2x3
           - 3x2
           - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
           type: string
         webhookUrl:
           type: string
@@ -1106,6 +1114,14 @@ components:
           - 2x3
           - 3x2
           - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
           type: string
         threshold:
           format: int64
@@ -1418,6 +1434,14 @@ components:
           - 2x3
           - 3x2
           - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
           type: string
         rotation:
           enum:
@@ -1587,6 +1611,14 @@ components:
           - 2x3
           - 3x2
           - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
           type: string
         stamp:
           description: "Attribution stamp, e.g. VOID: bfaerber"
@@ -1646,6 +1678,14 @@ components:
           - 2x3
           - 3x2
           - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
           type: string
         widthMm:
           format: double

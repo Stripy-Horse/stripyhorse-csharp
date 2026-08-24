@@ -152,7 +152,55 @@ namespace StripyHorse.Model
             /// Enum Netstamp for value: netstamp
             /// </summary>
             [EnumMember(Value = "netstamp")]
-            Netstamp = 10
+            Netstamp = 10,
+
+            /// <summary>
+            /// Enum _225x125 for value: 2.25x1.25
+            /// </summary>
+            [EnumMember(Value = "2.25x1.25")]
+            _225x125 = 11,
+
+            /// <summary>
+            /// Enum _2x1 for value: 2x1
+            /// </summary>
+            [EnumMember(Value = "2x1")]
+            _2x1 = 12,
+
+            /// <summary>
+            /// Enum _3x1 for value: 3x1
+            /// </summary>
+            [EnumMember(Value = "3x1")]
+            _3x1 = 13,
+
+            /// <summary>
+            /// Enum _4x1 for value: 4x1
+            /// </summary>
+            [EnumMember(Value = "4x1")]
+            _4x1 = 14,
+
+            /// <summary>
+            /// Enum _1x1 for value: 1x1
+            /// </summary>
+            [EnumMember(Value = "1x1")]
+            _1x1 = 15,
+
+            /// <summary>
+            /// Enum _4x3 for value: 4x3
+            /// </summary>
+            [EnumMember(Value = "4x3")]
+            _4x3 = 16,
+
+            /// <summary>
+            /// Enum _4x8 for value: 4x8
+            /// </summary>
+            [EnumMember(Value = "4x8")]
+            _4x8 = 17,
+
+            /// <summary>
+            /// Enum A6 for value: a6
+            /// </summary>
+            [EnumMember(Value = "a6")]
+            A6 = 18
         }
 
 
