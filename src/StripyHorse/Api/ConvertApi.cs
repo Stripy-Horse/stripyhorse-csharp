@@ -71,7 +71,7 @@ namespace StripyHorse.Api
         /// Convert a PDF or image to ZPL
         /// </summary>
         /// <remarks>
-        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -92,7 +92,7 @@ namespace StripyHorse.Api
         /// Convert a PDF or image to ZPL
         /// </summary>
         /// <remarks>
-        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -112,7 +112,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -124,13 +124,36 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <returns>ApiResponse of HtmlOutputBody</returns>
         ApiResponse<HtmlOutputBody> ConvertHtmlWithHttpInfo(HtmlInputBody htmlInputBody, int operationIndex = 0);
+        /// <summary>
+        /// Decompile ZPL into editable HTML
+        /// </summary>
+        /// <remarks>
+        /// The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ZplHTMLOutputBody</returns>
+        ZplHTMLOutputBody ConvertZplToHtml(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML
+        /// </summary>
+        /// <remarks>
+        /// The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of ZplHTMLOutputBody</returns>
+        ApiResponse<ZplHTMLOutputBody> ConvertZplToHtmlWithHttpInfo(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0);
         #endregion Synchronous Operations
     }
 
@@ -187,7 +210,7 @@ namespace StripyHorse.Api
         /// Convert a PDF or image to ZPL
         /// </summary>
         /// <remarks>
-        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -209,7 +232,7 @@ namespace StripyHorse.Api
         /// Convert a PDF or image to ZPL
         /// </summary>
         /// <remarks>
-        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -230,7 +253,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -243,7 +266,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -251,6 +274,31 @@ namespace StripyHorse.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (HtmlOutputBody)</returns>
         System.Threading.Tasks.Task<ApiResponse<HtmlOutputBody>> ConvertHtmlWithHttpInfoAsync(HtmlInputBody htmlInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Decompile ZPL into editable HTML
+        /// </summary>
+        /// <remarks>
+        /// The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ZplHTMLOutputBody</returns>
+        System.Threading.Tasks.Task<ZplHTMLOutputBody> ConvertZplToHtmlAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML
+        /// </summary>
+        /// <remarks>
+        /// The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (ZplHTMLOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<ZplHTMLOutputBody>> ConvertZplToHtmlWithHttpInfoAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         #endregion Asynchronous Operations
     }
 
@@ -653,7 +701,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -675,7 +723,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -791,7 +839,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -814,7 +862,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $convert &#x3D; new StripyHorse\\Api\\ConvertApi(null, $config); $result &#x3D; $convert-&gt;convertDocument(new SplFileObject(&#39;shipping-label.pdf&#39;), preset: &#39;4x6&#39;); foreach ($result-&gt;getPages() as $page) { sendToPrinter($page-&gt;getZpl()); } &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/convert \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -F file&#x3D;@shipping-label.pdf -F preset&#x3D;4x6 &#x60;&#x60;&#x60;
+        /// Convert a PDF or image to ZPL Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="file">PDF, PNG, GIF or JPEG</param>
@@ -932,7 +980,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -945,7 +993,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1016,7 +1064,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1030,7 +1078,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;). Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1093,6 +1141,177 @@ namespace StripyHorse.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ConvertHtml", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ZplHTMLOutputBody</returns>
+        public ZplHTMLOutputBody ConvertZplToHtml(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<ZplHTMLOutputBody> localVarResponse = ConvertZplToHtmlWithHttpInfo(zplHTMLInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of ZplHTMLOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<ZplHTMLOutputBody> ConvertZplToHtmlWithHttpInfo(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'zplHTMLInputBody' is set
+            if (zplHTMLInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'zplHTMLInputBody' when calling ConvertApi->ConvertZplToHtml");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = zplHTMLInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.ConvertZplToHtml";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<ZplHTMLOutputBody>("/v1/convert/zpl-html", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ConvertZplToHtml", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ZplHTMLOutputBody</returns>
+        public async System.Threading.Tasks.Task<ZplHTMLOutputBody> ConvertZplToHtmlAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<ZplHTMLOutputBody> localVarResponse = await ConvertZplToHtmlWithHttpInfoAsync(zplHTMLInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Decompile ZPL into editable HTML The migration path for legacy ZPL templates: text, boxes and Code128/QR barcodes become editable HTML in the dialect convertHtml accepts; unsupported elements (raster graphics, exotic barcodes) are embedded as positioned images so the layout survives. Round-tripping through convertHtml preserves scannable barcodes.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="zplHTMLInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (ZplHTMLOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<ZplHTMLOutputBody>> ConvertZplToHtmlWithHttpInfoAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'zplHTMLInputBody' is set
+            if (zplHTMLInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'zplHTMLInputBody' when calling ConvertApi->ConvertZplToHtml");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = zplHTMLInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.ConvertZplToHtml";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<ZplHTMLOutputBody>("/v1/convert/zpl-html", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("ConvertZplToHtml", localVarResponse);
                 if (_exception != null)
                 {
                     throw _exception;

@@ -50,7 +50,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -62,7 +62,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -159,7 +159,7 @@ namespace StripyHorse.Api
         /// List captured jobs, newest first
         /// </summary>
         /// <remarks>
-        /// For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// For CI assertions and inbox views. Cursor-paged via before.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -173,7 +173,7 @@ namespace StripyHorse.Api
         /// List captured jobs, newest first
         /// </summary>
         /// <remarks>
-        /// For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// For CI assertions and inbox views. Cursor-paged via before.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -224,7 +224,7 @@ namespace StripyHorse.Api
         /// Inject or clear fault conditions
         /// </summary>
         /// <remarks>
-        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -237,7 +237,7 @@ namespace StripyHorse.Api
         /// Inject or clear fault conditions
         /// </summary>
         /// <remarks>
-        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -305,7 +305,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -318,7 +318,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -436,7 +436,7 @@ namespace StripyHorse.Api
         /// List captured jobs, newest first
         /// </summary>
         /// <remarks>
-        /// For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// For CI assertions and inbox views. Cursor-paged via before.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -451,7 +451,7 @@ namespace StripyHorse.Api
         /// List captured jobs, newest first
         /// </summary>
         /// <remarks>
-        /// For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// For CI assertions and inbox views. Cursor-paged via before.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -513,7 +513,7 @@ namespace StripyHorse.Api
         /// Inject or clear fault conditions
         /// </summary>
         /// <remarks>
-        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -527,7 +527,7 @@ namespace StripyHorse.Api
         /// Inject or clear fault conditions
         /// </summary>
         /// <remarks>
-        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -849,7 +849,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -862,7 +862,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -933,7 +933,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -947,7 +947,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim &#x3D; new StripyHorse\\Api\\SimulatorApi(null, $config); $printer &#x3D; $sim-&gt;createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     &#39;name&#39; &#x3D;&gt; &#39;ci-run-42&#39;, &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); $addr &#x3D; $printer-&gt;getTcp()-&gt;getHost() . &#39;:&#39; . $printer-&gt;getTcp()-&gt;getPort(); // point the system under test at $addr, then assert with listJobs &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;name\&quot;:\&quot;ci-run-42\&quot;,\&quot;preset\&quot;:\&quot;4x6\&quot;}&#39;  &#x60;&#x60;&#x60;
+        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -1710,7 +1710,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -1725,7 +1725,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -1805,7 +1805,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -1821,7 +1821,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $jobs &#x3D; $sim-&gt;listJobs($printerId); assert(count($jobs-&gt;getJobs()) &#x3D;&#x3D;&#x3D; 1); assert($jobs-&gt;getJobs()[0]-&gt;getStatus() &#x3D;&#x3D;&#x3D; &#39;rendered&#39;); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; &#x60;&#x60;&#x60;
+        /// List captured jobs, newest first For CI assertions and inbox views. Cursor-paged via before.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -2223,7 +2223,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -2237,7 +2237,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -2316,7 +2316,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>
@@ -2331,7 +2331,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults([&#39;paper_out&#39; &#x3D;&gt; true])); // print something - it holds. Clear to flush: $sim-&gt;setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); &#x60;&#x60;&#x60;  **curl**: &#x60;&#x60;&#x60;bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \&quot;X-Api-Key: sh_live_YOUR_KEY\&quot; -H \&quot;Content-Type: application/json\&quot; \\   -d &#39;{\&quot;paperOut\&quot;:true}&#39;  &#x60;&#x60;&#x60;
+        /// Inject or clear fault conditions Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="printerId"></param>

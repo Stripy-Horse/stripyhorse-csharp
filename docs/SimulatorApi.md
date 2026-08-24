@@ -115,7 +115,7 @@ void (empty response body)
 
 Create a virtual printer
 
-Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.  **PHP** (`composer require stripyhorse/stripyhorse-php`): ```php $sim = new StripyHorse\\Api\\SimulatorApi(null, $config); $printer = $sim->createPrinter(new StripyHorse\\Model\\CreatePrinterInputBody([     'name' => 'ci-run-42', 'preset' => '4x6', ])); $addr = $printer->getTcp()->getHost() . ':' . $printer->getTcp()->getPort(); // point the system under test at $addr, then assert with listJobs ```  **curl**: ```bash curl https://api.stripyhorse.io/v1/printers \\   -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\" \\   -d '{\"name\":\"ci-run-42\",\"preset\":\"4x6\"}'  ```
+Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
 
 ### Example
 ```csharp
@@ -604,7 +604,7 @@ catch (ApiException e)
 
 List captured jobs, newest first
 
-For CI assertions and inbox views. Cursor-paged via before.  **PHP** (`composer require stripyhorse/stripyhorse-php`): ```php $jobs = $sim->listJobs($printerId); assert(count($jobs->getJobs()) === 1); assert($jobs->getJobs()[0]->getStatus() === 'rendered'); ```  **curl**: ```bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \\   -H \"X-Api-Key: sh_live_YOUR_KEY\" ```
+For CI assertions and inbox views. Cursor-paged via before.
 
 ### Example
 ```csharp
@@ -896,7 +896,7 @@ catch (ApiException e)
 
 Inject or clear fault conditions
 
-Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.  **PHP** (`composer require stripyhorse/stripyhorse-php`): ```php $sim->setPrinterFaults($printerId, new StripyHorse\\Model\\Faults(['paper_out' => true])); // print something - it holds. Clear to flush: $sim->setPrinterFaults($printerId, new StripyHorse\\Model\\Faults()); ```  **curl**: ```bash curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \\   -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\" \\   -d '{\"paperOut\":true}'  ```
+Blocking faults hold incoming jobs in the receive buffer; clearing them flushes the queue in order.
 
 ### Example
 ```csharp

@@ -13,7 +13,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 
 Render ZPL to PNG images
 
-Renders every label in the ZPL stream. For a raw PNG of a single label use renderZplPng.  **PHP** (`composer require stripyhorse/stripyhorse-php`): ```php $render = new StripyHorse\\Api\\RenderApi(null, $config); $out = $render->renderZpl(new StripyHorse\\Model\\RenderInputBody([     'zpl' => '^XA^FO50,50^A0N,45,45^FDHello^FS^XZ', 'preset' => '4x6', ])); file_put_contents('label.png', base64_decode($out->getLabels()[0]->getPng())); ```  **curl**: ```bash curl https://api.stripyhorse.io/v1/render \\   -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\" \\   -d '{\"zpl\":\"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ\",\"preset\":\"4x6\"}'  ```
+Renders every label in the ZPL stream. For a raw PNG of a single label use renderZplPng.
 
 ### Example
 ```csharp
@@ -112,7 +112,7 @@ catch (ApiException e)
 
 Render ZPL and return the first label as a raw PNG
 
-curl-friendly variant: the X-Label-Count response header carries the total label count.  **PHP** (`composer require stripyhorse/stripyhorse-php`): ```php $png = (new StripyHorse\\Api\\RenderApi(null, $config))     ->renderZplPng(new StripyHorse\\Model\\RenderInputBody(['zpl' => $zpl, 'preset' => '4x6'])); ```  **curl**: ```bash curl https://api.stripyhorse.io/v1/render.png \\   -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\" \\   -d '{\"zpl\":\"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ\",\"preset\":\"4x6\"}' -o label.png ```
+curl-friendly variant: the X-Label-Count response header carries the total label count.
 
 ### Example
 ```csharp

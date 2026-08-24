@@ -11,21 +11,8 @@ servers:
 paths:
   /v1/convert:
     post:
-      description: |-
-        Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
-
-        **PHP** (`composer require stripyhorse/stripyhorse-php`):
-        ```php
-        $convert = new StripyHorse\Api\ConvertApi(null, $config);
-        $result = $convert->convertDocument(new SplFileObject('shipping-label.pdf'), preset: '4x6');
-        foreach ($result->getPages() as $page) { sendToPrinter($page->getZpl()); }
-        ```
-
-        **curl**:
-        ```bash
-        curl https://api.stripyhorse.io/v1/convert \
-          -H "X-Api-Key: sh_live_YOUR_KEY" -F file=@shipping-label.pdf -F preset=4x6
-        ```
+      description: Each page becomes its own ^GFA command (Zebra ACS run-length compression).
+        PDFs up to 16 pages.
       operationId: convertDocument
       requestBody:
         content:
@@ -82,6 +69,42 @@ paths:
       summary: Convert a PDF or image to ZPL
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/convert \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -F file=@shipping-label.pdf -F preset=4x6
+      - lang: php
+        label: PHP
+        source: |-
+          $convert = new StripyHorse\Api\ConvertApi(null, $config);
+          $result = $convert->convertDocument(new SplFileObject('shipping-label.pdf'), preset: '4x6');
+          foreach ($result->getPages() as $page) { sendToPrinter($page->getZpl()); }
+      - lang: python
+        label: Python
+        source: |-
+          convert = ConvertApi(client)
+          result = convert.convert_document(file="shipping-label.pdf", preset="4x6")
+          for page in result.pages:
+              send_to_printer(page.zpl)
+      - lang: csharp
+        label: C#
+        source: |-
+          var convert = new ConvertApi(config);
+          using var pdf = File.OpenRead("shipping-label.pdf");
+          var result = convert.ConvertDocument(pdf, preset: "4x6");
+          foreach (var page in result.Pages)
+              SendToPrinter(page.Zpl);
+      - lang: java
+        label: Java
+        source: |-
+          ConvertApi convert = new ConvertApi(client);
+          ConvertOutputBody result = convert.convertDocument(
+              new File("shipping-label.pdf"),
+              null, null, null, null, "4x6", null, null, null, null);
+          for (ConvertedPage page : result.getPages())
+              sendToPrinter(page.getZpl());
   /v1/convert/batch:
     post:
       description: "Upload up to 20 PDFs/images as repeated `files` fields. The response\
@@ -144,7 +167,7 @@ paths:
   /v1/convert/html:
     post:
       description: |-
-        Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except `<zpl-barcode type="code128|qr" data="…">` elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (`left/top/width/height`). Unsupported types or unencodable data fail loudly.
+        Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except `<zpl-barcode type="code128|qr" data="…">` elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (`left/top/width/height`); optional `module` (^BY dots) and `mag` (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.
 
         **PHP** (`composer require stripyhorse/stripyhorse-php`):
         ```php
@@ -180,6 +203,75 @@ paths:
       summary: Convert an HTML label design to ZPL
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/convert/html \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -d '{"html":"<div style=\"position:absolute;left:40px;top:40px;font-size:50px\">Hello</div>","preset":"4x6"}'
+      - lang: php
+        label: PHP
+        source: |-
+          $out = $convert->convertHtml(new StripyHorse\Model\HtmlInputBody([
+              'html' => '<div style="position:absolute;left:40px;top:40px;font-size:50px">Hello</div>',
+              'preset' => '4x6',
+          ]));
+          echo $out->getZpl();
+      - lang: python
+        label: Python
+        source: |-
+          out = convert.convert_html(HtmlInputBody(
+              html='<div style="position:absolute;left:40px;top:40px;font-size:50px">Hello</div>',
+              preset="4x6"))
+          print(out.zpl)
+      - lang: csharp
+        label: C#
+        source: |-
+          var outp = convert.ConvertHtml(new HtmlInputBody(
+              html: """<div style="position:absolute;left:40px;top:40px;font-size:50px">Hello</div>""",
+              preset: HtmlInputBody.PresetEnum._4x6));
+          Console.WriteLine(outp.Zpl);
+      - lang: java
+        label: Java
+        source: |-
+          HtmlOutputBody out = convert.convertHtml(new HtmlInputBody()
+              .html("<div style=\"position:absolute;left:40px;top:40px;font-size:50px\">Hello</div>")
+              .preset(HtmlInputBody.PresetEnum._4X6));
+          System.out.println(out.getZpl());
+  /v1/convert/zpl-html:
+    post:
+      description: "The migration path for legacy ZPL templates: text, boxes and Code128/QR\
+        \ barcodes become editable HTML in the dialect convertHtml accepts; unsupported\
+        \ elements (raster graphics, exotic barcodes) are embedded as positioned images\
+        \ so the layout survives. Round-tripping through convertHtml preserves scannable\
+        \ barcodes."
+      operationId: convertZplToHtml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZplHTMLInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZplHTMLOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Decompile ZPL into editable HTML
+      tags:
+      - Convert
   /v1/printers:
     get:
       operationId: listPrinters
@@ -204,15 +296,7 @@ paths:
       - Simulator
     post:
       description: "Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent\
-        \ printers. The ingest URL and webhook secret are only returned here.\n\n\
-        **PHP** (`composer require stripyhorse/stripyhorse-php`):\n```php\n$sim =\
-        \ new StripyHorse\\Api\\SimulatorApi(null, $config);\n$printer = $sim->createPrinter(new\
-        \ StripyHorse\\Model\\CreatePrinterInputBody([\n    'name' => 'ci-run-42',\
-        \ 'preset' => '4x6',\n]));\n$addr = $printer->getTcp()->getHost() . ':' .\
-        \ $printer->getTcp()->getPort();\n// point the system under test at $addr,\
-        \ then assert with listJobs\n```\n\n**curl**:\n```bash\ncurl https://api.stripyhorse.io/v1/printers\
-        \ \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\"\
-        \ \\\n  -d '{\"name\":\"ci-run-42\",\"preset\":\"4x6\"}' \n```"
+        \ printers. The ingest URL and webhook secret are only returned here."
       operationId: createPrinter
       requestBody:
         content:
@@ -239,6 +323,45 @@ paths:
       summary: Create a virtual printer
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/printers \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -d '{"name":"ci-run-42","preset":"4x6"}'
+      - lang: php
+        label: PHP
+        source: |-
+          $sim = new StripyHorse\Api\SimulatorApi(null, $config);
+          $printer = $sim->createPrinter(new StripyHorse\Model\CreatePrinterInputBody([
+              'name' => 'ci-run-42', 'preset' => '4x6',
+          ]));
+          $addr = $printer->getTcp()->getHost() . ':' . $printer->getTcp()->getPort();
+          // point the system under test at $addr, then assert with listJobs
+      - lang: python
+        label: Python
+        source: |-
+          sim = SimulatorApi(client)
+          printer = sim.create_printer(CreatePrinterInputBody(name="ci-run-42", preset="4x6"))
+          addr = f"{printer.tcp.host}:{printer.tcp.port}"
+          # point the system under test at addr, then assert with list_jobs
+      - lang: csharp
+        label: C#
+        source: |-
+          var sim = new SimulatorApi(config);
+          var printer = sim.CreatePrinter(new CreatePrinterInputBody(
+              name: "ci-run-42", preset: CreatePrinterInputBody.PresetEnum._4x6));
+          var addr = $"{printer.Tcp.Host}:{printer.Tcp.Port}";
+          // point the system under test at addr, then assert with ListJobs
+      - lang: java
+        label: Java
+        source: |-
+          SimulatorApi sim = new SimulatorApi(client);
+          PrinterBody printer = sim.createPrinter(new CreatePrinterInputBody()
+              .name("ci-run-42").preset(CreatePrinterInputBody.PresetEnum._4X6));
+          String addr = printer.getTcp().getHost() + ":" + printer.getTcp().getPort();
+          // point the system under test at addr, then assert with listJobs
   /v1/printers/{printerId}:
     delete:
       operationId: deletePrinter
@@ -331,13 +454,8 @@ paths:
       - Simulator
   /v1/printers/{printerId}/faults:
     post:
-      description: "Blocking faults hold incoming jobs in the receive buffer; clearing\
-        \ them flushes the queue in order.\n\n**PHP** (`composer require stripyhorse/stripyhorse-php`):\n\
-        ```php\n$sim->setPrinterFaults($printerId, new StripyHorse\\Model\\Faults(['paper_out'\
-        \ => true]));\n// print something - it holds. Clear to flush:\n$sim->setPrinterFaults($printerId,\
-        \ new StripyHorse\\Model\\Faults());\n```\n\n**curl**:\n```bash\ncurl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults\
-        \ \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\"\
-        \ \\\n  -d '{\"paperOut\":true}' \n```"
+      description: Blocking faults hold incoming jobs in the receive buffer; clearing
+        them flushes the queue in order.
       operationId: setPrinterFaults
       parameters:
       - explode: false
@@ -372,6 +490,37 @@ paths:
       summary: Inject or clear fault conditions
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -d '{"paperOut":true}'
+      - lang: php
+        label: PHP
+        source: |-
+          $sim->setPrinterFaults($printerId, new StripyHorse\Model\Faults(['paper_out' => true]));
+          // print something - it holds. Clear to flush:
+          $sim->setPrinterFaults($printerId, new StripyHorse\Model\Faults());
+      - lang: python
+        label: Python
+        source: |-
+          sim.set_printer_faults(printer.id, Faults(paper_out=True))
+          # print something - it holds. Clear to flush:
+          sim.set_printer_faults(printer.id, Faults())
+      - lang: csharp
+        label: C#
+        source: |-
+          sim.SetPrinterFaults(printer.Id, new Faults(paperOut: true));
+          // print something - it holds. Clear to flush:
+          sim.SetPrinterFaults(printer.Id, new Faults());
+      - lang: java
+        label: Java
+        source: |-
+          sim.setPrinterFaults(printer.getId(), new Faults().paperOut(true));
+          // print something - it holds. Clear to flush:
+          sim.setPrinterFaults(printer.getId(), new Faults());
   /v1/printers/{printerId}/jobs:
     delete:
       operationId: clearJobs
@@ -399,21 +548,7 @@ paths:
       tags:
       - Simulator
     get:
-      description: |-
-        For CI assertions and inbox views. Cursor-paged via before.
-
-        **PHP** (`composer require stripyhorse/stripyhorse-php`):
-        ```php
-        $jobs = $sim->listJobs($printerId);
-        assert(count($jobs->getJobs()) === 1);
-        assert($jobs->getJobs()[0]->getStatus() === 'rendered');
-        ```
-
-        **curl**:
-        ```bash
-        curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \
-          -H "X-Api-Key: sh_live_YOUR_KEY"
-        ```
+      description: For CI assertions and inbox views. Cursor-paged via before.
       operationId: listJobs
       parameters:
       - explode: false
@@ -463,6 +598,36 @@ paths:
       summary: "List captured jobs, newest first"
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \
+            -H "X-Api-Key: sh_live_YOUR_KEY"
+      - lang: php
+        label: PHP
+        source: |-
+          $jobs = $sim->listJobs($printerId);
+          assert(count($jobs->getJobs()) === 1);
+          assert($jobs->getJobs()[0]->getStatus() === 'rendered');
+      - lang: python
+        label: Python
+        source: |-
+          jobs = sim.list_jobs(printer.id)
+          assert len(jobs.jobs) == 1
+          assert jobs.jobs[0].status == "rendered"
+      - lang: csharp
+        label: C#
+        source: |-
+          var jobs = sim.ListJobs(printer.Id);
+          Debug.Assert(jobs.Jobs.Count == 1);
+          Debug.Assert(jobs.Jobs[0].Status == "rendered");
+      - lang: java
+        label: Java
+        source: |-
+          ListJobsOutputBody jobs = sim.listJobs(printer.getId(), null, null);
+          assert jobs.getJobs().size() == 1;
+          assert "rendered".equals(jobs.getJobs().get(0).getStatus());
   /v1/printers/{printerId}/jobs/{jobId}:
     get:
       operationId: getJob
@@ -586,15 +751,8 @@ paths:
       - Simulator
   /v1/render:
     post:
-      description: "Renders every label in the ZPL stream. For a raw PNG of a single\
-        \ label use renderZplPng.\n\n**PHP** (`composer require stripyhorse/stripyhorse-php`):\n\
-        ```php\n$render = new StripyHorse\\Api\\RenderApi(null, $config);\n$out =\
-        \ $render->renderZpl(new StripyHorse\\Model\\RenderInputBody([\n    'zpl'\
-        \ => '^XA^FO50,50^A0N,45,45^FDHello^FS^XZ', 'preset' => '4x6',\n]));\nfile_put_contents('label.png',\
-        \ base64_decode($out->getLabels()[0]->getPng()));\n```\n\n**curl**:\n```bash\n\
-        curl https://api.stripyhorse.io/v1/render \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\"\
-        \ -H \"Content-Type: application/json\" \\\n  -d '{\"zpl\":\"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ\"\
-        ,\"preset\":\"4x6\"}' \n```"
+      description: Renders every label in the ZPL stream. For a raw PNG of a single
+        label use renderZplPng.
       operationId: renderZpl
       requestBody:
         content:
@@ -621,23 +779,50 @@ paths:
       summary: Render ZPL to PNG images
       tags:
       - Render
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/render \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}'
+      - lang: php
+        label: PHP
+        source: |-
+          $render = new StripyHorse\Api\RenderApi(null, $config);
+          $out = $render->renderZpl(new StripyHorse\Model\RenderInputBody([
+              'zpl' => '^XA^FO50,50^A0N,45,45^FDHello^FS^XZ', 'preset' => '4x6',
+          ]));
+          file_put_contents('label.png', base64_decode($out->getLabels()[0]->getPng()));
+      - lang: python
+        label: Python
+        source: |-
+          render = RenderApi(client)
+          out = render.render_zpl(RenderInputBody(
+              zpl="^XA^FO50,50^A0N,45,45^FDHello^FS^XZ", preset="4x6"))
+          with open("label.png", "wb") as f:
+              f.write(base64.b64decode(out.labels[0].png))
+      - lang: csharp
+        label: C#
+        source: |-
+          var render = new RenderApi(config);
+          var outp = render.RenderZpl(new RenderInputBody(
+              zpl: "^XA^FO50,50^A0N,45,45^FDHello^FS^XZ",
+              preset: RenderInputBody.PresetEnum._4x6));
+          File.WriteAllBytes("label.png", Convert.FromBase64String(outp.Labels[0].Png));
+      - lang: java
+        label: Java
+        source: |-
+          RenderApi render = new RenderApi(client);
+          RenderOutputBody out = render.renderZpl(new RenderInputBody()
+              .zpl("^XA^FO50,50^A0N,45,45^FDHello^FS^XZ")
+              .preset(RenderInputBody.PresetEnum._4X6));
+          Files.write(Path.of("label.png"),
+              Base64.getDecoder().decode(out.getLabels().get(0).getPng()));
   /v1/render.png:
     post:
-      description: |-
-        curl-friendly variant: the X-Label-Count response header carries the total label count.
-
-        **PHP** (`composer require stripyhorse/stripyhorse-php`):
-        ```php
-        $png = (new StripyHorse\Api\RenderApi(null, $config))
-            ->renderZplPng(new StripyHorse\Model\RenderInputBody(['zpl' => $zpl, 'preset' => '4x6']));
-        ```
-
-        **curl**:
-        ```bash
-        curl https://api.stripyhorse.io/v1/render.png \
-          -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
-          -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}' -o label.png
-        ```
+      description: "curl-friendly variant: the X-Label-Count response header carries\
+        \ the total label count."
       operationId: renderZplPng
       requestBody:
         content:
@@ -676,6 +861,22 @@ paths:
       summary: Render ZPL and return the first label as a raw PNG
       tags:
       - Render
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          curl https://api.stripyhorse.io/v1/render.png \
+            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}' -o label.png
+      - lang: php
+        label: PHP
+        source: |-
+          $png = (new StripyHorse\Api\RenderApi(null, $config))
+              ->renderZplPng(new StripyHorse\Model\RenderInputBody(['zpl' => $zpl, 'preset' => '4x6']));
+      - lang: python
+        label: Python
+        source: "png = RenderApi(client).render_zpl_png(RenderInputBody(zpl=zpl, preset=\"\
+          4x6\"))"
 components:
   schemas:
     ConvertOutputBody:
@@ -1309,6 +1510,57 @@ components:
           type: string
         webhookUrl:
           type: string
+    ZplHTMLInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        preset: 4x6
+        widthMm: 0.14658129805029452
+        zpl: zpl
+      properties:
+        dpmm:
+          description: Print density in dots/mm (152/203/300/600 dpi); default 8
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        preset:
+          description: Named label size in inches; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          type: string
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+        zpl:
+          type: string
+      required:
+      - zpl
+    ZplHTMLOutputBody:
+      additionalProperties: false
+      example:
+        html: html
+      properties:
+        html:
+          description: Editable HTML in the convertHtml dialect
+          type: string
+      required:
+      - html
     convertDocument_request:
       properties:
         barcodeAware:
