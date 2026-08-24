@@ -1,0 +1,1391 @@
+openapi: 3.1.0
+info:
+  description: "Zebra/ZPL developer tools: render ZPL to PNG, convert PDFs and images\
+    \ to print-ready ZPL, and drive hosted virtual Zebra printers for testing. Authenticate\
+    \ with an API key via `Authorization: Bearer sh_live_…` or `X-Api-Key`."
+  title: Stripy Horse API
+  version: 1.0.0
+servers:
+- url: https://api.stripyhorse.io
+- url: https://stripyhorse.io
+paths:
+  /v1/convert:
+    post:
+      description: |-
+        Each page becomes its own ^GFA command (Zebra ACS run-length compression). PDFs up to 16 pages.
+
+        **PHP** (`composer require stripyhorse/stripyhorse-php`):
+        ```php
+        $convert = new StripyHorse\Api\ConvertApi(null, $config);
+        $result = $convert->convertDocument(new SplFileObject('shipping-label.pdf'), preset: '4x6');
+        foreach ($result->getPages() as $page) { sendToPrinter($page->getZpl()); }
+        ```
+
+        **curl**:
+        ```bash
+        curl https://api.stripyhorse.io/v1/convert \
+          -H "X-Api-Key: sh_live_YOUR_KEY" -F file=@shipping-label.pdf -F preset=4x6
+        ```
+      operationId: convertDocument
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding:
+              barcodeAware:
+                contentType: text/plain
+                style: form
+              compression:
+                contentType: text/plain
+                style: form
+              dpmm:
+                contentType: text/plain
+                style: form
+              file:
+                contentType: application/octet-stream
+                style: form
+              heightMm:
+                contentType: text/plain
+                style: form
+              preset:
+                contentType: text/plain
+                style: form
+              rotation:
+                contentType: text/plain
+                style: form
+              scale:
+                contentType: text/plain
+                style: form
+              threshold:
+                contentType: text/plain
+                style: form
+              widthMm:
+                contentType: text/plain
+                style: form
+            schema:
+              $ref: "#/components/schemas/convertDocument_request"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConvertOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Convert a PDF or image to ZPL
+      tags:
+      - Convert
+  /v1/convert/batch:
+    post:
+      description: "Upload up to 20 PDFs/images as repeated `files` fields. The response\
+        \ is application/x-ndjson: one JSON object per converted page, streamed as\
+        \ each page finishes — `{\"file\":…,\"page\":…,\"pageCount\":…,\"zpl\":…}`\
+        \ on success, `{\"file\":…,\"error\":…}` per failed file (remaining files\
+        \ still convert)."
+      operationId: convertBatch
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding:
+              barcodeAware:
+                contentType: text/plain
+                style: form
+              compression:
+                contentType: text/plain
+                style: form
+              dpmm:
+                contentType: text/plain
+                style: form
+              files:
+                contentType: application/octet-stream
+                style: form
+              heightMm:
+                contentType: text/plain
+                style: form
+              preset:
+                contentType: text/plain
+                style: form
+              rotation:
+                contentType: text/plain
+                style: form
+              scale:
+                contentType: text/plain
+                style: form
+              threshold:
+                contentType: text/plain
+                style: form
+              widthMm:
+                contentType: text/plain
+                style: form
+            schema:
+              $ref: "#/components/schemas/convertBatch_request"
+      responses:
+        "200":
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: "Convert many documents in one request, results streamed"
+      tags:
+      - Convert
+  /v1/convert/html:
+    post:
+      description: |-
+        Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except `<zpl-barcode type="code128|qr" data="…">` elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (`left/top/width/height`). Unsupported types or unencodable data fail loudly.
+
+        **PHP** (`composer require stripyhorse/stripyhorse-php`):
+        ```php
+        $out = $convert->convertHtml(new StripyHorse\Model\HtmlInputBody([
+            'html' => '<div style="position:absolute;left:40px;top:40px;font-size:50px">Hello</div>',
+            'preset' => '4x6',
+        ]));
+        echo $out->getZpl();
+        ```
+      operationId: convertHtml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HtmlInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HtmlOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Convert an HTML label design to ZPL
+      tags:
+      - Convert
+  /v1/printers:
+    get:
+      operationId: listPrinters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListPrintersOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: List your printers
+      tags:
+      - Simulator
+    post:
+      description: "Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent\
+        \ printers. The ingest URL and webhook secret are only returned here.\n\n\
+        **PHP** (`composer require stripyhorse/stripyhorse-php`):\n```php\n$sim =\
+        \ new StripyHorse\\Api\\SimulatorApi(null, $config);\n$printer = $sim->createPrinter(new\
+        \ StripyHorse\\Model\\CreatePrinterInputBody([\n    'name' => 'ci-run-42',\
+        \ 'preset' => '4x6',\n]));\n$addr = $printer->getTcp()->getHost() . ':' .\
+        \ $printer->getTcp()->getPort();\n// point the system under test at $addr,\
+        \ then assert with listJobs\n```\n\n**curl**:\n```bash\ncurl https://api.stripyhorse.io/v1/printers\
+        \ \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\"\
+        \ \\\n  -d '{\"name\":\"ci-run-42\",\"preset\":\"4x6\"}' \n```"
+      operationId: createPrinter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrinterInputBody"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrinterBody"
+          description: Created
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Create a virtual printer
+      tags:
+      - Simulator
+  /v1/printers/{printerId}:
+    delete:
+      operationId: deletePrinter
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Delete a printer and its captured jobs
+      tags:
+      - Simulator
+    get:
+      operationId: getPrinter
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrinterBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Get a printer with live state
+      tags:
+      - Simulator
+    patch:
+      operationId: updatePrinter
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePrinterInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrinterBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Rename a printer or set its webhook URL
+      tags:
+      - Simulator
+  /v1/printers/{printerId}/faults:
+    post:
+      description: "Blocking faults hold incoming jobs in the receive buffer; clearing\
+        \ them flushes the queue in order.\n\n**PHP** (`composer require stripyhorse/stripyhorse-php`):\n\
+        ```php\n$sim->setPrinterFaults($printerId, new StripyHorse\\Model\\Faults(['paper_out'\
+        \ => true]));\n// print something - it holds. Clear to flush:\n$sim->setPrinterFaults($printerId,\
+        \ new StripyHorse\\Model\\Faults());\n```\n\n**curl**:\n```bash\ncurl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults\
+        \ \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\" -H \"Content-Type: application/json\"\
+        \ \\\n  -d '{\"paperOut\":true}' \n```"
+      operationId: setPrinterFaults
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Faults"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StateOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Inject or clear fault conditions
+      tags:
+      - Simulator
+  /v1/printers/{printerId}/jobs:
+    delete:
+      operationId: clearJobs
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Delete all captured jobs
+      tags:
+      - Simulator
+    get:
+      description: |-
+        For CI assertions and inbox views. Cursor-paged via before.
+
+        **PHP** (`composer require stripyhorse/stripyhorse-php`):
+        ```php
+        $jobs = $sim->listJobs($printerId);
+        assert(count($jobs->getJobs()) === 1);
+        assert($jobs->getJobs()[0]->getStatus() === 'rendered');
+        ```
+
+        **curl**:
+        ```bash
+        curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \
+          -H "X-Api-Key: sh_live_YOUR_KEY"
+        ```
+      operationId: listJobs
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: int64
+          maximum: 200
+          minimum: 1
+          type: integer
+        style: form
+      - description: Return jobs with id lower than this cursor
+        explode: false
+        in: query
+        name: before
+        required: false
+        schema:
+          description: Return jobs with id lower than this cursor
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListJobsOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: "List captured jobs, newest first"
+      tags:
+      - Simulator
+  /v1/printers/{printerId}/jobs/{jobId}:
+    get:
+      operationId: getJob
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Get one job including its raw ZPL
+      tags:
+      - Simulator
+  /v1/printers/{printerId}/jobs/{jobId}/labels/{index}.png:
+    get:
+      operationId: getJobLabel
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: index
+        required: true
+        schema:
+          format: int64
+          minimum: 0
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Get one rendered label as a PNG
+      tags:
+      - Simulator
+  /v1/printers/{printerId}/reset:
+    post:
+      operationId: resetPrinter
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StateOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Clear all faults and flush held jobs
+      tags:
+      - Simulator
+  /v1/render:
+    post:
+      description: "Renders every label in the ZPL stream. For a raw PNG of a single\
+        \ label use renderZplPng.\n\n**PHP** (`composer require stripyhorse/stripyhorse-php`):\n\
+        ```php\n$render = new StripyHorse\\Api\\RenderApi(null, $config);\n$out =\
+        \ $render->renderZpl(new StripyHorse\\Model\\RenderInputBody([\n    'zpl'\
+        \ => '^XA^FO50,50^A0N,45,45^FDHello^FS^XZ', 'preset' => '4x6',\n]));\nfile_put_contents('label.png',\
+        \ base64_decode($out->getLabels()[0]->getPng()));\n```\n\n**curl**:\n```bash\n\
+        curl https://api.stripyhorse.io/v1/render \\\n  -H \"X-Api-Key: sh_live_YOUR_KEY\"\
+        \ -H \"Content-Type: application/json\" \\\n  -d '{\"zpl\":\"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ\"\
+        ,\"preset\":\"4x6\"}' \n```"
+      operationId: renderZpl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RenderInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RenderOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Render ZPL to PNG images
+      tags:
+      - Render
+  /v1/render.png:
+    post:
+      description: |-
+        curl-friendly variant: the X-Label-Count response header carries the total label count.
+
+        **PHP** (`composer require stripyhorse/stripyhorse-php`):
+        ```php
+        $png = (new StripyHorse\Api\RenderApi(null, $config))
+            ->renderZplPng(new StripyHorse\Model\RenderInputBody(['zpl' => $zpl, 'preset' => '4x6']));
+        ```
+
+        **curl**:
+        ```bash
+        curl https://api.stripyhorse.io/v1/render.png \
+          -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+          -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}' -o label.png
+        ```
+      operationId: renderZplPng
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RenderInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                type: string
+              style: simple
+            X-Label-Count:
+              explode: false
+              schema:
+                format: int64
+                type: integer
+              style: simple
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Render ZPL and return the first label as a raw PNG
+      tags:
+      - Render
+components:
+  schemas:
+    ConvertOutputBody:
+      additionalProperties: false
+      example:
+        pages:
+        - page: 0
+          zpl: zpl
+        - page: 0
+          zpl: zpl
+      properties:
+        pages:
+          items:
+            $ref: "#/components/schemas/ConvertedPage"
+          nullable: true
+          type: array
+          default: null
+      required:
+      - pages
+    ConvertedPage:
+      additionalProperties: false
+      example:
+        page: 0
+        zpl: zpl
+      properties:
+        page:
+          description: 1-based page number
+          format: int64
+          type: integer
+        zpl:
+          type: string
+      required:
+      - page
+      - zpl
+    CreatePrinterInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        mode: ""
+        name: name
+        preset: 4x6
+        webhookUrl: webhookUrl
+        widthMm: 0.14658129805029452
+      properties:
+        dpmm:
+          description: Print density in dots/mm (152/203/300/600 dpi); default 8
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        mode:
+          enum:
+          - ""
+          - ephemeral
+          - persistent
+          type: string
+        name:
+          minLength: 1
+          type: string
+        preset:
+          description: Named label size in inches; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          type: string
+        webhookUrl:
+          type: string
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - name
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: "Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'"
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        detail:
+          description: A human-readable explanation specific to this occurrence of
+            the problem.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          nullable: true
+          type: array
+          default: null
+        instance:
+          description: A URI reference that identifies the specific occurrence of
+            the problem.
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          format: int64
+          type: integer
+        title:
+          description: "A short, human-readable summary of the problem type. This\
+            \ value should not change between occurrences of the error."
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          format: uri
+          type: string
+    Faults:
+      additionalProperties: false
+      example:
+        headUp: true
+        overTemp: true
+        paperOut: true
+        paused: true
+        ribbonOut: true
+        underTemp: true
+      properties:
+        headUp:
+          type: boolean
+        overTemp:
+          type: boolean
+        paperOut:
+          type: boolean
+        paused:
+          type: boolean
+        ribbonOut:
+          type: boolean
+        underTemp:
+          type: boolean
+    HtmlInputBody:
+      additionalProperties: false
+      example:
+        compression: acs
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        html: html
+        preset: 4x6
+        threshold: 38
+        widthMm: 0.5962133916683182
+      properties:
+        compression:
+          enum:
+          - acs
+          - z64
+          type: string
+        dpmm:
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        html:
+          description: "Label markup: HTML/CSS plus <zpl-barcode> elements"
+          type: string
+        preset:
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          type: string
+        threshold:
+          format: int64
+          maximum: 255
+          minimum: 1
+          type: integer
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - html
+    HtmlOutputBody:
+      additionalProperties: false
+      example:
+        heightPx: 0
+        widthPx: 6
+        zpl: zpl
+      properties:
+        heightPx:
+          format: int64
+          type: integer
+        widthPx:
+          format: int64
+          type: integer
+        zpl:
+          type: string
+      required:
+      - heightPx
+      - widthPx
+      - zpl
+    JobOutputBody:
+      additionalProperties: false
+      example:
+        labels:
+        - labels
+        - labels
+        zpl: zpl
+      properties:
+        labels:
+          description: URLs of the rendered label PNGs
+          items:
+            type: string
+          nullable: true
+          type: array
+          default: null
+        zpl:
+          description: The raw ZPL as received
+          type: string
+      required:
+      - labels
+      - zpl
+    JobSummary:
+      additionalProperties: false
+      example:
+        error: error
+        id: 0
+        labelCount: 6
+        receivedAt: 2000-01-23T04:56:07.000+00:00
+        source: tcp
+        status: rendered
+        zplBytes: 1
+      properties:
+        error:
+          type: string
+        id:
+          format: int64
+          type: integer
+        labelCount:
+          format: int64
+          type: integer
+        receivedAt:
+          format: date-time
+          type: string
+        source:
+          enum:
+          - tcp
+          - https
+          type: string
+        status:
+          enum:
+          - rendered
+          - render_failed
+          type: string
+        zplBytes:
+          format: int64
+          type: integer
+      required:
+      - id
+      - labelCount
+      - receivedAt
+      - source
+      - status
+      - zplBytes
+    ListJobsOutputBody:
+      additionalProperties: false
+      example:
+        jobs:
+        - error: error
+          id: 0
+          labelCount: 6
+          receivedAt: 2000-01-23T04:56:07.000+00:00
+          source: tcp
+          status: rendered
+          zplBytes: 1
+        - error: error
+          id: 0
+          labelCount: 6
+          receivedAt: 2000-01-23T04:56:07.000+00:00
+          source: tcp
+          status: rendered
+          zplBytes: 1
+      properties:
+        jobs:
+          items:
+            $ref: "#/components/schemas/JobSummary"
+          nullable: true
+          type: array
+          default: null
+      required:
+      - jobs
+    ListPrintersOutputBody:
+      additionalProperties: false
+      example:
+        printers:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          dpmm: 0
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          heightMm: 6.027456183070403
+          id: id
+          ingestUrl: ingestUrl
+          mode: ephemeral
+          name: name
+          state:
+            faults:
+              headUp: true
+              overTemp: true
+              paperOut: true
+              paused: true
+              ribbonOut: true
+              underTemp: true
+            formatsInBuffer: 1
+            labelLengthDots: 5
+            odometer: 5
+            widthDots: 2
+          tcp:
+            host: host
+            port: 7
+          webhookSecret: webhookSecret
+          webhookUrl: webhookUrl
+          widthMm: 9.301444243932576
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          dpmm: 0
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          heightMm: 6.027456183070403
+          id: id
+          ingestUrl: ingestUrl
+          mode: ephemeral
+          name: name
+          state:
+            faults:
+              headUp: true
+              overTemp: true
+              paperOut: true
+              paused: true
+              ribbonOut: true
+              underTemp: true
+            formatsInBuffer: 1
+            labelLengthDots: 5
+            odometer: 5
+            widthDots: 2
+          tcp:
+            host: host
+            port: 7
+          webhookSecret: webhookSecret
+          webhookUrl: webhookUrl
+          widthMm: 9.301444243932576
+      properties:
+        printers:
+          items:
+            $ref: "#/components/schemas/PrinterBody"
+          nullable: true
+          type: array
+          default: null
+      required:
+      - printers
+    PrinterBody:
+      additionalProperties: false
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        dpmm: 0
+        expiresAt: 2000-01-23T04:56:07.000+00:00
+        heightMm: 6.027456183070403
+        id: id
+        ingestUrl: ingestUrl
+        mode: ephemeral
+        name: name
+        state:
+          faults:
+            headUp: true
+            overTemp: true
+            paperOut: true
+            paused: true
+            ribbonOut: true
+            underTemp: true
+          formatsInBuffer: 1
+          labelLengthDots: 5
+          odometer: 5
+          widthDots: 2
+        tcp:
+          host: host
+          port: 7
+        webhookSecret: webhookSecret
+        webhookUrl: webhookUrl
+        widthMm: 9.301444243932576
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        dpmm:
+          format: int64
+          type: integer
+        expiresAt:
+          format: date-time
+          type: string
+        heightMm:
+          format: double
+          type: number
+        id:
+          type: string
+        ingestUrl:
+          description: HTTPS print capability URL. Only returned on creation.
+          type: string
+        mode:
+          enum:
+          - ephemeral
+          - persistent
+          type: string
+        name:
+          type: string
+        state:
+          $ref: "#/components/schemas/StatusSnapshot"
+        tcp:
+          $ref: "#/components/schemas/PrinterBodyTCPStruct"
+        webhookSecret:
+          description: HMAC-SHA256 key for X-Stripy-Horse-Signature. Only returned
+            on creation.
+          type: string
+        webhookUrl:
+          type: string
+        widthMm:
+          format: double
+          type: number
+      required:
+      - createdAt
+      - dpmm
+      - heightMm
+      - id
+      - mode
+      - name
+      - tcp
+      - widthMm
+    PrinterBodyTCPStruct:
+      additionalProperties: false
+      example:
+        host: host
+        port: 7
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      required:
+      - host
+      - port
+    RenderInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        preset: 4x6
+        rotation: 1
+        widthMm: 0.5962133916683182
+        zpl: zpl
+      properties:
+        dpmm:
+          description: Print density in dots/mm (152/203/300/600 dpi); default 8
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        preset:
+          description: Named label size in inches; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          type: string
+        rotation:
+          enum:
+          - 0
+          - 90
+          - 180
+          - 270
+          format: int64
+          type: integer
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+        zpl:
+          type: string
+      required:
+      - zpl
+    RenderOutputBody:
+      additionalProperties: false
+      example:
+        labelCount: 0
+        labels:
+        - heightPx: 6
+          index: 1
+          png: png
+          widthPx: 5
+        - heightPx: 6
+          index: 1
+          png: png
+          widthPx: 5
+      properties:
+        labelCount:
+          format: int64
+          type: integer
+        labels:
+          items:
+            $ref: "#/components/schemas/RenderedLabel"
+          nullable: true
+          type: array
+          default: null
+      required:
+      - labelCount
+      - labels
+    RenderedLabel:
+      additionalProperties: false
+      example:
+        heightPx: 6
+        index: 1
+        png: png
+        widthPx: 5
+      properties:
+        heightPx:
+          format: int64
+          type: integer
+        index:
+          format: int64
+          type: integer
+        png:
+          description: Base64-encoded PNG
+          type: string
+        widthPx:
+          format: int64
+          type: integer
+      required:
+      - heightPx
+      - index
+      - png
+      - widthPx
+    StateOutputBody:
+      additionalProperties: false
+      example:
+        state:
+          faults:
+            headUp: true
+            overTemp: true
+            paperOut: true
+            paused: true
+            ribbonOut: true
+            underTemp: true
+          formatsInBuffer: 1
+          labelLengthDots: 5
+          odometer: 5
+          widthDots: 2
+      properties:
+        state:
+          $ref: "#/components/schemas/StatusSnapshot"
+      required:
+      - state
+    StatusSnapshot:
+      additionalProperties: false
+      example:
+        faults:
+          headUp: true
+          overTemp: true
+          paperOut: true
+          paused: true
+          ribbonOut: true
+          underTemp: true
+        formatsInBuffer: 1
+        labelLengthDots: 5
+        odometer: 5
+        widthDots: 2
+      properties:
+        faults:
+          $ref: "#/components/schemas/Faults"
+        formatsInBuffer:
+          format: int64
+          type: integer
+        labelLengthDots:
+          format: int64
+          type: integer
+        odometer:
+          format: int64
+          type: integer
+        widthDots:
+          format: int64
+          type: integer
+      required:
+      - faults
+      - formatsInBuffer
+      - labelLengthDots
+      - odometer
+      - widthDots
+    UpdatePrinterInputBody:
+      additionalProperties: false
+      example:
+        name: name
+        webhookUrl: webhookUrl
+      properties:
+        name:
+          type: string
+        webhookUrl:
+          type: string
+    convertDocument_request:
+      properties:
+        barcodeAware:
+          description: "EXPERIMENTAL: re-emit decodable barcodes as native ^BC/^BQ\
+            \ fields, verified by a decode round trip with automatic fallback to plain\
+            \ rasterization"
+          type: boolean
+        compression:
+          description: "acs (default) or z64 (zlib+base64, smaller payloads)"
+          type: string
+        dpmm:
+          format: int64
+          type: integer
+        file:
+          description: "PDF, PNG, GIF or JPEG"
+          format: binary
+          type: string
+        heightMm:
+          format: double
+          type: number
+        preset:
+          type: string
+        rotation:
+          format: int64
+          type: integer
+        scale:
+          description: "cover (fit), fill (stretch) or none"
+          type: string
+        threshold:
+          format: int64
+          type: integer
+        widthMm:
+          format: double
+          type: number
+      required:
+      - file
+    convertBatch_request:
+      properties:
+        barcodeAware:
+          type: boolean
+        compression:
+          type: string
+        dpmm:
+          format: int64
+          type: integer
+        files:
+          items:
+            description: Up to 20 PDFs/images
+            format: binary
+            type: string
+          type: array
+          default: null
+        heightMm:
+          format: double
+          type: number
+        preset:
+          type: string
+        rotation:
+          format: int64
+          type: integer
+        scale:
+          type: string
+        threshold:
+          format: int64
+          type: integer
+        widthMm:
+          format: double
+          type: number
+      required:
+      - files
+  securitySchemes:
+    bearerKey:
+      bearerFormat: sh_live_…
+      scheme: bearer
+      type: http
+    headerKey:
+      in: header
+      name: X-Api-Key
+      type: apiKey
+
