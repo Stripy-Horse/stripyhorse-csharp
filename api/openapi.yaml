@@ -877,6 +877,38 @@ paths:
         label: Python
         source: "png = RenderApi(client).render_zpl_png(RenderInputBody(zpl=zpl, preset=\"\
           4x6\"))"
+  /v1/void:
+    post:
+      description: "Overlays large DO NOT SHIP warnings (and an optional attribution\
+        \ stamp) across every label in the stream, so printed dev and test labels\
+        \ can never be mistaken for shippable ones. Original fields are untouched;\
+        \ stamps draw on top."
+      operationId: voidZpl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoidInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoidOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Stamp ZPL as void / do-not-ship
+      tags:
+      - Convert
 components:
   schemas:
     ConvertOutputBody:
@@ -1510,6 +1542,63 @@ components:
           type: string
         webhookUrl:
           type: string
+    VoidInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        preset: 4x6
+        stamp: stamp
+        text: text
+        widthMm: 0.14658129805029452
+        zpl: zpl
+      properties:
+        dpmm:
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        preset:
+          description: Named label size in inches; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          type: string
+        stamp:
+          description: "Attribution stamp, e.g. VOID: bfaerber"
+          type: string
+        text:
+          description: Warning text; default DO NOT SHIP
+          type: string
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+        zpl:
+          type: string
+      required:
+      - zpl
+    VoidOutputBody:
+      additionalProperties: false
+      example:
+        zpl: zpl
+      properties:
+        zpl:
+          type: string
+      required:
+      - zpl
     ZplHTMLInputBody:
       additionalProperties: false
       example:

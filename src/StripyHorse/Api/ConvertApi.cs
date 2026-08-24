@@ -154,6 +154,29 @@ namespace StripyHorse.Api
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <returns>ApiResponse of ZplHTMLOutputBody</returns>
         ApiResponse<ZplHTMLOutputBody> ConvertZplToHtmlWithHttpInfo(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0);
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship
+        /// </summary>
+        /// <remarks>
+        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>VoidOutputBody</returns>
+        VoidOutputBody VoidZpl(VoidInputBody voidInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship
+        /// </summary>
+        /// <remarks>
+        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of VoidOutputBody</returns>
+        ApiResponse<VoidOutputBody> VoidZplWithHttpInfo(VoidInputBody voidInputBody, int operationIndex = 0);
         #endregion Synchronous Operations
     }
 
@@ -299,6 +322,31 @@ namespace StripyHorse.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ZplHTMLOutputBody)</returns>
         System.Threading.Tasks.Task<ApiResponse<ZplHTMLOutputBody>> ConvertZplToHtmlWithHttpInfoAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship
+        /// </summary>
+        /// <remarks>
+        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of VoidOutputBody</returns>
+        System.Threading.Tasks.Task<VoidOutputBody> VoidZplAsync(VoidInputBody voidInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship
+        /// </summary>
+        /// <remarks>
+        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (VoidOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<VoidOutputBody>> VoidZplWithHttpInfoAsync(VoidInputBody voidInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         #endregion Asynchronous Operations
     }
 
@@ -1312,6 +1360,177 @@ namespace StripyHorse.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ConvertZplToHtml", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>VoidOutputBody</returns>
+        public VoidOutputBody VoidZpl(VoidInputBody voidInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<VoidOutputBody> localVarResponse = VoidZplWithHttpInfo(voidInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of VoidOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<VoidOutputBody> VoidZplWithHttpInfo(VoidInputBody voidInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'voidInputBody' is set
+            if (voidInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'voidInputBody' when calling ConvertApi->VoidZpl");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = voidInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.VoidZpl";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<VoidOutputBody>("/v1/void", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("VoidZpl", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of VoidOutputBody</returns>
+        public async System.Threading.Tasks.Task<VoidOutputBody> VoidZplAsync(VoidInputBody voidInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<VoidOutputBody> localVarResponse = await VoidZplWithHttpInfoAsync(voidInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="voidInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (VoidOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<VoidOutputBody>> VoidZplWithHttpInfoAsync(VoidInputBody voidInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'voidInputBody' is set
+            if (voidInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'voidInputBody' when calling ConvertApi->VoidZpl");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = voidInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.VoidZpl";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<VoidOutputBody>("/v1/void", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("VoidZpl", localVarResponse);
                 if (_exception != null)
                 {
                     throw _exception;

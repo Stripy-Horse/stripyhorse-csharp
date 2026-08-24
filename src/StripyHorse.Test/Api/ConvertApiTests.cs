@@ -118,5 +118,17 @@ namespace StripyHorse.Test.Api
             //var response = instance.ConvertZplToHtml(zplHTMLInputBody);
             //Assert.IsType<ZplHTMLOutputBody>(response);
         }
+
+        /// <summary>
+        /// Test VoidZpl
+        /// </summary>
+        [Fact]
+        public void VoidZplTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //VoidInputBody voidInputBody = null;
+            //var response = instance.VoidZpl(voidInputBody);
+            //Assert.IsType<VoidOutputBody>(response);
+        }
     }
 }

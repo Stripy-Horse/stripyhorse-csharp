@@ -27,6 +27,8 @@ docs/SimulatorApi.md
 docs/StateOutputBody.md
 docs/StatusSnapshot.md
 docs/UpdatePrinterInputBody.md
+docs/VoidInputBody.md
+docs/VoidOutputBody.md
 docs/ZplHTMLInputBody.md
 docs/ZplHTMLOutputBody.md
 git_push.sh
@@ -53,6 +55,8 @@ src/StripyHorse.Test/Model/RenderedLabelTests.cs
 src/StripyHorse.Test/Model/StateOutputBodyTests.cs
 src/StripyHorse.Test/Model/StatusSnapshotTests.cs
 src/StripyHorse.Test/Model/UpdatePrinterInputBodyTests.cs
+src/StripyHorse.Test/Model/VoidInputBodyTests.cs
+src/StripyHorse.Test/Model/VoidOutputBodyTests.cs
 src/StripyHorse.Test/Model/ZplHTMLInputBodyTests.cs
 src/StripyHorse.Test/Model/ZplHTMLOutputBodyTests.cs
 src/StripyHorse.Test/StripyHorse.Test.csproj
@@ -96,6 +100,8 @@ src/StripyHorse/Model/RenderedLabel.cs
 src/StripyHorse/Model/StateOutputBody.cs
 src/StripyHorse/Model/StatusSnapshot.cs
 src/StripyHorse/Model/UpdatePrinterInputBody.cs
+src/StripyHorse/Model/VoidInputBody.cs
+src/StripyHorse/Model/VoidOutputBody.cs
 src/StripyHorse/Model/ZplHTMLInputBody.cs
 src/StripyHorse/Model/ZplHTMLOutputBody.cs
 src/StripyHorse/StripyHorse.csproj

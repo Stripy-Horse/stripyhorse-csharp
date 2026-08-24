@@ -8,6 +8,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 | [**ConvertDocument**](ConvertApi.md#convertdocument) | **POST** /v1/convert | Convert a PDF or image to ZPL |
 | [**ConvertHtml**](ConvertApi.md#converthtml) | **POST** /v1/convert/html | Convert an HTML label design to ZPL |
 | [**ConvertZplToHtml**](ConvertApi.md#convertzpltohtml) | **POST** /v1/convert/zpl-html | Decompile ZPL into editable HTML |
+| [**VoidZpl**](ConvertApi.md#voidzpl) | **POST** /v1/void | Stamp ZPL as void / do-not-ship |
 
 <a id="convertbatch"></a>
 # **ConvertBatch**
@@ -418,6 +419,105 @@ catch (ApiException e)
 ### Return type
 
 [**ZplHTMLOutputBody**](ZplHTMLOutputBody.md)
+
+### Authorization
+
+[headerKey](../README.md#headerKey), [bearerKey](../README.md#bearerKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a id="voidzpl"></a>
+# **VoidZpl**
+> VoidOutputBody VoidZpl (VoidInputBody voidInputBody)
+
+Stamp ZPL as void / do-not-ship
+
+Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using StripyHorse.Api;
+using StripyHorse.Client;
+using StripyHorse.Model;
+
+namespace Example
+{
+    public class VoidZplExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://api.stripyhorse.io";
+            // Configure API key authorization: headerKey
+            config.AddApiKey("X-Api-Key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // config.AddApiKeyPrefix("X-Api-Key", "Bearer");
+            // Configure Bearer token for authorization: bearerKey
+            config.AccessToken = "YOUR_BEARER_TOKEN";
+
+            var apiInstance = new ConvertApi(config);
+            var voidInputBody = new VoidInputBody(); // VoidInputBody | 
+
+            try
+            {
+                // Stamp ZPL as void / do-not-ship
+                VoidOutputBody result = apiInstance.VoidZpl(voidInputBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ConvertApi.VoidZpl: " + e.Message);
+                Debug.Print("Status Code: " + e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+#### Using the VoidZplWithHttpInfo variant
+This returns an ApiResponse object which contains the response data, status code and headers.
+
+```csharp
+try
+{
+    // Stamp ZPL as void / do-not-ship
+    ApiResponse<VoidOutputBody> response = apiInstance.VoidZplWithHttpInfo(voidInputBody);
+    Debug.Write("Status Code: " + response.StatusCode);
+    Debug.Write("Response Headers: " + response.Headers);
+    Debug.Write("Response Body: " + response.Data);
+}
+catch (ApiException e)
+{
+    Debug.Print("Exception when calling ConvertApi.VoidZplWithHttpInfo: " + e.Message);
+    Debug.Print("Status Code: " + e.ErrorCode);
+    Debug.Print(e.StackTrace);
+}
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **voidInputBody** | [**VoidInputBody**](VoidInputBody.md) |  |  |
+
+### Return type
+
+[**VoidOutputBody**](VoidOutputBody.md)
 
 ### Authorization
 
