@@ -55,6 +55,18 @@ namespace StripyHorse.Test.Api
         }
 
         /// <summary>
+        /// Test PreflightLabel
+        /// </summary>
+        [Fact]
+        public void PreflightLabelTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //PreflightInputBody preflightInputBody = null;
+            //var response = instance.PreflightLabel(preflightInputBody);
+            //Assert.IsType<PreflightOutputBody>(response);
+        }
+
+        /// <summary>
         /// Test RenderZpl
         /// </summary>
         [Fact]

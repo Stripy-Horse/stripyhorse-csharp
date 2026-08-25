@@ -132,6 +132,18 @@ namespace StripyHorse.Test.Api
         }
 
         /// <summary>
+        /// Test StampZpl
+        /// </summary>
+        [Fact]
+        public void StampZplTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //StampInputBody stampInputBody = null;
+            //var response = instance.StampZpl(stampInputBody);
+            //Assert.IsType<StampOutputBody>(response);
+        }
+
+        /// <summary>
         /// Test VoidZpl
         /// </summary>
         [Fact]

@@ -305,6 +305,41 @@ paths:
       summary: Decode a Zebra ~HS host status response
       tags:
       - Printers
+  /v1/preflight:
+    post:
+      description: "Renders the ZPL and grades every barcode the way a verifier grades\
+        \ a printed label: round-trip decode, measured module width in printer dots,\
+        \ dot-grid alignment (catches rasterized barcodes), quiet zones in modules,\
+        \ physical X-dimension against the spec minimum, blur tolerance, and a cross-density\
+        \ table - plus static lint findings (structure, encoding traps, out-of-bounds\
+        \ fields). Grade fail means a scanner will reject it; fix it before a truck\
+        \ does."
+      operationId: preflightLabel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreflightInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreflightOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Grade a label's barcodes before they ship
+      tags:
+      - Render
   /v1/printers:
     get:
       operationId: listPrinters
@@ -910,6 +945,38 @@ paths:
         label: Python
         source: "png = RenderApi(client).render_zpl_png(RenderInputBody(zpl=zpl, preset=\"\
           4x6\"))"
+  /v1/stamp:
+    post:
+      description: "Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every\
+        \ label in the stream as a positioned graphic field drawn over the existing\
+        \ content. Position and width are in printer dots; height follows the image's\
+        \ aspect ratio."
+      operationId: stampZpl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StampInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StampOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Stamp an image onto ZPL labels
+      tags:
+      - Convert
   /v1/unicode:
     post:
       description: "Text fields containing characters the printer's fonts can't render\
@@ -978,6 +1045,93 @@ paths:
       - Convert
 components:
   schemas:
+    Barcode:
+      additionalProperties: false
+      example:
+        blurMarginDots: 0
+        checks:
+        - detail: detail
+          name: name
+          status: pass
+        - detail: detail
+          name: name
+          status: pass
+        crossDpi:
+        - dpmm: 6
+          ok: true
+          xDimensionMm: 1.4658129805029452
+        - dpmm: 6
+          ok: true
+          xDimensionMm: 1.4658129805029452
+        format: format
+        moduleDots: 5.962133916683182
+        quietLeftModules: 5.637376656633329
+        quietRightModules: 2.3021358869347655
+        value: value
+        xDimensionMm: 7.061401241503109
+      properties:
+        blurMarginDots:
+          description: Largest blur radius the symbol survives; 0 = no margin
+          format: int64
+          type: integer
+        checks:
+          items:
+            $ref: "#/components/schemas/Check"
+          nullable: true
+          type: array
+          default: null
+        crossDpi:
+          description: "X-dimension at other print densities, same dot counts"
+          items:
+            $ref: "#/components/schemas/DPIVerdict"
+          nullable: true
+          type: array
+          default: null
+        format:
+          description: "CODE_128, CODE_39, ITF, QR_CODE, DATA_MATRIX"
+          type: string
+        moduleDots:
+          description: Measured narrow-element width in printer dots (1D only)
+          format: double
+          type: number
+        quietLeftModules:
+          format: double
+          type: number
+        quietRightModules:
+          format: double
+          type: number
+        value:
+          type: string
+        xDimensionMm:
+          description: Physical narrow-element width at the analyzed density
+          format: double
+          type: number
+      required:
+      - blurMarginDots
+      - checks
+      - format
+      - value
+    Check:
+      additionalProperties: false
+      example:
+        detail: detail
+        name: name
+        status: pass
+      properties:
+        detail:
+          type: string
+        name:
+          type: string
+        status:
+          enum:
+          - pass
+          - warn
+          - fail
+          type: string
+      required:
+      - detail
+      - name
+      - status
     ConvertOutputBody:
       additionalProperties: false
       example:
@@ -1073,6 +1227,25 @@ components:
           type: number
       required:
       - name
+    DPIVerdict:
+      additionalProperties: false
+      example:
+        dpmm: 6
+        ok: true
+        xDimensionMm: 1.4658129805029452
+      properties:
+        dpmm:
+          format: int64
+          type: integer
+        ok:
+          type: boolean
+        xDimensionMm:
+          format: double
+          type: number
+      required:
+      - dpmm
+      - ok
+      - xDimensionMm
     ErrorDetail:
       additionalProperties: false
       properties:
@@ -1138,6 +1311,33 @@ components:
           type: boolean
         underTemp:
           type: boolean
+    Finding:
+      additionalProperties: false
+      example:
+        code: code
+        label: 9
+        message: message
+        severity: error
+      properties:
+        code:
+          type: string
+        label:
+          description: 1-based label index; 0 = whole stream
+          format: int64
+          type: integer
+        message:
+          type: string
+        severity:
+          enum:
+          - error
+          - warning
+          - info
+          type: string
+      required:
+      - code
+      - label
+      - message
+      - severity
     HostStatus:
       additionalProperties: false
       example:
@@ -1528,6 +1728,182 @@ components:
           default: null
       required:
       - printers
+    PreflightInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        heightMm: 0.6027456183070403
+        preset: 4x6
+        widthMm: 0.14658129805029452
+        zpl: zpl
+      properties:
+        dpmm:
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        preset:
+          description: Named label size; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          - 2x3
+          - 3x2
+          - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
+          type: string
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+        zpl:
+          type: string
+      required:
+      - zpl
+    PreflightOutputBody:
+      additionalProperties: false
+      example:
+        labels:
+        - barcodes:
+          - blurMarginDots: 0
+            checks:
+            - detail: detail
+              name: name
+              status: pass
+            - detail: detail
+              name: name
+              status: pass
+            crossDpi:
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            format: format
+            moduleDots: 5.962133916683182
+            quietLeftModules: 5.637376656633329
+            quietRightModules: 2.3021358869347655
+            value: value
+            xDimensionMm: 7.061401241503109
+          - blurMarginDots: 0
+            checks:
+            - detail: detail
+              name: name
+              status: pass
+            - detail: detail
+              name: name
+              status: pass
+            crossDpi:
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            format: format
+            moduleDots: 5.962133916683182
+            quietLeftModules: 5.637376656633329
+            quietRightModules: 2.3021358869347655
+            value: value
+            xDimensionMm: 7.061401241503109
+          grade: pass
+          warnings:
+          - warnings
+          - warnings
+        - barcodes:
+          - blurMarginDots: 0
+            checks:
+            - detail: detail
+              name: name
+              status: pass
+            - detail: detail
+              name: name
+              status: pass
+            crossDpi:
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            format: format
+            moduleDots: 5.962133916683182
+            quietLeftModules: 5.637376656633329
+            quietRightModules: 2.3021358869347655
+            value: value
+            xDimensionMm: 7.061401241503109
+          - blurMarginDots: 0
+            checks:
+            - detail: detail
+              name: name
+              status: pass
+            - detail: detail
+              name: name
+              status: pass
+            crossDpi:
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            - dpmm: 6
+              ok: true
+              xDimensionMm: 1.4658129805029452
+            format: format
+            moduleDots: 5.962133916683182
+            quietLeftModules: 5.637376656633329
+            quietRightModules: 2.3021358869347655
+            value: value
+            xDimensionMm: 7.061401241503109
+          grade: pass
+          warnings:
+          - warnings
+          - warnings
+        lint:
+        - code: code
+          label: 9
+          message: message
+          severity: error
+        - code: code
+          label: 9
+          message: message
+          severity: error
+      properties:
+        labels:
+          description: One report per rendered label
+          items:
+            $ref: "#/components/schemas/Report"
+          nullable: true
+          type: array
+          default: null
+        lint:
+          description: "Static ZPL findings: structure, encoding, bounds"
+          items:
+            $ref: "#/components/schemas/Finding"
+          nullable: true
+          type: array
+          default: null
+      required:
+      - labels
+      - lint
     PrinterBody:
       additionalProperties: false
       example:
@@ -1730,6 +2106,121 @@ components:
       - index
       - png
       - widthPx
+    Report:
+      additionalProperties: false
+      example:
+        barcodes:
+        - blurMarginDots: 0
+          checks:
+          - detail: detail
+            name: name
+            status: pass
+          - detail: detail
+            name: name
+            status: pass
+          crossDpi:
+          - dpmm: 6
+            ok: true
+            xDimensionMm: 1.4658129805029452
+          - dpmm: 6
+            ok: true
+            xDimensionMm: 1.4658129805029452
+          format: format
+          moduleDots: 5.962133916683182
+          quietLeftModules: 5.637376656633329
+          quietRightModules: 2.3021358869347655
+          value: value
+          xDimensionMm: 7.061401241503109
+        - blurMarginDots: 0
+          checks:
+          - detail: detail
+            name: name
+            status: pass
+          - detail: detail
+            name: name
+            status: pass
+          crossDpi:
+          - dpmm: 6
+            ok: true
+            xDimensionMm: 1.4658129805029452
+          - dpmm: 6
+            ok: true
+            xDimensionMm: 1.4658129805029452
+          format: format
+          moduleDots: 5.962133916683182
+          quietLeftModules: 5.637376656633329
+          quietRightModules: 2.3021358869347655
+          value: value
+          xDimensionMm: 7.061401241503109
+        grade: pass
+        warnings:
+        - warnings
+        - warnings
+      properties:
+        barcodes:
+          items:
+            $ref: "#/components/schemas/Barcode"
+          nullable: true
+          type: array
+          default: null
+        grade:
+          description: Worst status across all checks
+          enum:
+          - pass
+          - warn
+          - fail
+          type: string
+        warnings:
+          description: "Label-level notes, e.g. no barcodes found"
+          items:
+            type: string
+          nullable: true
+          type: array
+          default: null
+      required:
+      - barcodes
+      - grade
+    StampInputBody:
+      additionalProperties: false
+      example:
+        image: image
+        widthDots: 0
+        x: 0
+        "y": 0
+        zpl: zpl
+      properties:
+        image:
+          description: "PNG/GIF/JPEG, base64-encoded"
+          type: string
+        widthDots:
+          description: Stamp width in dots; 0 keeps the image's natural size
+          format: int64
+          minimum: 0
+          type: integer
+        x:
+          description: Left edge in dots
+          format: int64
+          minimum: 0
+          type: integer
+        "y":
+          description: Top edge in dots
+          format: int64
+          minimum: 0
+          type: integer
+        zpl:
+          type: string
+      required:
+      - image
+      - zpl
+    StampOutputBody:
+      additionalProperties: false
+      example:
+        zpl: zpl
+      properties:
+        zpl:
+          type: string
+      required:
+      - zpl
     StateOutputBody:
       additionalProperties: false
       example:

@@ -27,6 +27,29 @@ namespace StripyHorse.Api
     {
         #region Synchronous Operations
         /// <summary>
+        /// Grade a label&#39;s barcodes before they ship
+        /// </summary>
+        /// <remarks>
+        /// Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>PreflightOutputBody</returns>
+        PreflightOutputBody PreflightLabel(PreflightInputBody preflightInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship
+        /// </summary>
+        /// <remarks>
+        /// Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of PreflightOutputBody</returns>
+        ApiResponse<PreflightOutputBody> PreflightLabelWithHttpInfo(PreflightInputBody preflightInputBody, int operationIndex = 0);
+        /// <summary>
         /// Render ZPL to PNG images
         /// </summary>
         /// <remarks>
@@ -81,6 +104,31 @@ namespace StripyHorse.Api
     public interface IRenderApiAsync : IApiAccessor
     {
         #region Asynchronous Operations
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship
+        /// </summary>
+        /// <remarks>
+        /// Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PreflightOutputBody</returns>
+        System.Threading.Tasks.Task<PreflightOutputBody> PreflightLabelAsync(PreflightInputBody preflightInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship
+        /// </summary>
+        /// <remarks>
+        /// Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PreflightOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<PreflightOutputBody>> PreflightLabelWithHttpInfoAsync(PreflightInputBody preflightInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Render ZPL to PNG images
         /// </summary>
@@ -249,6 +297,177 @@ namespace StripyHorse.Api
                 return _exceptionFactory;
             }
             set { _exceptionFactory = value; }
+        }
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>PreflightOutputBody</returns>
+        public PreflightOutputBody PreflightLabel(PreflightInputBody preflightInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<PreflightOutputBody> localVarResponse = PreflightLabelWithHttpInfo(preflightInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of PreflightOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<PreflightOutputBody> PreflightLabelWithHttpInfo(PreflightInputBody preflightInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'preflightInputBody' is set
+            if (preflightInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'preflightInputBody' when calling RenderApi->PreflightLabel");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = preflightInputBody;
+
+            localVarRequestOptions.Operation = "RenderApi.PreflightLabel";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<PreflightOutputBody>("/v1/preflight", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("PreflightLabel", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of PreflightOutputBody</returns>
+        public async System.Threading.Tasks.Task<PreflightOutputBody> PreflightLabelAsync(PreflightInputBody preflightInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<PreflightOutputBody> localVarResponse = await PreflightLabelWithHttpInfoAsync(preflightInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Grade a label&#39;s barcodes before they ship Renders the ZPL and grades every barcode the way a verifier grades a printed label: round-trip decode, measured module width in printer dots, dot-grid alignment (catches rasterized barcodes), quiet zones in modules, physical X-dimension against the spec minimum, blur tolerance, and a cross-density table - plus static lint findings (structure, encoding traps, out-of-bounds fields). Grade fail means a scanner will reject it; fix it before a truck does.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="preflightInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (PreflightOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<PreflightOutputBody>> PreflightLabelWithHttpInfoAsync(PreflightInputBody preflightInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'preflightInputBody' is set
+            if (preflightInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'preflightInputBody' when calling RenderApi->PreflightLabel");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = preflightInputBody;
+
+            localVarRequestOptions.Operation = "RenderApi.PreflightLabel";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<PreflightOutputBody>("/v1/preflight", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("PreflightLabel", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
         }
 
         /// <summary>

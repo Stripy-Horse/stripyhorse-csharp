@@ -178,6 +178,29 @@ namespace StripyHorse.Api
         /// <returns>ApiResponse of UnicodeOutputBody</returns>
         ApiResponse<UnicodeOutputBody> RasterizeUnicodeWithHttpInfo(UnicodeInputBody unicodeInputBody, int operationIndex = 0);
         /// <summary>
+        /// Stamp an image onto ZPL labels
+        /// </summary>
+        /// <remarks>
+        /// Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>StampOutputBody</returns>
+        StampOutputBody StampZpl(StampInputBody stampInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels
+        /// </summary>
+        /// <remarks>
+        /// Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of StampOutputBody</returns>
+        ApiResponse<StampOutputBody> StampZplWithHttpInfo(StampInputBody stampInputBody, int operationIndex = 0);
+        /// <summary>
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
@@ -370,6 +393,31 @@ namespace StripyHorse.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (UnicodeOutputBody)</returns>
         System.Threading.Tasks.Task<ApiResponse<UnicodeOutputBody>> RasterizeUnicodeWithHttpInfoAsync(UnicodeInputBody unicodeInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Stamp an image onto ZPL labels
+        /// </summary>
+        /// <remarks>
+        /// Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of StampOutputBody</returns>
+        System.Threading.Tasks.Task<StampOutputBody> StampZplAsync(StampInputBody stampInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels
+        /// </summary>
+        /// <remarks>
+        /// Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (StampOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<StampOutputBody>> StampZplWithHttpInfoAsync(StampInputBody stampInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
@@ -1579,6 +1627,177 @@ namespace StripyHorse.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("RasterizeUnicode", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>StampOutputBody</returns>
+        public StampOutputBody StampZpl(StampInputBody stampInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<StampOutputBody> localVarResponse = StampZplWithHttpInfo(stampInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of StampOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<StampOutputBody> StampZplWithHttpInfo(StampInputBody stampInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'stampInputBody' is set
+            if (stampInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'stampInputBody' when calling ConvertApi->StampZpl");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = stampInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.StampZpl";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<StampOutputBody>("/v1/stamp", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StampZpl", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of StampOutputBody</returns>
+        public async System.Threading.Tasks.Task<StampOutputBody> StampZplAsync(StampInputBody stampInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<StampOutputBody> localVarResponse = await StampZplWithHttpInfoAsync(stampInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Stamp an image onto ZPL labels Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image&#39;s aspect ratio.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stampInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (StampOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<StampOutputBody>> StampZplWithHttpInfoAsync(StampInputBody stampInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'stampInputBody' is set
+            if (stampInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'stampInputBody' when calling ConvertApi->StampZpl");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = stampInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.StampZpl";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<StampOutputBody>("/v1/stamp", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StampZpl", localVarResponse);
                 if (_exception != null)
                 {
                     throw _exception;

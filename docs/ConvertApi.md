@@ -9,6 +9,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 | [**ConvertHtml**](ConvertApi.md#converthtml) | **POST** /v1/convert/html | Convert an HTML label design to ZPL |
 | [**ConvertZplToHtml**](ConvertApi.md#convertzpltohtml) | **POST** /v1/convert/zpl-html | Decompile ZPL into editable HTML |
 | [**RasterizeUnicode**](ConvertApi.md#rasterizeunicode) | **POST** /v1/unicode | Make Unicode ZPL printable on any Zebra |
+| [**StampZpl**](ConvertApi.md#stampzpl) | **POST** /v1/stamp | Stamp an image onto ZPL labels |
 | [**VoidZpl**](ConvertApi.md#voidzpl) | **POST** /v1/void | Stamp ZPL as void / do-not-ship |
 
 <a id="convertbatch"></a>
@@ -519,6 +520,105 @@ catch (ApiException e)
 ### Return type
 
 [**UnicodeOutputBody**](UnicodeOutputBody.md)
+
+### Authorization
+
+[headerKey](../README.md#headerKey), [bearerKey](../README.md#bearerKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a id="stampzpl"></a>
+# **StampZpl**
+> StampOutputBody StampZpl (StampInputBody stampInputBody)
+
+Stamp an image onto ZPL labels
+
+Bakes a PNG/GIF/JPEG (a logo, a QA stamp, a brand mark) onto every label in the stream as a positioned graphic field drawn over the existing content. Position and width are in printer dots; height follows the image's aspect ratio.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using StripyHorse.Api;
+using StripyHorse.Client;
+using StripyHorse.Model;
+
+namespace Example
+{
+    public class StampZplExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://api.stripyhorse.io";
+            // Configure API key authorization: headerKey
+            config.AddApiKey("X-Api-Key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // config.AddApiKeyPrefix("X-Api-Key", "Bearer");
+            // Configure Bearer token for authorization: bearerKey
+            config.AccessToken = "YOUR_BEARER_TOKEN";
+
+            var apiInstance = new ConvertApi(config);
+            var stampInputBody = new StampInputBody(); // StampInputBody | 
+
+            try
+            {
+                // Stamp an image onto ZPL labels
+                StampOutputBody result = apiInstance.StampZpl(stampInputBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ConvertApi.StampZpl: " + e.Message);
+                Debug.Print("Status Code: " + e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+#### Using the StampZplWithHttpInfo variant
+This returns an ApiResponse object which contains the response data, status code and headers.
+
+```csharp
+try
+{
+    // Stamp an image onto ZPL labels
+    ApiResponse<StampOutputBody> response = apiInstance.StampZplWithHttpInfo(stampInputBody);
+    Debug.Write("Status Code: " + response.StatusCode);
+    Debug.Write("Response Headers: " + response.Headers);
+    Debug.Write("Response Body: " + response.Data);
+}
+catch (ApiException e)
+{
+    Debug.Print("Exception when calling ConvertApi.StampZplWithHttpInfo: " + e.Message);
+    Debug.Print("Status Code: " + e.ErrorCode);
+    Debug.Print(e.StackTrace);
+}
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **stampInputBody** | [**StampInputBody**](StampInputBody.md) |  |  |
+
+### Return type
+
+[**StampOutputBody**](StampOutputBody.md)
 
 ### Authorization
 
