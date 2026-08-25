@@ -198,7 +198,7 @@ namespace StripyHorse.Model
         /// <param name="heightMm">heightMm.</param>
         /// <param name="preset">Named label size in inches; alternative to widthMm/heightMm.</param>
         /// <param name="stamp">Attribution stamp, e.g. VOID: bfaerber.</param>
-        /// <param name="text">Warning text; default DO NOT SHIP.</param>
+        /// <param name="text">Warning text; default VOID - DO NOT MAIL.</param>
         /// <param name="widthMm">widthMm.</param>
         /// <param name="zpl">zpl (required).</param>
         public VoidInputBody(DpmmEnum? dpmm = default, double heightMm = default, PresetEnum? preset = default, string stamp = default, string text = default, double widthMm = default, string zpl = default)
@@ -231,9 +231,9 @@ namespace StripyHorse.Model
         public string Stamp { get; set; }
 
         /// <summary>
-        /// Warning text; default DO NOT SHIP
+        /// Warning text; default VOID - DO NOT MAIL
         /// </summary>
-        /// <value>Warning text; default DO NOT SHIP</value>
+        /// <value>Warning text; default VOID - DO NOT MAIL</value>
         [DataMember(Name = "text", EmitDefaultValue = false)]
         public string Text { get; set; }
 

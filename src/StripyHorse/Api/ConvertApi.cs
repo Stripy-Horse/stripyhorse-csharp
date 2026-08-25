@@ -181,7 +181,7 @@ namespace StripyHorse.Api
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
-        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -193,7 +193,7 @@ namespace StripyHorse.Api
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
-        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -374,7 +374,7 @@ namespace StripyHorse.Api
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
-        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -387,7 +387,7 @@ namespace StripyHorse.Api
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
-        /// Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -1589,7 +1589,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Stamp ZPL as void / do-not-ship Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -1602,7 +1602,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Stamp ZPL as void / do-not-ship Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -1673,7 +1673,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Stamp ZPL as void / do-not-ship Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>
@@ -1687,7 +1687,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Stamp ZPL as void / do-not-ship Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+        /// Stamp ZPL as void / do-not-ship Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="voidInputBody"></param>

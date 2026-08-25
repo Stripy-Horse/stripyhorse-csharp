@@ -272,6 +272,39 @@ paths:
       summary: Decompile ZPL into editable HTML
       tags:
       - Convert
+  /v1/host-status/parse:
+    post:
+      description: "Parses the three-line ~HS answer a Zebra printer (or our virtual\
+        \ printer) returns on port 9100 into typed fields - paper out, pause, buffer\
+        \ contents, head temperature - so you never write a positional comma parser.\
+        \ Accepts raw bytes, cat -v style ^B/^C markers, or hand-cleaned lines. Does\
+        \ not count against your monthly quota."
+      operationId: parseHostStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HostStatusInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HostStatusOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Decode a Zebra ~HS host status response
+      tags:
+      - Printers
   /v1/printers:
     get:
       operationId: listPrinters
@@ -913,10 +946,10 @@ paths:
       - Convert
   /v1/void:
     post:
-      description: "Overlays large DO NOT SHIP warnings (and an optional attribution\
-        \ stamp) across every label in the stream, so printed dev and test labels\
-        \ can never be mistaken for shippable ones. Original fields are untouched;\
-        \ stamps draw on top."
+      description: "Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional\
+        \ attribution stamp) across every label in the stream, so printed dev and\
+        \ test labels can never be mistaken for shippable ones. Original fields are\
+        \ untouched; stamps draw on top."
       operationId: voidZpl
       requestBody:
         content:
@@ -1105,6 +1138,159 @@ components:
           type: boolean
         underTemp:
           type: boolean
+    HostStatus:
+      additionalProperties: false
+      example:
+        blocking: true
+        bufferFull: true
+        commSettings: commSettings
+        corruptRam: true
+        diagnosticMode: true
+        formatsInBuffer: 0
+        functionSettings: functionSettings
+        graphicsStored: 6
+        headUp: true
+        labelLengthDots: 1
+        labelsRemaining: 5
+        overTemp: true
+        paperOut: true
+        partialFormat: true
+        password: password
+        paused: true
+        printMode: printMode
+        ribbonOut: true
+        staticRam: true
+        thermalTransfer: true
+        underTemp: true
+      properties:
+        blocking:
+          description: True when any condition stops printing
+          type: boolean
+        bufferFull:
+          type: boolean
+        commSettings:
+          description: Raw communication-settings code
+          type: string
+        corruptRam:
+          type: boolean
+        diagnosticMode:
+          type: boolean
+        formatsInBuffer:
+          description: Jobs waiting in the receive buffer
+          format: int64
+          type: integer
+        functionSettings:
+          description: Raw function-settings code
+          type: string
+        graphicsStored:
+          format: int64
+          type: integer
+        headUp:
+          type: boolean
+        labelLengthDots:
+          format: int64
+          type: integer
+        labelsRemaining:
+          format: int64
+          type: integer
+        overTemp:
+          type: boolean
+        paperOut:
+          type: boolean
+        partialFormat:
+          type: boolean
+        password:
+          type: string
+        paused:
+          type: boolean
+        printMode:
+          description: "rewind, peel-off, tear-off, cutter or applicator"
+          type: string
+        ribbonOut:
+          type: boolean
+        staticRam:
+          type: boolean
+        thermalTransfer:
+          type: boolean
+        underTemp:
+          type: boolean
+      required:
+      - blocking
+      - bufferFull
+      - commSettings
+      - corruptRam
+      - diagnosticMode
+      - formatsInBuffer
+      - functionSettings
+      - graphicsStored
+      - headUp
+      - labelLengthDots
+      - labelsRemaining
+      - overTemp
+      - paperOut
+      - partialFormat
+      - password
+      - paused
+      - printMode
+      - ribbonOut
+      - staticRam
+      - thermalTransfer
+      - underTemp
+    HostStatusInputBody:
+      additionalProperties: false
+      example:
+        response: response
+      properties:
+        response:
+          description: "The three ~HS status lines, as received"
+          type: string
+      required:
+      - response
+    HostStatusOutputBody:
+      additionalProperties: false
+      example:
+        fields:
+        - field: field
+          raw: raw
+          value: value
+        - field: field
+          raw: raw
+          value: value
+        status:
+          blocking: true
+          bufferFull: true
+          commSettings: commSettings
+          corruptRam: true
+          diagnosticMode: true
+          formatsInBuffer: 0
+          functionSettings: functionSettings
+          graphicsStored: 6
+          headUp: true
+          labelLengthDots: 1
+          labelsRemaining: 5
+          overTemp: true
+          paperOut: true
+          partialFormat: true
+          password: password
+          paused: true
+          printMode: printMode
+          ribbonOut: true
+          staticRam: true
+          thermalTransfer: true
+          underTemp: true
+      properties:
+        fields:
+          description: Every field with its documented meaning and raw token
+          items:
+            $ref: "#/components/schemas/StatusField"
+          nullable: true
+          type: array
+          default: null
+        status:
+          $ref: "#/components/schemas/HostStatus"
+      required:
+      - fields
+      - status
     HtmlInputBody:
       additionalProperties: false
       example:
@@ -1564,6 +1750,23 @@ components:
           $ref: "#/components/schemas/StatusSnapshot"
       required:
       - state
+    StatusField:
+      additionalProperties: false
+      example:
+        field: field
+        raw: raw
+        value: value
+      properties:
+        field:
+          type: string
+        raw:
+          type: string
+        value:
+          type: string
+      required:
+      - field
+      - raw
+      - value
     StatusSnapshot:
       additionalProperties: false
       example:
@@ -1690,7 +1893,7 @@ components:
           description: "Attribution stamp, e.g. VOID: bfaerber"
           type: string
         text:
-          description: Warning text; default DO NOT SHIP
+          description: Warning text; default VOID - DO NOT MAIL
           type: string
         widthMm:
           format: double

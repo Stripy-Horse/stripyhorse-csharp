@@ -544,7 +544,7 @@ catch (ApiException e)
 
 Stamp ZPL as void / do-not-ship
 
-Overlays large DO NOT SHIP warnings (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
+Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional attribution stamp) across every label in the stream, so printed dev and test labels can never be mistaken for shippable ones. Original fields are untouched; stamps draw on top.
 
 ### Example
 ```csharp

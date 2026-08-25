@@ -11,6 +11,9 @@ docs/CreatePrinterInputBody.md
 docs/ErrorDetail.md
 docs/ErrorModel.md
 docs/Faults.md
+docs/HostStatus.md
+docs/HostStatusInputBody.md
+docs/HostStatusOutputBody.md
 docs/HtmlInputBody.md
 docs/HtmlOutputBody.md
 docs/JobOutputBody.md
@@ -19,12 +22,14 @@ docs/ListJobsOutputBody.md
 docs/ListPrintersOutputBody.md
 docs/PrinterBody.md
 docs/PrinterBodyTCPStruct.md
+docs/PrintersApi.md
 docs/RenderApi.md
 docs/RenderInputBody.md
 docs/RenderOutputBody.md
 docs/RenderedLabel.md
 docs/SimulatorApi.md
 docs/StateOutputBody.md
+docs/StatusField.md
 docs/StatusSnapshot.md
 docs/UnicodeInputBody.md
 docs/UnicodeOutputBody.md
@@ -35,6 +40,7 @@ docs/ZplHTMLInputBody.md
 docs/ZplHTMLOutputBody.md
 git_push.sh
 src/StripyHorse.Test/Api/ConvertApiTests.cs
+src/StripyHorse.Test/Api/PrintersApiTests.cs
 src/StripyHorse.Test/Api/RenderApiTests.cs
 src/StripyHorse.Test/Api/SimulatorApiTests.cs
 src/StripyHorse.Test/Model/ConvertOutputBodyTests.cs
@@ -43,6 +49,9 @@ src/StripyHorse.Test/Model/CreatePrinterInputBodyTests.cs
 src/StripyHorse.Test/Model/ErrorDetailTests.cs
 src/StripyHorse.Test/Model/ErrorModelTests.cs
 src/StripyHorse.Test/Model/FaultsTests.cs
+src/StripyHorse.Test/Model/HostStatusInputBodyTests.cs
+src/StripyHorse.Test/Model/HostStatusOutputBodyTests.cs
+src/StripyHorse.Test/Model/HostStatusTests.cs
 src/StripyHorse.Test/Model/HtmlInputBodyTests.cs
 src/StripyHorse.Test/Model/HtmlOutputBodyTests.cs
 src/StripyHorse.Test/Model/JobOutputBodyTests.cs
@@ -55,6 +64,7 @@ src/StripyHorse.Test/Model/RenderInputBodyTests.cs
 src/StripyHorse.Test/Model/RenderOutputBodyTests.cs
 src/StripyHorse.Test/Model/RenderedLabelTests.cs
 src/StripyHorse.Test/Model/StateOutputBodyTests.cs
+src/StripyHorse.Test/Model/StatusFieldTests.cs
 src/StripyHorse.Test/Model/StatusSnapshotTests.cs
 src/StripyHorse.Test/Model/UnicodeInputBodyTests.cs
 src/StripyHorse.Test/Model/UnicodeOutputBodyTests.cs
@@ -65,6 +75,7 @@ src/StripyHorse.Test/Model/ZplHTMLInputBodyTests.cs
 src/StripyHorse.Test/Model/ZplHTMLOutputBodyTests.cs
 src/StripyHorse.Test/StripyHorse.Test.csproj
 src/StripyHorse/Api/ConvertApi.cs
+src/StripyHorse/Api/PrintersApi.cs
 src/StripyHorse/Api/RenderApi.cs
 src/StripyHorse/Api/SimulatorApi.cs
 src/StripyHorse/Client/ApiClient.cs
@@ -90,6 +101,9 @@ src/StripyHorse/Model/CreatePrinterInputBody.cs
 src/StripyHorse/Model/ErrorDetail.cs
 src/StripyHorse/Model/ErrorModel.cs
 src/StripyHorse/Model/Faults.cs
+src/StripyHorse/Model/HostStatus.cs
+src/StripyHorse/Model/HostStatusInputBody.cs
+src/StripyHorse/Model/HostStatusOutputBody.cs
 src/StripyHorse/Model/HtmlInputBody.cs
 src/StripyHorse/Model/HtmlOutputBody.cs
 src/StripyHorse/Model/JobOutputBody.cs
@@ -102,6 +116,7 @@ src/StripyHorse/Model/RenderInputBody.cs
 src/StripyHorse/Model/RenderOutputBody.cs
 src/StripyHorse/Model/RenderedLabel.cs
 src/StripyHorse/Model/StateOutputBody.cs
+src/StripyHorse/Model/StatusField.cs
 src/StripyHorse/Model/StatusSnapshot.cs
 src/StripyHorse/Model/UnicodeInputBody.cs
 src/StripyHorse/Model/UnicodeOutputBody.cs
