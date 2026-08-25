@@ -73,8 +73,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/convert \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -F file=@shipping-label.pdf -F preset=4x6
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -F file=@shipping-label.pdf -F preset=4x6
       - lang: php
         label: PHP
         source: |-
@@ -207,8 +208,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/convert/html \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"html":"<div style=\"position:absolute;left:40px;top:40px;font-size:50px\">Hello</div>","preset":"4x6"}'
       - lang: php
         label: PHP
@@ -305,6 +307,55 @@ paths:
       summary: Decode a Zebra ~HS host status response
       tags:
       - Printers
+  /v1/labels/compose:
+    post:
+      description: "Labels as JSON: place text, barcodes (code128/39, QR, DataMatrix),\
+        \ boxes, lines, circles, images and raw ZPL passthrough on a label and get\
+        \ back ZPL - optionally with rendered previews. {{name}} in text/data interpolates\
+        \ from the variables map; an unresolved variable is an error, never a blank\
+        \ on a real shipment. Positions are printer dots."
+      operationId: composeLabel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComposeInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComposeOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Compose ZPL from typed JSON elements
+      tags:
+      - Compose
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/labels/compose \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{
+              "preset": "4x6",
+              "variables": {"name": "Debbie Root", "track": "420546188580"},
+              "elements": [
+                {"type": "text", "x": 50, "y": 40, "text": "{{name}}", "fontHeight": 40},
+                {"type": "barcode128", "x": 50, "y": 200, "data": "{{track}}", "height": 140},
+                {"type": "box", "x": 20, "y": 20, "width": 770, "height": 400, "thickness": 3}
+              ]
+            }'
   /v1/preflight:
     post:
       description: "Renders the ZPL and grades every barcode the way a verifier grades\
@@ -395,8 +446,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/printers \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"name":"ci-run-42","preset":"4x6"}'
       - lang: php
         label: PHP
@@ -562,8 +614,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"paperOut":true}'
       - lang: php
         label: PHP
@@ -670,8 +723,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \
-            -H "X-Api-Key: sh_live_YOUR_KEY"
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
       - lang: php
         label: PHP
         source: |-
@@ -851,8 +905,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/render \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}'
       - lang: php
         label: PHP
@@ -933,8 +988,9 @@ paths:
       - lang: bash
         label: curl
         source: |-
+          STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/render.png \
-            -H "X-Api-Key: sh_live_YOUR_KEY" -H "Content-Type: application/json" \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}' -o label.png
       - lang: php
         label: PHP
@@ -1132,6 +1188,161 @@ components:
       - detail
       - name
       - status
+    ComposeInputBody:
+      additionalProperties: false
+      example:
+        dpmm: 0
+        elements:
+        - align: ""
+          cornerRadius: 4
+          data: data
+          diameter: 1
+          errorCorrection: ""
+          font: font
+          fontHeight: 5
+          fontWidth: 5
+          height: 2
+          length: 7
+          lines: 9
+          magnification: 3
+          maxWidth: 2
+          moduleSize: 4
+          moduleWidth: 7
+          orientation: ""
+          png: png
+          printText: true
+          rotation: 1
+          text: text
+          thickness: 1
+          threshold: 37
+          type: text
+          width: 6
+          x: 0
+          "y": 0
+          zpl: zpl
+        - align: ""
+          cornerRadius: 4
+          data: data
+          diameter: 1
+          errorCorrection: ""
+          font: font
+          fontHeight: 5
+          fontWidth: 5
+          height: 2
+          length: 7
+          lines: 9
+          magnification: 3
+          maxWidth: 2
+          moduleSize: 4
+          moduleWidth: 7
+          orientation: ""
+          png: png
+          printText: true
+          rotation: 1
+          text: text
+          thickness: 1
+          threshold: 37
+          type: text
+          width: 6
+          x: 0
+          "y": 0
+          zpl: zpl
+        heightMm: 0.4965218492984954
+        preset: 4x6
+        preview: true
+        variables:
+          key: variables
+        widthMm: 0.5025004791520294
+      properties:
+        dpmm:
+          enum:
+          - 6
+          - 8
+          - 12
+          - 24
+          format: int64
+          type: integer
+        elements:
+          items:
+            $ref: "#/components/schemas/Element"
+          nullable: true
+          type: array
+          default: null
+        heightMm:
+          format: double
+          minimum: 0
+          type: number
+        preset:
+          description: Named label size; alternative to widthMm/heightMm
+          enum:
+          - 4x6
+          - 6x4
+          - 4x4
+          - 4x2
+          - 2x4
+          - 3x5
+          - 5x3
+          - 2x3
+          - 3x2
+          - netstamp
+          - 2.25x1.25
+          - 2x1
+          - 3x1
+          - 4x1
+          - 1x1
+          - 4x3
+          - 4x8
+          - a6
+          type: string
+        preview:
+          description: Also render the composed label to PNG
+          type: boolean
+        variables:
+          additionalProperties:
+            type: string
+          description: "Values for {{name}} references"
+          type: object
+        widthMm:
+          format: double
+          minimum: 0
+          type: number
+      required:
+      - elements
+    ComposeOutputBody:
+      additionalProperties: false
+      example:
+        labels:
+        - heightPx: 0
+          index: 6
+          png: png
+          widthPx: 1
+        - heightPx: 0
+          index: 6
+          png: png
+          widthPx: 1
+        warnings:
+        - warnings
+        - warnings
+        zpl: zpl
+      properties:
+        labels:
+          description: Rendered previews when preview=true
+          items:
+            $ref: "#/components/schemas/RenderedLabel"
+          nullable: true
+          type: array
+          default: null
+        warnings:
+          items:
+            type: string
+          nullable: true
+          type: array
+          default: null
+        zpl:
+          type: string
+      required:
+      - warnings
+      - zpl
     ConvertOutputBody:
       additionalProperties: false
       example:
@@ -1246,6 +1457,174 @@ components:
       - dpmm
       - ok
       - xDimensionMm
+    Element:
+      additionalProperties: false
+      example:
+        align: ""
+        cornerRadius: 4
+        data: data
+        diameter: 1
+        errorCorrection: ""
+        font: font
+        fontHeight: 5
+        fontWidth: 5
+        height: 2
+        length: 7
+        lines: 9
+        magnification: 3
+        maxWidth: 2
+        moduleSize: 4
+        moduleWidth: 7
+        orientation: ""
+        png: png
+        printText: true
+        rotation: 1
+        text: text
+        thickness: 1
+        threshold: 37
+        type: text
+        width: 6
+        x: 0
+        "y": 0
+        zpl: zpl
+      properties:
+        align:
+          description: Alignment when wrapping
+          enum:
+          - ""
+          - left
+          - center
+          - right
+          - justify
+          type: string
+        cornerRadius:
+          description: Box corner rounding 0-8
+          format: int64
+          maximum: 8
+          minimum: 0
+          type: integer
+        data:
+          description: "Barcode payload; {{name}} interpolates"
+          type: string
+        diameter:
+          description: Circle diameter in dots
+          format: int64
+          type: integer
+        errorCorrection:
+          description: QR error correction (default M)
+          enum:
+          - ""
+          - L
+          - M
+          - Q
+          - H
+          type: string
+        font:
+          description: "Printer font: 0 (scalable, default) or A-Z"
+          type: string
+        fontHeight:
+          description: Character height in dots (text)
+          format: int64
+          type: integer
+        fontWidth:
+          description: Character width in dots; 0 follows fontHeight
+          format: int64
+          type: integer
+        height:
+          description: Bar height in dots (1D) / box height in dots (box)
+          format: int64
+          type: integer
+        length:
+          description: Line length in dots
+          format: int64
+          type: integer
+        lines:
+          description: Max lines when wrapping (default 1)
+          format: int64
+          type: integer
+        magnification:
+          description: QR module magnification (default 3)
+          format: int64
+          type: integer
+        maxWidth:
+          description: Wrap text into a block this many dots wide
+          format: int64
+          type: integer
+        moduleSize:
+          description: DataMatrix module size in dots (default 4)
+          format: int64
+          type: integer
+        moduleWidth:
+          description: Narrow element width in dots (1D; default 3)
+          format: int64
+          type: integer
+        orientation:
+          description: Line direction
+          enum:
+          - ""
+          - h
+          - v
+          type: string
+        png:
+          description: "PNG/GIF/JPEG, base64-encoded"
+          type: string
+        printText:
+          description: Print the human-readable line under 1D barcodes (default true)
+          type: boolean
+        rotation:
+          enum:
+          - 0
+          - 90
+          - 180
+          - 270
+          format: int64
+          type: integer
+        text:
+          description: "Text content; {{name}} interpolates from variables"
+          type: string
+        thickness:
+          description: Stroke thickness in dots (default 1)
+          format: int64
+          type: integer
+        threshold:
+          description: Bitonal threshold (default 128)
+          format: int64
+          maximum: 255
+          minimum: 0
+          type: integer
+        type:
+          description: What to place
+          enum:
+          - text
+          - barcode128
+          - barcode39
+          - qr
+          - datamatrix
+          - box
+          - line
+          - circle
+          - image
+          - raw
+          type: string
+        width:
+          description: Box/image width in dots
+          format: int64
+          type: integer
+        x:
+          description: Left edge in dots
+          format: int64
+          minimum: 0
+          type: integer
+        "y":
+          description: Top edge in dots
+          format: int64
+          minimum: 0
+          type: integer
+        zpl:
+          description: Verbatim ZPL commands (raw only) - the escape hatch
+          type: string
+      required:
+      - type
     ErrorDetail:
       additionalProperties: false
       properties:
@@ -2060,14 +2439,14 @@ components:
       example:
         labelCount: 0
         labels:
-        - heightPx: 6
-          index: 1
+        - heightPx: 0
+          index: 6
           png: png
-          widthPx: 5
-        - heightPx: 6
-          index: 1
+          widthPx: 1
+        - heightPx: 0
+          index: 6
           png: png
-          widthPx: 5
+          widthPx: 1
       properties:
         labelCount:
           format: int64
@@ -2084,10 +2463,10 @@ components:
     RenderedLabel:
       additionalProperties: false
       example:
-        heightPx: 6
-        index: 1
+        heightPx: 0
+        index: 6
         png: png
-        widthPx: 5
+        widthPx: 1
       properties:
         heightPx:
           format: int64
