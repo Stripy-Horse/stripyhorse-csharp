@@ -155,6 +155,29 @@ namespace StripyHorse.Api
         /// <returns>ApiResponse of ZplHTMLOutputBody</returns>
         ApiResponse<ZplHTMLOutputBody> ConvertZplToHtmlWithHttpInfo(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0);
         /// <summary>
+        /// Make Unicode ZPL printable on any Zebra
+        /// </summary>
+        /// <remarks>
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>UnicodeOutputBody</returns>
+        UnicodeOutputBody RasterizeUnicode(UnicodeInputBody unicodeInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra
+        /// </summary>
+        /// <remarks>
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of UnicodeOutputBody</returns>
+        ApiResponse<UnicodeOutputBody> RasterizeUnicodeWithHttpInfo(UnicodeInputBody unicodeInputBody, int operationIndex = 0);
+        /// <summary>
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
         /// <remarks>
@@ -322,6 +345,31 @@ namespace StripyHorse.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ZplHTMLOutputBody)</returns>
         System.Threading.Tasks.Task<ApiResponse<ZplHTMLOutputBody>> ConvertZplToHtmlWithHttpInfoAsync(ZplHTMLInputBody zplHTMLInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra
+        /// </summary>
+        /// <remarks>
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of UnicodeOutputBody</returns>
+        System.Threading.Tasks.Task<UnicodeOutputBody> RasterizeUnicodeAsync(UnicodeInputBody unicodeInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra
+        /// </summary>
+        /// <remarks>
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (UnicodeOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<UnicodeOutputBody>> RasterizeUnicodeWithHttpInfoAsync(UnicodeInputBody unicodeInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Stamp ZPL as void / do-not-ship
         /// </summary>
@@ -1360,6 +1408,177 @@ namespace StripyHorse.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ConvertZplToHtml", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>UnicodeOutputBody</returns>
+        public UnicodeOutputBody RasterizeUnicode(UnicodeInputBody unicodeInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<UnicodeOutputBody> localVarResponse = RasterizeUnicodeWithHttpInfo(unicodeInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of UnicodeOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<UnicodeOutputBody> RasterizeUnicodeWithHttpInfo(UnicodeInputBody unicodeInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'unicodeInputBody' is set
+            if (unicodeInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'unicodeInputBody' when calling ConvertApi->RasterizeUnicode");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = unicodeInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.RasterizeUnicode";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<UnicodeOutputBody>("/v1/unicode", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("RasterizeUnicode", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of UnicodeOutputBody</returns>
+        public async System.Threading.Tasks.Task<UnicodeOutputBody> RasterizeUnicodeAsync(UnicodeInputBody unicodeInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<UnicodeOutputBody> localVarResponse = await RasterizeUnicodeWithHttpInfoAsync(unicodeInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="unicodeInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (UnicodeOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<UnicodeOutputBody>> RasterizeUnicodeWithHttpInfoAsync(UnicodeInputBody unicodeInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'unicodeInputBody' is set
+            if (unicodeInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'unicodeInputBody' when calling ConvertApi->RasterizeUnicode");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.Data = unicodeInputBody;
+
+            localVarRequestOptions.Operation = "ConvertApi.RasterizeUnicode";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<UnicodeOutputBody>("/v1/unicode", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("RasterizeUnicode", localVarResponse);
                 if (_exception != null)
                 {
                     throw _exception;

@@ -877,6 +877,40 @@ paths:
         label: Python
         source: "png = RenderApi(client).render_zpl_png(RenderInputBody(zpl=zpl, preset=\"\
           4x6\"))"
+  /v1/unicode:
+    post:
+      description: "Text fields containing characters the printer's fonts can't render\
+        \ — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond\
+        \ ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field's\
+        \ exact position and size. Every other byte (barcodes, ASCII text, graphics)\
+        \ passes through untouched. Fields that can't be converted safely (rotated,\
+        \ ^FH-escaped) are left unchanged and reported in `skipped`."
+      operationId: rasterizeUnicode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnicodeInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnicodeOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Make Unicode ZPL printable on any Zebra
+      tags:
+      - Convert
   /v1/void:
     post:
       description: "Overlays large DO NOT SHIP warnings (and an optional attribution\
@@ -1565,6 +1599,38 @@ components:
       - labelLengthDots
       - odometer
       - widthDots
+    UnicodeInputBody:
+      additionalProperties: false
+      example:
+        zpl: zpl
+      properties:
+        zpl:
+          type: string
+      required:
+      - zpl
+    UnicodeOutputBody:
+      additionalProperties: false
+      example:
+        fieldsRasterized: 0
+        skipped:
+        - skipped
+        - skipped
+        zpl: zpl
+      properties:
+        fieldsRasterized:
+          format: int64
+          type: integer
+        skipped:
+          items:
+            type: string
+          nullable: true
+          type: array
+          default: null
+        zpl:
+          type: string
+      required:
+      - fieldsRasterized
+      - zpl
     UpdatePrinterInputBody:
       additionalProperties: false
       example:

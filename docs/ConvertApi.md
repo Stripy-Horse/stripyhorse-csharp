@@ -8,6 +8,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 | [**ConvertDocument**](ConvertApi.md#convertdocument) | **POST** /v1/convert | Convert a PDF or image to ZPL |
 | [**ConvertHtml**](ConvertApi.md#converthtml) | **POST** /v1/convert/html | Convert an HTML label design to ZPL |
 | [**ConvertZplToHtml**](ConvertApi.md#convertzpltohtml) | **POST** /v1/convert/zpl-html | Decompile ZPL into editable HTML |
+| [**RasterizeUnicode**](ConvertApi.md#rasterizeunicode) | **POST** /v1/unicode | Make Unicode ZPL printable on any Zebra |
 | [**VoidZpl**](ConvertApi.md#voidzpl) | **POST** /v1/void | Stamp ZPL as void / do-not-ship |
 
 <a id="convertbatch"></a>
@@ -419,6 +420,105 @@ catch (ApiException e)
 ### Return type
 
 [**ZplHTMLOutputBody**](ZplHTMLOutputBody.md)
+
+### Authorization
+
+[headerKey](../README.md#headerKey), [bearerKey](../README.md#bearerKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a id="rasterizeunicode"></a>
+# **RasterizeUnicode**
+> UnicodeOutputBody RasterizeUnicode (UnicodeInputBody unicodeInputBody)
+
+Make Unicode ZPL printable on any Zebra
+
+Text fields containing characters the printer's fonts can't render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field's exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can't be converted safely (rotated, ^FH-escaped) are left unchanged and reported in `skipped`.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using StripyHorse.Api;
+using StripyHorse.Client;
+using StripyHorse.Model;
+
+namespace Example
+{
+    public class RasterizeUnicodeExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://api.stripyhorse.io";
+            // Configure API key authorization: headerKey
+            config.AddApiKey("X-Api-Key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // config.AddApiKeyPrefix("X-Api-Key", "Bearer");
+            // Configure Bearer token for authorization: bearerKey
+            config.AccessToken = "YOUR_BEARER_TOKEN";
+
+            var apiInstance = new ConvertApi(config);
+            var unicodeInputBody = new UnicodeInputBody(); // UnicodeInputBody | 
+
+            try
+            {
+                // Make Unicode ZPL printable on any Zebra
+                UnicodeOutputBody result = apiInstance.RasterizeUnicode(unicodeInputBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling ConvertApi.RasterizeUnicode: " + e.Message);
+                Debug.Print("Status Code: " + e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+#### Using the RasterizeUnicodeWithHttpInfo variant
+This returns an ApiResponse object which contains the response data, status code and headers.
+
+```csharp
+try
+{
+    // Make Unicode ZPL printable on any Zebra
+    ApiResponse<UnicodeOutputBody> response = apiInstance.RasterizeUnicodeWithHttpInfo(unicodeInputBody);
+    Debug.Write("Status Code: " + response.StatusCode);
+    Debug.Write("Response Headers: " + response.Headers);
+    Debug.Write("Response Body: " + response.Data);
+}
+catch (ApiException e)
+{
+    Debug.Print("Exception when calling ConvertApi.RasterizeUnicodeWithHttpInfo: " + e.Message);
+    Debug.Print("Status Code: " + e.ErrorCode);
+    Debug.Print(e.StackTrace);
+}
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **unicodeInputBody** | [**UnicodeInputBody**](UnicodeInputBody.md) |  |  |
+
+### Return type
+
+[**UnicodeOutputBody**](UnicodeOutputBody.md)
 
 ### Authorization
 

@@ -26,6 +26,8 @@ docs/RenderedLabel.md
 docs/SimulatorApi.md
 docs/StateOutputBody.md
 docs/StatusSnapshot.md
+docs/UnicodeInputBody.md
+docs/UnicodeOutputBody.md
 docs/UpdatePrinterInputBody.md
 docs/VoidInputBody.md
 docs/VoidOutputBody.md
@@ -54,6 +56,8 @@ src/StripyHorse.Test/Model/RenderOutputBodyTests.cs
 src/StripyHorse.Test/Model/RenderedLabelTests.cs
 src/StripyHorse.Test/Model/StateOutputBodyTests.cs
 src/StripyHorse.Test/Model/StatusSnapshotTests.cs
+src/StripyHorse.Test/Model/UnicodeInputBodyTests.cs
+src/StripyHorse.Test/Model/UnicodeOutputBodyTests.cs
 src/StripyHorse.Test/Model/UpdatePrinterInputBodyTests.cs
 src/StripyHorse.Test/Model/VoidInputBodyTests.cs
 src/StripyHorse.Test/Model/VoidOutputBodyTests.cs
@@ -99,6 +103,8 @@ src/StripyHorse/Model/RenderOutputBody.cs
 src/StripyHorse/Model/RenderedLabel.cs
 src/StripyHorse/Model/StateOutputBody.cs
 src/StripyHorse/Model/StatusSnapshot.cs
+src/StripyHorse/Model/UnicodeInputBody.cs
+src/StripyHorse/Model/UnicodeOutputBody.cs
 src/StripyHorse/Model/UpdatePrinterInputBody.cs
 src/StripyHorse/Model/VoidInputBody.cs
 src/StripyHorse/Model/VoidOutputBody.cs

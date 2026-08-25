@@ -120,6 +120,18 @@ namespace StripyHorse.Test.Api
         }
 
         /// <summary>
+        /// Test RasterizeUnicode
+        /// </summary>
+        [Fact]
+        public void RasterizeUnicodeTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //UnicodeInputBody unicodeInputBody = null;
+            //var response = instance.RasterizeUnicode(unicodeInputBody);
+            //Assert.IsType<UnicodeOutputBody>(response);
+        }
+
+        /// <summary>
         /// Test VoidZpl
         /// </summary>
         [Fact]
