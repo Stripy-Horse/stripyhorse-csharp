@@ -30,7 +30,7 @@ namespace StripyHorse.Api
         /// Convert many documents in one request, results streamed
         /// </summary>
         /// <remarks>
-        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -51,7 +51,7 @@ namespace StripyHorse.Api
         /// Convert many documents in one request, results streamed
         /// </summary>
         /// <remarks>
-        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -112,7 +112,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -124,7 +124,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -158,7 +158,7 @@ namespace StripyHorse.Api
         /// Make Unicode ZPL printable on any Zebra
         /// </summary>
         /// <remarks>
-        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -170,7 +170,7 @@ namespace StripyHorse.Api
         /// Make Unicode ZPL printable on any Zebra
         /// </summary>
         /// <remarks>
-        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -236,7 +236,7 @@ namespace StripyHorse.Api
         /// Convert many documents in one request, results streamed
         /// </summary>
         /// <remarks>
-        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -258,7 +258,7 @@ namespace StripyHorse.Api
         /// Convert many documents in one request, results streamed
         /// </summary>
         /// <remarks>
-        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -322,7 +322,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -335,7 +335,7 @@ namespace StripyHorse.Api
         /// Convert an HTML label design to ZPL
         /// </summary>
         /// <remarks>
-        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -372,7 +372,7 @@ namespace StripyHorse.Api
         /// Make Unicode ZPL printable on any Zebra
         /// </summary>
         /// <remarks>
-        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -385,7 +385,7 @@ namespace StripyHorse.Api
         /// Make Unicode ZPL printable on any Zebra
         /// </summary>
         /// <remarks>
-        /// Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -564,7 +564,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -585,7 +585,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -703,7 +703,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -725,7 +725,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes — &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
+        /// Convert many documents in one request, results streamed Upload up to 20 PDFs/images as repeated &#x60;files&#x60; fields. The response is application/x-ndjson: one JSON object per converted page, streamed as each page finishes: &#x60;{\&quot;file\&quot;:…,\&quot;page\&quot;:…,\&quot;pageCount\&quot;:…,\&quot;zpl\&quot;:…}&#x60; on success, &#x60;{\&quot;file\&quot;:…,\&quot;error\&quot;:…}&#x60; per failed file (remaining files still convert).
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="files"></param>
@@ -1124,7 +1124,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1137,7 +1137,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1208,7 +1208,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1222,7 +1222,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it — except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
+        /// Convert an HTML label design to ZPL Renders the HTML at exact print resolution (headless Chrome, network access blocked) and rasterizes it, except &#x60;&lt;zpl-barcode type&#x3D;\&quot;code128|qr\&quot; data&#x3D;\&quot;…\&quot;&gt;&#x60; elements, which are measured from the layout and emitted as native ^BC/^BQ fields at their exact boxes. Size and position them with CSS (&#x60;left/top/width/height&#x60;); optional &#x60;module&#x60; (^BY dots) and &#x60;mag&#x60; (QR magnification) attributes pin exact bar geometry instead of fitting it to the box. Unsupported types or unencodable data fail loudly.  **PHP** (&#x60;composer require stripyhorse/stripyhorse-php&#x60;): &#x60;&#x60;&#x60;php $out &#x3D; $convert-&gt;convertHtml(new StripyHorse\\Model\\HtmlInputBody([     &#39;html&#39; &#x3D;&gt; &#39;&lt;div style&#x3D;\&quot;position:absolute;left:40px;top:40px;font-size:50px\&quot;&gt;Hello&lt;/div&gt;&#39;,     &#39;preset&#39; &#x3D;&gt; &#39;4x6&#39;, ])); echo $out-&gt;getZpl(); &#x60;&#x60;&#x60;
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="htmlInputBody"></param>
@@ -1466,7 +1466,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -1479,7 +1479,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -1550,7 +1550,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>
@@ -1564,7 +1564,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render — Arabic (contextual joining, RTL), Cyrillic, and everything else beyond ASCII — are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
+        /// Make Unicode ZPL printable on any Zebra Text fields containing characters the printer&#39;s fonts can&#39;t render (Arabic with contextual joining and RTL, Cyrillic, and everything else beyond ASCII) are shaped properly and re-emitted as ^GFA bitmaps at the field&#39;s exact position and size. Every other byte (barcodes, ASCII text, graphics) passes through untouched. Fields that can&#39;t be converted safely (rotated, ^FH-escaped) are left unchanged and reported in &#x60;skipped&#x60;.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="unicodeInputBody"></param>

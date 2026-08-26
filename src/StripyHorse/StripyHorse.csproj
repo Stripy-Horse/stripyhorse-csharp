@@ -9,7 +9,7 @@
     <Authors>Stripy Horse</Authors>
     <Company>OpenAPI</Company>
     <AssemblyTitle>OpenAPI Library</AssemblyTitle>
-    <Description>Official C# client for the Stripy Horse API — Zebra/ZPL developer tools</Description>
+    <Description>Official C# client for the Stripy Horse API - Zebra/ZPL developer tools</Description>
     <Copyright>No Copyright</Copyright>
     <RootNamespace>StripyHorse</RootNamespace>
     <Version>1.0.0</Version>

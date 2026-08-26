@@ -1,11 +1,11 @@
 # Stripy Horse C# SDK
 
-Official .NET client for the [Stripy Horse](https://stripyhorse.io) API — Zebra/ZPL
+Official .NET client for the [Stripy Horse](https://stripyhorse.io) API - Zebra/ZPL
 developer tools: render ZPL to PNG, convert PDFs/images/HTML to print-ready ZPL,
 and drive hosted virtual Zebra printers from your tests.
 
 Generated from the live [OpenAPI spec](https://stripyhorse.io/openapi.yaml), which is
-itself emitted from the server's handler code — the SDK can never drift from the API.
+itself emitted from the server's handler code, so the SDK can never drift from the API.
 
 Targets .NET 8.
 
