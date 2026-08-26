@@ -1194,65 +1194,69 @@ components:
         dpmm: 0
         elements:
         - align: ""
-          cornerRadius: 4
+          columns: 30
+          cornerRadius: 1
           data: data
-          diameter: 1
+          diameter: 5
           errorCorrection: ""
           font: font
           fontHeight: 5
-          fontWidth: 5
-          height: 2
-          length: 7
-          lines: 9
-          magnification: 3
-          maxWidth: 2
-          moduleSize: 4
-          moduleWidth: 7
+          fontWidth: 2
+          height: 7
+          length: 9
+          lines: 3
+          magnification: 2
+          maxWidth: 4
+          moduleSize: 7
+          moduleWidth: 1
           orientation: ""
           png: png
           printText: true
           rotation: 1
+          rows: 7
           text: text
-          thickness: 1
-          threshold: 37
+          thickness: 6
+          threshold: 190
           type: text
-          width: 6
+          width: 1
           x: 0
           "y": 0
           zpl: zpl
         - align: ""
-          cornerRadius: 4
+          columns: 30
+          cornerRadius: 1
           data: data
-          diameter: 1
+          diameter: 5
           errorCorrection: ""
           font: font
           fontHeight: 5
-          fontWidth: 5
-          height: 2
-          length: 7
-          lines: 9
-          magnification: 3
-          maxWidth: 2
-          moduleSize: 4
-          moduleWidth: 7
+          fontWidth: 2
+          height: 7
+          length: 9
+          lines: 3
+          magnification: 2
+          maxWidth: 4
+          moduleSize: 7
+          moduleWidth: 1
           orientation: ""
           png: png
           printText: true
           rotation: 1
+          rows: 7
           text: text
-          thickness: 1
-          threshold: 37
+          thickness: 6
+          threshold: 190
           type: text
-          width: 6
+          width: 1
           x: 0
           "y": 0
           zpl: zpl
-        heightMm: 0.4965218492984954
+        heightMm: 0.9965781217890561
         preset: 4x6
         preview: true
         variables:
           key: variables
-        widthMm: 0.5025004791520294
+        widthMm: 0.9369310271410669
       properties:
         dpmm:
           enum:
@@ -1461,29 +1465,31 @@ components:
       additionalProperties: false
       example:
         align: ""
-        cornerRadius: 4
+        columns: 30
+        cornerRadius: 1
         data: data
-        diameter: 1
+        diameter: 5
         errorCorrection: ""
         font: font
         fontHeight: 5
-        fontWidth: 5
-        height: 2
-        length: 7
-        lines: 9
-        magnification: 3
-        maxWidth: 2
-        moduleSize: 4
-        moduleWidth: 7
+        fontWidth: 2
+        height: 7
+        length: 9
+        lines: 3
+        magnification: 2
+        maxWidth: 4
+        moduleSize: 7
+        moduleWidth: 1
         orientation: ""
         png: png
         printText: true
         rotation: 1
+        rows: 7
         text: text
-        thickness: 1
-        threshold: 37
+        thickness: 6
+        threshold: 190
         type: text
-        width: 6
+        width: 1
         x: 0
         "y": 0
         zpl: zpl
@@ -1497,6 +1503,12 @@ components:
           - right
           - justify
           type: string
+        columns:
+          description: Grid columns (default 1)
+          format: int64
+          maximum: 50
+          minimum: 0
+          type: integer
         cornerRadius:
           description: Box corner rounding 0-8
           format: int64
@@ -1579,6 +1591,12 @@ components:
           - 270
           format: int64
           type: integer
+        rows:
+          description: Grid rows (default 1)
+          format: int64
+          maximum: 50
+          minimum: 0
+          type: integer
         text:
           description: "Text content; {{name}} interpolates from variables"
           type: string
@@ -1603,6 +1621,7 @@ components:
           - box
           - line
           - circle
+          - grid
           - image
           - raw
           type: string

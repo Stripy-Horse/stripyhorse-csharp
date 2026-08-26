@@ -64,6 +64,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Columns'
+        /// </summary>
+        [Fact]
+        public void ColumnsTest()
+        {
+            // TODO unit test for the property 'Columns'
+        }
+
+        /// <summary>
         /// Test the property 'CornerRadius'
         /// </summary>
         [Fact]
@@ -223,6 +232,15 @@ namespace StripyHorse.Test.Model
         public void RotationTest()
         {
             // TODO unit test for the property 'Rotation'
+        }
+
+        /// <summary>
+        /// Test the property 'Rows'
+        /// </summary>
+        [Fact]
+        public void RowsTest()
+        {
+            // TODO unit test for the property 'Rows'
         }
 
         /// <summary>

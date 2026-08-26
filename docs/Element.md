@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Align** | **string** | Alignment when wrapping | [optional] 
+**Columns** | **long** | Grid columns (default 1) | [optional] 
 **CornerRadius** | **long** | Box corner rounding 0-8 | [optional] 
 **Data** | **string** | Barcode payload; {{name}} interpolates | [optional] 
 **Diameter** | **long** | Circle diameter in dots | [optional] 
@@ -23,6 +24,7 @@ Name | Type | Description | Notes
 **Png** | **string** | PNG/GIF/JPEG, base64-encoded | [optional] 
 **PrintText** | **bool** | Print the human-readable line under 1D barcodes (default true) | [optional] 
 **Rotation** | **long** |  | [optional] 
+**Rows** | **long** | Grid rows (default 1) | [optional] 
 **Text** | **string** | Text content; {{name}} interpolates from variables | [optional] 
 **Thickness** | **long** | Stroke thickness in dots (default 1) | [optional] 
 **Threshold** | **long** | Bitonal threshold (default 128) | [optional] 

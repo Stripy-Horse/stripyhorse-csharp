@@ -242,16 +242,22 @@ namespace StripyHorse.Model
             Circle = 8,
 
             /// <summary>
+            /// Enum Grid for value: grid
+            /// </summary>
+            [EnumMember(Value = "grid")]
+            Grid = 9,
+
+            /// <summary>
             /// Enum Image for value: image
             /// </summary>
             [EnumMember(Value = "image")]
-            Image = 9,
+            Image = 10,
 
             /// <summary>
             /// Enum Raw for value: raw
             /// </summary>
             [EnumMember(Value = "raw")]
-            Raw = 10
+            Raw = 11
         }
 
 
@@ -270,6 +276,7 @@ namespace StripyHorse.Model
         /// Initializes a new instance of the <see cref="Element" /> class.
         /// </summary>
         /// <param name="align">Alignment when wrapping.</param>
+        /// <param name="columns">Grid columns (default 1).</param>
         /// <param name="cornerRadius">Box corner rounding 0-8.</param>
         /// <param name="data">Barcode payload; {{name}} interpolates.</param>
         /// <param name="diameter">Circle diameter in dots.</param>
@@ -288,6 +295,7 @@ namespace StripyHorse.Model
         /// <param name="png">PNG/GIF/JPEG, base64-encoded.</param>
         /// <param name="printText">Print the human-readable line under 1D barcodes (default true).</param>
         /// <param name="rotation">rotation.</param>
+        /// <param name="rows">Grid rows (default 1).</param>
         /// <param name="text">Text content; {{name}} interpolates from variables.</param>
         /// <param name="thickness">Stroke thickness in dots (default 1).</param>
         /// <param name="threshold">Bitonal threshold (default 128).</param>
@@ -296,10 +304,11 @@ namespace StripyHorse.Model
         /// <param name="x">Left edge in dots.</param>
         /// <param name="y">Top edge in dots.</param>
         /// <param name="zpl">Verbatim ZPL commands (raw only) - the escape hatch.</param>
-        public Element(AlignEnum? align = default, long cornerRadius = default, string data = default, long diameter = default, ErrorCorrectionEnum? errorCorrection = default, string font = default, long fontHeight = default, long fontWidth = default, long height = default, long length = default, long lines = default, long magnification = default, long maxWidth = default, long moduleSize = default, long moduleWidth = default, OrientationEnum? orientation = default, string png = default, bool printText = default, RotationEnum? rotation = default, string text = default, long thickness = default, long threshold = default, TypeEnum type = default, long width = default, long x = default, long y = default, string zpl = default)
+        public Element(AlignEnum? align = default, long columns = default, long cornerRadius = default, string data = default, long diameter = default, ErrorCorrectionEnum? errorCorrection = default, string font = default, long fontHeight = default, long fontWidth = default, long height = default, long length = default, long lines = default, long magnification = default, long maxWidth = default, long moduleSize = default, long moduleWidth = default, OrientationEnum? orientation = default, string png = default, bool printText = default, RotationEnum? rotation = default, long rows = default, string text = default, long thickness = default, long threshold = default, TypeEnum type = default, long width = default, long x = default, long y = default, string zpl = default)
         {
             this.Type = type;
             this.Align = align;
+            this.Columns = columns;
             this.CornerRadius = cornerRadius;
             this.Data = data;
             this.Diameter = diameter;
@@ -318,6 +327,7 @@ namespace StripyHorse.Model
             this.Png = png;
             this.PrintText = printText;
             this.Rotation = rotation;
+            this.Rows = rows;
             this.Text = text;
             this.Thickness = thickness;
             this.Threshold = threshold;
@@ -326,6 +336,13 @@ namespace StripyHorse.Model
             this.Y = y;
             this.Zpl = zpl;
         }
+
+        /// <summary>
+        /// Grid columns (default 1)
+        /// </summary>
+        /// <value>Grid columns (default 1)</value>
+        [DataMember(Name = "columns", EmitDefaultValue = false)]
+        public long Columns { get; set; }
 
         /// <summary>
         /// Box corner rounding 0-8
@@ -433,6 +450,13 @@ namespace StripyHorse.Model
         public bool PrintText { get; set; }
 
         /// <summary>
+        /// Grid rows (default 1)
+        /// </summary>
+        /// <value>Grid rows (default 1)</value>
+        [DataMember(Name = "rows", EmitDefaultValue = false)]
+        public long Rows { get; set; }
+
+        /// <summary>
         /// Text content; {{name}} interpolates from variables
         /// </summary>
         /// <value>Text content; {{name}} interpolates from variables</value>
@@ -490,6 +514,7 @@ namespace StripyHorse.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class Element {\n");
             sb.Append("  Align: ").Append(Align).Append("\n");
+            sb.Append("  Columns: ").Append(Columns).Append("\n");
             sb.Append("  CornerRadius: ").Append(CornerRadius).Append("\n");
             sb.Append("  Data: ").Append(Data).Append("\n");
             sb.Append("  Diameter: ").Append(Diameter).Append("\n");
@@ -508,6 +533,7 @@ namespace StripyHorse.Model
             sb.Append("  Png: ").Append(Png).Append("\n");
             sb.Append("  PrintText: ").Append(PrintText).Append("\n");
             sb.Append("  Rotation: ").Append(Rotation).Append("\n");
+            sb.Append("  Rows: ").Append(Rows).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  Thickness: ").Append(Thickness).Append("\n");
             sb.Append("  Threshold: ").Append(Threshold).Append("\n");
@@ -536,6 +562,18 @@ namespace StripyHorse.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
+            // Columns (long) maximum
+            if (this.Columns > (long)50)
+            {
+                yield return new ValidationResult("Invalid value for Columns, must be a value less than or equal to 50.", new [] { "Columns" });
+            }
+
+            // Columns (long) minimum
+            if (this.Columns < (long)0)
+            {
+                yield return new ValidationResult("Invalid value for Columns, must be a value greater than or equal to 0.", new [] { "Columns" });
+            }
+
             // CornerRadius (long) maximum
             if (this.CornerRadius > (long)8)
             {
@@ -546,6 +584,18 @@ namespace StripyHorse.Model
             if (this.CornerRadius < (long)0)
             {
                 yield return new ValidationResult("Invalid value for CornerRadius, must be a value greater than or equal to 0.", new [] { "CornerRadius" });
+            }
+
+            // Rows (long) maximum
+            if (this.Rows > (long)50)
+            {
+                yield return new ValidationResult("Invalid value for Rows, must be a value less than or equal to 50.", new [] { "Rows" });
+            }
+
+            // Rows (long) minimum
+            if (this.Rows < (long)0)
+            {
+                yield return new ValidationResult("Invalid value for Rows, must be a value greater than or equal to 0.", new [] { "Rows" });
             }
 
             // Threshold (long) maximum
