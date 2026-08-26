@@ -76,6 +76,18 @@ paths:
           STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/convert \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -F file=@shipping-label.pdf -F preset=4x6
+      - lang: go
+        label: Go
+        source: |-
+          pdf, _ := os.Open("shipping-label.pdf")
+          defer pdf.Close()
+          result, _, err := client.ConvertAPI.ConvertDocument(ctx).File(pdf).Preset("4x6").Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          for _, page := range result.GetPages() {
+              sendToPrinter(page.GetZpl())
+          }
       - lang: php
         label: PHP
         source: |-
@@ -212,6 +224,16 @@ paths:
           curl https://api.stripyhorse.io/v1/convert/html \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"html":"<div style=\"position:absolute;left:40px;top:40px;font-size:50px\">Hello</div>","preset":"4x6"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewHtmlInputBody(`<div style="position:absolute;left:40px;top:40px;font-size:50px">Hello</div>`)
+          body.SetPreset("4x6")
+          out, _, err := client.ConvertAPI.ConvertHtml(ctx).HtmlInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          fmt.Println(out.GetZpl())
       - lang: php
         label: PHP
         source: |-
@@ -450,6 +472,17 @@ paths:
           curl https://api.stripyhorse.io/v1/printers \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"name":"ci-run-42","preset":"4x6"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewCreatePrinterInputBody("ci-run-42")
+          body.SetPreset("4x6")
+          printer, _, err := client.SimulatorAPI.CreatePrinter(ctx).CreatePrinterInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          addr := fmt.Sprintf("%s:%d", printer.GetTcp().GetHost(), printer.GetTcp().GetPort())
+          // point the system under test at addr, then assert with ListJobs
       - lang: php
         label: PHP
         source: |-
@@ -618,6 +651,14 @@ paths:
           curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/faults \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"paperOut":true}'
+      - lang: go
+        label: Go
+        source: |-
+          faults := stripyhorse.NewFaults()
+          faults.SetPaperOut(true)
+          client.SimulatorAPI.SetPrinterFaults(ctx, printer.GetId()).Faults(*faults).Execute()
+          // print something - it holds. Clear to flush:
+          client.SimulatorAPI.SetPrinterFaults(ctx, printer.GetId()).Faults(*stripyhorse.NewFaults()).Execute()
       - lang: php
         label: PHP
         source: |-
@@ -726,6 +767,19 @@ paths:
           STRIPY_HORSE_API_KEY=""
           curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/jobs \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          jobs, _, err := client.SimulatorAPI.ListJobs(ctx, printer.GetId()).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          if len(jobs.GetJobs()) != 1 {
+              log.Fatalf("expected 1 job, got %d", len(jobs.GetJobs()))
+          }
+          if jobs.GetJobs()[0].GetStatus() != "rendered" {
+              log.Fatal("job did not render")
+          }
       - lang: php
         label: PHP
         source: |-
@@ -909,6 +963,22 @@ paths:
           curl https://api.stripyhorse.io/v1/render \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}'
+      - lang: go
+        label: Go
+        source: |-
+          cfg := stripyhorse.NewConfiguration()
+          client := stripyhorse.NewAPIClient(cfg)
+          ctx := context.WithValue(context.Background(),
+              stripyhorse.ContextAccessToken, os.Getenv("STRIPY_HORSE_API_KEY"))
+
+          body := stripyhorse.NewRenderInputBody("^XA^FO50,50^A0N,45,45^FDHello^FS^XZ")
+          body.SetPreset("4x6")
+          out, _, err := client.RenderAPI.RenderZpl(ctx).RenderInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          png, _ := base64.StdEncoding.DecodeString(out.GetLabels()[0].GetPng())
+          os.WriteFile("label.png", png, 0o644)
       - lang: php
         label: PHP
         source: |-
@@ -992,6 +1062,13 @@ paths:
           curl https://api.stripyhorse.io/v1/render.png \
             -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
             -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDHello^FS^XZ","preset":"4x6"}' -o label.png
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewRenderInputBody("^XA^FO50,50^A0N,45,45^FDHello^FS^XZ")
+          body.SetPreset("4x6")
+          png, _, err := client.RenderAPI.RenderZplPng(ctx).RenderInputBody(*body).Execute()
+          os.WriteFile("label.png", []byte(png), 0o644)
       - lang: php
         label: PHP
         source: |-
