@@ -1382,6 +1382,7 @@ components:
     CreatePrinterInputBody:
       additionalProperties: false
       example:
+        anonymize: true
         dpmm: 0
         heightMm: 0.6027456183070403
         mode: ""
@@ -1390,6 +1391,9 @@ components:
         webhookUrl: webhookUrl
         widthMm: 0.14658129805029452
       properties:
+        anonymize:
+          description: Mask PII and strip graphics from every captured frame
+          type: boolean
         dpmm:
           description: Print density in dots/mm (152/203/300/600 dpi); default 8
           enum:
@@ -2065,7 +2069,8 @@ components:
       additionalProperties: false
       example:
         printers:
-        - createdAt: 2000-01-23T04:56:07.000+00:00
+        - anonymize: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
           dpmm: 0
           expiresAt: 2000-01-23T04:56:07.000+00:00
           heightMm: 6.027456183070403
@@ -2091,7 +2096,8 @@ components:
           webhookSecret: webhookSecret
           webhookUrl: webhookUrl
           widthMm: 9.301444243932576
-        - createdAt: 2000-01-23T04:56:07.000+00:00
+        - anonymize: true
+          createdAt: 2000-01-23T04:56:07.000+00:00
           dpmm: 0
           expiresAt: 2000-01-23T04:56:07.000+00:00
           heightMm: 6.027456183070403
@@ -2305,6 +2311,7 @@ components:
     PrinterBody:
       additionalProperties: false
       example:
+        anonymize: true
         createdAt: 2000-01-23T04:56:07.000+00:00
         dpmm: 0
         expiresAt: 2000-01-23T04:56:07.000+00:00
@@ -2332,6 +2339,10 @@ components:
         webhookUrl: webhookUrl
         widthMm: 9.301444243932576
       properties:
+        anonymize:
+          description: "When true, PII is masked and graphics stripped from every\
+            \ captured frame"
+          type: boolean
         createdAt:
           format: date-time
           type: string
@@ -2370,6 +2381,7 @@ components:
           format: double
           type: number
       required:
+      - anonymize
       - createdAt
       - dpmm
       - heightMm
@@ -2726,9 +2738,12 @@ components:
     UpdatePrinterInputBody:
       additionalProperties: false
       example:
+        anonymize: true
         name: name
         webhookUrl: webhookUrl
       properties:
+        anonymize:
+          type: boolean
         name:
           type: string
         webhookUrl:

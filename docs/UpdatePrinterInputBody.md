@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Anonymize** | **bool** |  | [optional] 
 **Name** | **string** |  | [optional] 
 **WebhookUrl** | **string** |  | [optional] 
 

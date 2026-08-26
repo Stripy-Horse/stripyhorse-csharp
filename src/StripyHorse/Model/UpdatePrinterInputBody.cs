@@ -34,13 +34,21 @@ namespace StripyHorse.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdatePrinterInputBody" /> class.
         /// </summary>
+        /// <param name="anonymize">anonymize.</param>
         /// <param name="name">name.</param>
         /// <param name="webhookUrl">webhookUrl.</param>
-        public UpdatePrinterInputBody(string name = default, string webhookUrl = default)
+        public UpdatePrinterInputBody(bool anonymize = default, string name = default, string webhookUrl = default)
         {
+            this.Anonymize = anonymize;
             this.Name = name;
             this.WebhookUrl = webhookUrl;
         }
+
+        /// <summary>
+        /// Gets or Sets Anonymize
+        /// </summary>
+        [DataMember(Name = "anonymize", EmitDefaultValue = true)]
+        public bool Anonymize { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -62,6 +70,7 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdatePrinterInputBody {\n");
+            sb.Append("  Anonymize: ").Append(Anonymize).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  WebhookUrl: ").Append(WebhookUrl).Append("\n");
             sb.Append("}\n");

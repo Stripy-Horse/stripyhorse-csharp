@@ -55,6 +55,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Anonymize'
+        /// </summary>
+        [Fact]
+        public void AnonymizeTest()
+        {
+            // TODO unit test for the property 'Anonymize'
+        }
+
+        /// <summary>
         /// Test the property 'CreatedAt'
         /// </summary>
         [Fact]

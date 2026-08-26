@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Anonymize** | **bool** | Mask PII and strip graphics from every captured frame | [optional] 
 **Dpmm** | **long** | Print density in dots/mm (152/203/300/600 dpi); default 8 | [optional] 
 **HeightMm** | **double** |  | [optional] 
 **Mode** | **string** |  | [optional] 

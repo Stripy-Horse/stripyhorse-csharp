@@ -227,6 +227,7 @@ namespace StripyHorse.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePrinterInputBody" /> class.
         /// </summary>
+        /// <param name="anonymize">Mask PII and strip graphics from every captured frame.</param>
         /// <param name="dpmm">Print density in dots/mm (152/203/300/600 dpi); default 8.</param>
         /// <param name="heightMm">heightMm.</param>
         /// <param name="mode">mode.</param>
@@ -234,7 +235,7 @@ namespace StripyHorse.Model
         /// <param name="preset">Named label size in inches; alternative to widthMm/heightMm.</param>
         /// <param name="webhookUrl">webhookUrl.</param>
         /// <param name="widthMm">widthMm.</param>
-        public CreatePrinterInputBody(DpmmEnum? dpmm = default, double heightMm = default, ModeEnum? mode = default, string name = default, PresetEnum? preset = default, string webhookUrl = default, double widthMm = default)
+        public CreatePrinterInputBody(bool anonymize = default, DpmmEnum? dpmm = default, double heightMm = default, ModeEnum? mode = default, string name = default, PresetEnum? preset = default, string webhookUrl = default, double widthMm = default)
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -242,6 +243,7 @@ namespace StripyHorse.Model
                 throw new ArgumentNullException("name is a required property for CreatePrinterInputBody and cannot be null");
             }
             this.Name = name;
+            this.Anonymize = anonymize;
             this.Dpmm = dpmm;
             this.HeightMm = heightMm;
             this.Mode = mode;
@@ -249,6 +251,13 @@ namespace StripyHorse.Model
             this.WebhookUrl = webhookUrl;
             this.WidthMm = widthMm;
         }
+
+        /// <summary>
+        /// Mask PII and strip graphics from every captured frame
+        /// </summary>
+        /// <value>Mask PII and strip graphics from every captured frame</value>
+        [DataMember(Name = "anonymize", EmitDefaultValue = true)]
+        public bool Anonymize { get; set; }
 
         /// <summary>
         /// Gets or Sets HeightMm
@@ -282,6 +291,7 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class CreatePrinterInputBody {\n");
+            sb.Append("  Anonymize: ").Append(Anonymize).Append("\n");
             sb.Append("  Dpmm: ").Append(Dpmm).Append("\n");
             sb.Append("  HeightMm: ").Append(HeightMm).Append("\n");
             sb.Append("  Mode: ").Append(Mode).Append("\n");

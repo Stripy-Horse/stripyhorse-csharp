@@ -64,6 +64,7 @@ namespace StripyHorse.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="PrinterBody" /> class.
         /// </summary>
+        /// <param name="anonymize">When true, PII is masked and graphics stripped from every captured frame (required).</param>
         /// <param name="createdAt">createdAt (required).</param>
         /// <param name="dpmm">dpmm (required).</param>
         /// <param name="expiresAt">expiresAt.</param>
@@ -77,8 +78,9 @@ namespace StripyHorse.Model
         /// <param name="webhookSecret">HMAC-SHA256 key for X-Stripy-Horse-Signature. Only returned on creation..</param>
         /// <param name="webhookUrl">webhookUrl.</param>
         /// <param name="widthMm">widthMm (required).</param>
-        public PrinterBody(DateTime createdAt = default, long dpmm = default, DateTime expiresAt = default, double heightMm = default, string id = default, string ingestUrl = default, ModeEnum mode = default, string name = default, StatusSnapshot state = default, PrinterBodyTCPStruct tcp = default, string webhookSecret = default, string webhookUrl = default, double widthMm = default)
+        public PrinterBody(bool anonymize = default, DateTime createdAt = default, long dpmm = default, DateTime expiresAt = default, double heightMm = default, string id = default, string ingestUrl = default, ModeEnum mode = default, string name = default, StatusSnapshot state = default, PrinterBodyTCPStruct tcp = default, string webhookSecret = default, string webhookUrl = default, double widthMm = default)
         {
+            this.Anonymize = anonymize;
             this.CreatedAt = createdAt;
             this.Dpmm = dpmm;
             this.HeightMm = heightMm;
@@ -108,6 +110,13 @@ namespace StripyHorse.Model
             this.WebhookSecret = webhookSecret;
             this.WebhookUrl = webhookUrl;
         }
+
+        /// <summary>
+        /// When true, PII is masked and graphics stripped from every captured frame
+        /// </summary>
+        /// <value>When true, PII is masked and graphics stripped from every captured frame</value>
+        [DataMember(Name = "anonymize", IsRequired = true, EmitDefaultValue = true)]
+        public bool Anonymize { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
@@ -191,6 +200,7 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class PrinterBody {\n");
+            sb.Append("  Anonymize: ").Append(Anonymize).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Dpmm: ").Append(Dpmm).Append("\n");
             sb.Append("  ExpiresAt: ").Append(ExpiresAt).Append("\n");
