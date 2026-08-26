@@ -1382,7 +1382,6 @@ components:
           additionalProperties:
             type: string
           description: "Values for {{name}} references"
-          type: object
         widthMm:
           format: double
           minimum: 0
@@ -1734,8 +1733,7 @@ components:
         message:
           description: Error message text
           type: string
-        value:
-          description: The value at the given location
+        value: {}
     ErrorModel:
       additionalProperties: false
       properties:

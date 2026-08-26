@@ -36,7 +36,7 @@ namespace StripyHorse.Model
         /// </summary>
         /// <param name="location">Where the error occurred, e.g. &#39;body.items[3].tags&#39; or &#39;path.thing-id&#39;.</param>
         /// <param name="message">Error message text.</param>
-        /// <param name="value">The value at the given location.</param>
+        /// <param name="value">value.</param>
         public ErrorDetail(string location = default, string message = default, Object value = default)
         {
             this.Location = location;
@@ -59,9 +59,8 @@ namespace StripyHorse.Model
         public string Message { get; set; }
 
         /// <summary>
-        /// The value at the given location
+        /// Gets or Sets Value
         /// </summary>
-        /// <value>The value at the given location</value>
         [DataMember(Name = "value", EmitDefaultValue = true)]
         public Object Value { get; set; }
 
