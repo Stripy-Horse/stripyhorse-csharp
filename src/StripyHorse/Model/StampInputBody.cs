@@ -130,6 +130,12 @@ namespace StripyHorse.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
+            // WidthDots (long) maximum
+            if (this.WidthDots > (long)10000)
+            {
+                yield return new ValidationResult("Invalid value for WidthDots, must be a value less than or equal to 10000.", new [] { "WidthDots" });
+            }
+
             // WidthDots (long) minimum
             if (this.WidthDots < (long)0)
             {

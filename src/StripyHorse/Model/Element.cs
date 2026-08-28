@@ -692,6 +692,12 @@ namespace StripyHorse.Model
                 yield return new ValidationResult("Invalid value for CornerRadius, must be a value greater than or equal to 0.", new [] { "CornerRadius" });
             }
 
+            // FontHeight (long) maximum
+            if (this.FontHeight > (long)10000)
+            {
+                yield return new ValidationResult("Invalid value for FontHeight, must be a value less than or equal to 10000.", new [] { "FontHeight" });
+            }
+
             // Rows (long) maximum
             if (this.Rows > (long)50)
             {
