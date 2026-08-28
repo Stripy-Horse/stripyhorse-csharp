@@ -77,6 +77,51 @@ namespace StripyHorse.Model
         [DataMember(Name = "align", EmitDefaultValue = false)]
         public AlignEnum? Align { get; set; }
         /// <summary>
+        /// Which corner x,y names. topLeft (^FO, default); bottomLeft (^FT: the text baseline, what most designer-exported ZPL uses); the Right variants make x the field&#39;s right edge (ZPL justification 1)
+        /// </summary>
+        /// <value>Which corner x,y names. topLeft (^FO, default); bottomLeft (^FT: the text baseline, what most designer-exported ZPL uses); the Right variants make x the field&#39;s right edge (ZPL justification 1)</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum AnchorEnum
+        {
+            /// <summary>
+            /// Enum Empty for value: 
+            /// </summary>
+            [EnumMember(Value = "")]
+            Empty = 1,
+
+            /// <summary>
+            /// Enum TopLeft for value: topLeft
+            /// </summary>
+            [EnumMember(Value = "topLeft")]
+            TopLeft = 2,
+
+            /// <summary>
+            /// Enum BottomLeft for value: bottomLeft
+            /// </summary>
+            [EnumMember(Value = "bottomLeft")]
+            BottomLeft = 3,
+
+            /// <summary>
+            /// Enum TopRight for value: topRight
+            /// </summary>
+            [EnumMember(Value = "topRight")]
+            TopRight = 4,
+
+            /// <summary>
+            /// Enum BottomRight for value: bottomRight
+            /// </summary>
+            [EnumMember(Value = "bottomRight")]
+            BottomRight = 5
+        }
+
+
+        /// <summary>
+        /// Which corner x,y names. topLeft (^FO, default); bottomLeft (^FT: the text baseline, what most designer-exported ZPL uses); the Right variants make x the field&#39;s right edge (ZPL justification 1)
+        /// </summary>
+        /// <value>Which corner x,y names. topLeft (^FO, default); bottomLeft (^FT: the text baseline, what most designer-exported ZPL uses); the Right variants make x the field&#39;s right edge (ZPL justification 1)</value>
+        [DataMember(Name = "anchor", EmitDefaultValue = false)]
+        public AnchorEnum? Anchor { get; set; }
+        /// <summary>
         /// QR error correction (default M)
         /// </summary>
         /// <value>QR error correction (default M)</value>
@@ -121,6 +166,51 @@ namespace StripyHorse.Model
         /// <value>QR error correction (default M)</value>
         [DataMember(Name = "errorCorrection", EmitDefaultValue = false)]
         public ErrorCorrectionEnum? ErrorCorrection { get; set; }
+        /// <summary>
+        /// Code 128 mode: N none (default), U UCC case, A automatic subset switching, D UCC/EAN application identifiers
+        /// </summary>
+        /// <value>Code 128 mode: N none (default), U UCC case, A automatic subset switching, D UCC/EAN application identifiers</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum ModeEnum
+        {
+            /// <summary>
+            /// Enum Empty for value: 
+            /// </summary>
+            [EnumMember(Value = "")]
+            Empty = 1,
+
+            /// <summary>
+            /// Enum N for value: N
+            /// </summary>
+            [EnumMember(Value = "N")]
+            N = 2,
+
+            /// <summary>
+            /// Enum U for value: U
+            /// </summary>
+            [EnumMember(Value = "U")]
+            U = 3,
+
+            /// <summary>
+            /// Enum A for value: A
+            /// </summary>
+            [EnumMember(Value = "A")]
+            A = 4,
+
+            /// <summary>
+            /// Enum D for value: D
+            /// </summary>
+            [EnumMember(Value = "D")]
+            D = 5
+        }
+
+
+        /// <summary>
+        /// Code 128 mode: N none (default), U UCC case, A automatic subset switching, D UCC/EAN application identifiers
+        /// </summary>
+        /// <value>Code 128 mode: N none (default), U UCC case, A automatic subset switching, D UCC/EAN application identifiers</value>
+        [DataMember(Name = "mode", EmitDefaultValue = false)]
+        public ModeEnum? Mode { get; set; }
         /// <summary>
         /// Line direction
         /// </summary>
@@ -276,6 +366,7 @@ namespace StripyHorse.Model
         /// Initializes a new instance of the <see cref="Element" /> class.
         /// </summary>
         /// <param name="align">Alignment when wrapping.</param>
+        /// <param name="anchor">Which corner x,y names. topLeft (^FO, default); bottomLeft (^FT: the text baseline, what most designer-exported ZPL uses); the Right variants make x the field&#39;s right edge (ZPL justification 1).</param>
         /// <param name="columns">Grid columns (default 1).</param>
         /// <param name="cornerRadius">Box corner rounding 0-8.</param>
         /// <param name="data">Barcode payload; {{name}} interpolates.</param>
@@ -286,9 +377,11 @@ namespace StripyHorse.Model
         /// <param name="fontWidth">Character width in dots; 0 follows fontHeight.</param>
         /// <param name="height">Bar height in dots (1D) / box height in dots (box).</param>
         /// <param name="length">Line length in dots.</param>
+        /// <param name="lineSpacing">Extra dots between wrapped lines.</param>
         /// <param name="lines">Max lines when wrapping (default 1).</param>
         /// <param name="magnification">QR module magnification (default 3).</param>
         /// <param name="maxWidth">Wrap text into a block this many dots wide.</param>
+        /// <param name="mode">Code 128 mode: N none (default), U UCC case, A automatic subset switching, D UCC/EAN application identifiers.</param>
         /// <param name="moduleSize">DataMatrix module size in dots (default 4).</param>
         /// <param name="moduleWidth">Narrow element width in dots (1D; default 3).</param>
         /// <param name="orientation">Line direction.</param>
@@ -304,10 +397,11 @@ namespace StripyHorse.Model
         /// <param name="x">Left edge in dots.</param>
         /// <param name="y">Top edge in dots.</param>
         /// <param name="zpl">Verbatim ZPL commands (raw only) - the escape hatch.</param>
-        public Element(AlignEnum? align = default, long columns = default, long cornerRadius = default, string data = default, long diameter = default, ErrorCorrectionEnum? errorCorrection = default, string font = default, long fontHeight = default, long fontWidth = default, long height = default, long length = default, long lines = default, long magnification = default, long maxWidth = default, long moduleSize = default, long moduleWidth = default, OrientationEnum? orientation = default, string png = default, bool printText = default, RotationEnum? rotation = default, long rows = default, string text = default, long thickness = default, long threshold = default, TypeEnum type = default, long width = default, long x = default, long y = default, string zpl = default)
+        public Element(AlignEnum? align = default, AnchorEnum? anchor = default, long columns = default, long cornerRadius = default, string data = default, long diameter = default, ErrorCorrectionEnum? errorCorrection = default, string font = default, long fontHeight = default, long fontWidth = default, long height = default, long length = default, long lineSpacing = default, long lines = default, long magnification = default, long maxWidth = default, ModeEnum? mode = default, long moduleSize = default, long moduleWidth = default, OrientationEnum? orientation = default, string png = default, bool printText = default, RotationEnum? rotation = default, long rows = default, string text = default, long thickness = default, long threshold = default, TypeEnum type = default, long width = default, long x = default, long y = default, string zpl = default)
         {
             this.Type = type;
             this.Align = align;
+            this.Anchor = anchor;
             this.Columns = columns;
             this.CornerRadius = cornerRadius;
             this.Data = data;
@@ -318,9 +412,11 @@ namespace StripyHorse.Model
             this.FontWidth = fontWidth;
             this.Height = height;
             this.Length = length;
+            this.LineSpacing = lineSpacing;
             this.Lines = lines;
             this.Magnification = magnification;
             this.MaxWidth = maxWidth;
+            this.Mode = mode;
             this.ModuleSize = moduleSize;
             this.ModuleWidth = moduleWidth;
             this.Orientation = orientation;
@@ -399,6 +495,13 @@ namespace StripyHorse.Model
         /// <value>Line length in dots</value>
         [DataMember(Name = "length", EmitDefaultValue = false)]
         public long Length { get; set; }
+
+        /// <summary>
+        /// Extra dots between wrapped lines
+        /// </summary>
+        /// <value>Extra dots between wrapped lines</value>
+        [DataMember(Name = "lineSpacing", EmitDefaultValue = false)]
+        public long LineSpacing { get; set; }
 
         /// <summary>
         /// Max lines when wrapping (default 1)
@@ -514,6 +617,7 @@ namespace StripyHorse.Model
             StringBuilder sb = new StringBuilder();
             sb.Append("class Element {\n");
             sb.Append("  Align: ").Append(Align).Append("\n");
+            sb.Append("  Anchor: ").Append(Anchor).Append("\n");
             sb.Append("  Columns: ").Append(Columns).Append("\n");
             sb.Append("  CornerRadius: ").Append(CornerRadius).Append("\n");
             sb.Append("  Data: ").Append(Data).Append("\n");
@@ -524,9 +628,11 @@ namespace StripyHorse.Model
             sb.Append("  FontWidth: ").Append(FontWidth).Append("\n");
             sb.Append("  Height: ").Append(Height).Append("\n");
             sb.Append("  Length: ").Append(Length).Append("\n");
+            sb.Append("  LineSpacing: ").Append(LineSpacing).Append("\n");
             sb.Append("  Lines: ").Append(Lines).Append("\n");
             sb.Append("  Magnification: ").Append(Magnification).Append("\n");
             sb.Append("  MaxWidth: ").Append(MaxWidth).Append("\n");
+            sb.Append("  Mode: ").Append(Mode).Append("\n");
             sb.Append("  ModuleSize: ").Append(ModuleSize).Append("\n");
             sb.Append("  ModuleWidth: ").Append(ModuleWidth).Append("\n");
             sb.Append("  Orientation: ").Append(Orientation).Append("\n");

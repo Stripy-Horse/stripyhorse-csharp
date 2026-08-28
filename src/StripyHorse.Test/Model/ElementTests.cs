@@ -64,6 +64,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Anchor'
+        /// </summary>
+        [Fact]
+        public void AnchorTest()
+        {
+            // TODO unit test for the property 'Anchor'
+        }
+
+        /// <summary>
         /// Test the property 'Columns'
         /// </summary>
         [Fact]
@@ -154,6 +163,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'LineSpacing'
+        /// </summary>
+        [Fact]
+        public void LineSpacingTest()
+        {
+            // TODO unit test for the property 'LineSpacing'
+        }
+
+        /// <summary>
         /// Test the property 'Lines'
         /// </summary>
         [Fact]
@@ -178,6 +196,15 @@ namespace StripyHorse.Test.Model
         public void MaxWidthTest()
         {
             // TODO unit test for the property 'MaxWidth'
+        }
+
+        /// <summary>
+        /// Test the property 'Mode'
+        /// </summary>
+        [Fact]
+        public void ModeTest()
+        {
+            // TODO unit test for the property 'Mode'
         }
 
         /// <summary>

@@ -1271,6 +1271,7 @@ components:
         dpmm: 0
         elements:
         - align: ""
+          anchor: ""
           columns: 30
           cornerRadius: 1
           data: data
@@ -1281,25 +1282,28 @@ components:
           fontWidth: 2
           height: 7
           length: 9
-          lines: 3
-          magnification: 2
-          maxWidth: 4
-          moduleSize: 7
+          lineSpacing: 3
+          lines: 2
+          magnification: 4
+          maxWidth: 7
+          mode: ""
+          moduleSize: 1
           moduleWidth: 1
           orientation: ""
           png: png
           printText: true
           rotation: 1
-          rows: 7
+          rows: 34
           text: text
-          thickness: 6
-          threshold: 190
+          thickness: 7
+          threshold: 29
           type: text
-          width: 1
+          width: 4
           x: 0
           "y": 0
           zpl: zpl
         - align: ""
+          anchor: ""
           columns: 30
           cornerRadius: 1
           data: data
@@ -1310,30 +1314,32 @@ components:
           fontWidth: 2
           height: 7
           length: 9
-          lines: 3
-          magnification: 2
-          maxWidth: 4
-          moduleSize: 7
+          lineSpacing: 3
+          lines: 2
+          magnification: 4
+          maxWidth: 7
+          mode: ""
+          moduleSize: 1
           moduleWidth: 1
           orientation: ""
           png: png
           printText: true
           rotation: 1
-          rows: 7
+          rows: 34
           text: text
-          thickness: 6
-          threshold: 190
+          thickness: 7
+          threshold: 29
           type: text
-          width: 1
+          width: 4
           x: 0
           "y": 0
           zpl: zpl
-        heightMm: 0.9965781217890561
+        heightMm: 0.9369310271410669
         preset: 4x6
         preview: true
         variables:
           key: variables
-        widthMm: 0.9369310271410669
+        widthMm: 0.6683562403749608
       properties:
         dpmm:
           enum:
@@ -1547,6 +1553,7 @@ components:
       additionalProperties: false
       example:
         align: ""
+        anchor: ""
         columns: 30
         cornerRadius: 1
         data: data
@@ -1557,21 +1564,23 @@ components:
         fontWidth: 2
         height: 7
         length: 9
-        lines: 3
-        magnification: 2
-        maxWidth: 4
-        moduleSize: 7
+        lineSpacing: 3
+        lines: 2
+        magnification: 4
+        maxWidth: 7
+        mode: ""
+        moduleSize: 1
         moduleWidth: 1
         orientation: ""
         png: png
         printText: true
         rotation: 1
-        rows: 7
+        rows: 34
         text: text
-        thickness: 6
-        threshold: 190
+        thickness: 7
+        threshold: 29
         type: text
-        width: 1
+        width: 4
         x: 0
         "y": 0
         zpl: zpl
@@ -1584,6 +1593,17 @@ components:
           - center
           - right
           - justify
+          type: string
+        anchor:
+          description: "Which corner x,y names. topLeft (^FO, default); bottomLeft\
+            \ (^FT: the text baseline, what most designer-exported ZPL uses); the\
+            \ Right variants make x the field's right edge (ZPL justification 1)"
+          enum:
+          - ""
+          - topLeft
+          - bottomLeft
+          - topRight
+          - bottomRight
           type: string
         columns:
           description: Grid columns (default 1)
@@ -1632,6 +1652,10 @@ components:
           description: Line length in dots
           format: int64
           type: integer
+        lineSpacing:
+          description: Extra dots between wrapped lines
+          format: int64
+          type: integer
         lines:
           description: Max lines when wrapping (default 1)
           format: int64
@@ -1644,6 +1668,16 @@ components:
           description: Wrap text into a block this many dots wide
           format: int64
           type: integer
+        mode:
+          description: "Code 128 mode: N none (default), U UCC case, A automatic subset\
+            \ switching, D UCC/EAN application identifiers"
+          enum:
+          - ""
+          - "N"
+          - U
+          - A
+          - D
+          type: string
         moduleSize:
           description: DataMatrix module size in dots (default 4)
           format: int64
