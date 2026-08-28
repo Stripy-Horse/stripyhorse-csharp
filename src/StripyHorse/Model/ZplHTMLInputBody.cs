@@ -85,22 +85,22 @@ namespace StripyHorse.Model
             _6x4 = 2,
 
             /// <summary>
+            /// Enum _4x8 for value: 4x8
+            /// </summary>
+            [EnumMember(Value = "4x8")]
+            _4x8 = 3,
+
+            /// <summary>
             /// Enum _4x4 for value: 4x4
             /// </summary>
             [EnumMember(Value = "4x4")]
-            _4x4 = 3,
+            _4x4 = 4,
 
             /// <summary>
-            /// Enum _4x2 for value: 4x2
+            /// Enum _4x3 for value: 4x3
             /// </summary>
-            [EnumMember(Value = "4x2")]
-            _4x2 = 4,
-
-            /// <summary>
-            /// Enum _2x4 for value: 2x4
-            /// </summary>
-            [EnumMember(Value = "2x4")]
-            _2x4 = 5,
+            [EnumMember(Value = "4x3")]
+            _4x3 = 5,
 
             /// <summary>
             /// Enum _3x5 for value: 3x5
@@ -115,70 +115,70 @@ namespace StripyHorse.Model
             _5x3 = 7,
 
             /// <summary>
+            /// Enum _4x2 for value: 4x2
+            /// </summary>
+            [EnumMember(Value = "4x2")]
+            _4x2 = 8,
+
+            /// <summary>
+            /// Enum _2x4 for value: 2x4
+            /// </summary>
+            [EnumMember(Value = "2x4")]
+            _2x4 = 9,
+
+            /// <summary>
             /// Enum _2x3 for value: 2x3
             /// </summary>
             [EnumMember(Value = "2x3")]
-            _2x3 = 8,
+            _2x3 = 10,
 
             /// <summary>
             /// Enum _3x2 for value: 3x2
             /// </summary>
             [EnumMember(Value = "3x2")]
-            _3x2 = 9,
-
-            /// <summary>
-            /// Enum Netstamp for value: netstamp
-            /// </summary>
-            [EnumMember(Value = "netstamp")]
-            Netstamp = 10,
-
-            /// <summary>
-            /// Enum _225x125 for value: 2.25x1.25
-            /// </summary>
-            [EnumMember(Value = "2.25x1.25")]
-            _225x125 = 11,
-
-            /// <summary>
-            /// Enum _15x1 for value: 1.5x1
-            /// </summary>
-            [EnumMember(Value = "1.5x1")]
-            _15x1 = 12,
+            _3x2 = 11,
 
             /// <summary>
             /// Enum _2x1 for value: 2x1
             /// </summary>
             [EnumMember(Value = "2x1")]
-            _2x1 = 13,
+            _2x1 = 12,
 
             /// <summary>
             /// Enum _3x1 for value: 3x1
             /// </summary>
             [EnumMember(Value = "3x1")]
-            _3x1 = 14,
+            _3x1 = 13,
 
             /// <summary>
             /// Enum _4x1 for value: 4x1
             /// </summary>
             [EnumMember(Value = "4x1")]
-            _4x1 = 15,
+            _4x1 = 14,
+
+            /// <summary>
+            /// Enum _225x125 for value: 2.25x1.25
+            /// </summary>
+            [EnumMember(Value = "2.25x1.25")]
+            _225x125 = 15,
+
+            /// <summary>
+            /// Enum _15x1 for value: 1.5x1
+            /// </summary>
+            [EnumMember(Value = "1.5x1")]
+            _15x1 = 16,
 
             /// <summary>
             /// Enum _1x1 for value: 1x1
             /// </summary>
             [EnumMember(Value = "1x1")]
-            _1x1 = 16,
+            _1x1 = 17,
 
             /// <summary>
-            /// Enum _4x3 for value: 4x3
+            /// Enum Netstamp for value: netstamp
             /// </summary>
-            [EnumMember(Value = "4x3")]
-            _4x3 = 17,
-
-            /// <summary>
-            /// Enum _4x8 for value: 4x8
-            /// </summary>
-            [EnumMember(Value = "4x8")]
-            _4x8 = 18,
+            [EnumMember(Value = "netstamp")]
+            Netstamp = 18,
 
             /// <summary>
             /// Enum A6 for value: a6
