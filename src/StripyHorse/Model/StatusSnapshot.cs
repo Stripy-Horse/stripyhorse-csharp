@@ -39,13 +39,22 @@ namespace StripyHorse.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="StatusSnapshot" /> class.
         /// </summary>
+        /// <param name="darkness">print.tone setting, e.g. 20.0 (required).</param>
         /// <param name="faults">faults (required).</param>
         /// <param name="formatsInBuffer">formatsInBuffer (required).</param>
+        /// <param name="friendlyName">device.friendly_name override; empty means unset (required).</param>
         /// <param name="labelLengthDots">labelLengthDots (required).</param>
         /// <param name="odometer">odometer (required).</param>
+        /// <param name="speedIps">media.speed setting, inches/second (required).</param>
         /// <param name="widthDots">widthDots (required).</param>
-        public StatusSnapshot(Faults faults = default, long formatsInBuffer = default, long labelLengthDots = default, long odometer = default, long widthDots = default)
+        public StatusSnapshot(string darkness = default, Faults faults = default, long formatsInBuffer = default, string friendlyName = default, long labelLengthDots = default, long odometer = default, string speedIps = default, long widthDots = default)
         {
+            // to ensure "darkness" is required (not null)
+            if (darkness == null)
+            {
+                throw new ArgumentNullException("darkness is a required property for StatusSnapshot and cannot be null");
+            }
+            this.Darkness = darkness;
             // to ensure "faults" is required (not null)
             if (faults == null)
             {
@@ -53,10 +62,29 @@ namespace StripyHorse.Model
             }
             this.Faults = faults;
             this.FormatsInBuffer = formatsInBuffer;
+            // to ensure "friendlyName" is required (not null)
+            if (friendlyName == null)
+            {
+                throw new ArgumentNullException("friendlyName is a required property for StatusSnapshot and cannot be null");
+            }
+            this.FriendlyName = friendlyName;
             this.LabelLengthDots = labelLengthDots;
             this.Odometer = odometer;
+            // to ensure "speedIps" is required (not null)
+            if (speedIps == null)
+            {
+                throw new ArgumentNullException("speedIps is a required property for StatusSnapshot and cannot be null");
+            }
+            this.SpeedIps = speedIps;
             this.WidthDots = widthDots;
         }
+
+        /// <summary>
+        /// print.tone setting, e.g. 20.0
+        /// </summary>
+        /// <value>print.tone setting, e.g. 20.0</value>
+        [DataMember(Name = "darkness", IsRequired = true, EmitDefaultValue = true)]
+        public string Darkness { get; set; }
 
         /// <summary>
         /// Gets or Sets Faults
@@ -71,6 +99,13 @@ namespace StripyHorse.Model
         public long FormatsInBuffer { get; set; }
 
         /// <summary>
+        /// device.friendly_name override; empty means unset
+        /// </summary>
+        /// <value>device.friendly_name override; empty means unset</value>
+        [DataMember(Name = "friendlyName", IsRequired = true, EmitDefaultValue = true)]
+        public string FriendlyName { get; set; }
+
+        /// <summary>
         /// Gets or Sets LabelLengthDots
         /// </summary>
         [DataMember(Name = "labelLengthDots", IsRequired = true, EmitDefaultValue = true)]
@@ -81,6 +116,13 @@ namespace StripyHorse.Model
         /// </summary>
         [DataMember(Name = "odometer", IsRequired = true, EmitDefaultValue = true)]
         public long Odometer { get; set; }
+
+        /// <summary>
+        /// media.speed setting, inches/second
+        /// </summary>
+        /// <value>media.speed setting, inches/second</value>
+        [DataMember(Name = "speedIps", IsRequired = true, EmitDefaultValue = true)]
+        public string SpeedIps { get; set; }
 
         /// <summary>
         /// Gets or Sets WidthDots
@@ -96,10 +138,13 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class StatusSnapshot {\n");
+            sb.Append("  Darkness: ").Append(Darkness).Append("\n");
             sb.Append("  Faults: ").Append(Faults).Append("\n");
             sb.Append("  FormatsInBuffer: ").Append(FormatsInBuffer).Append("\n");
+            sb.Append("  FriendlyName: ").Append(FriendlyName).Append("\n");
             sb.Append("  LabelLengthDots: ").Append(LabelLengthDots).Append("\n");
             sb.Append("  Odometer: ").Append(Odometer).Append("\n");
+            sb.Append("  SpeedIps: ").Append(SpeedIps).Append("\n");
             sb.Append("  WidthDots: ").Append(WidthDots).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

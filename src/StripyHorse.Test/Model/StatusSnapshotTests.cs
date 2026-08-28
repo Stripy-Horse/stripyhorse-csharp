@@ -55,6 +55,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Darkness'
+        /// </summary>
+        [Fact]
+        public void DarknessTest()
+        {
+            // TODO unit test for the property 'Darkness'
+        }
+
+        /// <summary>
         /// Test the property 'Faults'
         /// </summary>
         [Fact]
@@ -73,6 +82,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'FriendlyName'
+        /// </summary>
+        [Fact]
+        public void FriendlyNameTest()
+        {
+            // TODO unit test for the property 'FriendlyName'
+        }
+
+        /// <summary>
         /// Test the property 'LabelLengthDots'
         /// </summary>
         [Fact]
@@ -88,6 +106,15 @@ namespace StripyHorse.Test.Model
         public void OdometerTest()
         {
             // TODO unit test for the property 'Odometer'
+        }
+
+        /// <summary>
+        /// Test the property 'SpeedIps'
+        /// </summary>
+        [Fact]
+        public void SpeedIpsTest()
+        {
+            // TODO unit test for the property 'SpeedIps'
         }
 
         /// <summary>

@@ -2154,6 +2154,7 @@ components:
           mode: ephemeral
           name: name
           state:
+            darkness: darkness
             faults:
               headUp: true
               overTemp: true
@@ -2162,8 +2163,10 @@ components:
               ribbonOut: true
               underTemp: true
             formatsInBuffer: 1
+            friendlyName: friendlyName
             labelLengthDots: 5
             odometer: 5
+            speedIps: speedIps
             widthDots: 2
           tcp:
             host: host
@@ -2181,6 +2184,7 @@ components:
           mode: ephemeral
           name: name
           state:
+            darkness: darkness
             faults:
               headUp: true
               overTemp: true
@@ -2189,8 +2193,10 @@ components:
               ribbonOut: true
               underTemp: true
             formatsInBuffer: 1
+            friendlyName: friendlyName
             labelLengthDots: 5
             odometer: 5
+            speedIps: speedIps
             widthDots: 2
           tcp:
             host: host
@@ -2396,6 +2402,7 @@ components:
         mode: ephemeral
         name: name
         state:
+          darkness: darkness
           faults:
             headUp: true
             overTemp: true
@@ -2404,8 +2411,10 @@ components:
             ribbonOut: true
             underTemp: true
           formatsInBuffer: 1
+          friendlyName: friendlyName
           labelLengthDots: 5
           odometer: 5
+          speedIps: speedIps
           widthDots: 2
         tcp:
           host: host
@@ -2710,6 +2719,7 @@ components:
       additionalProperties: false
       example:
         state:
+          darkness: darkness
           faults:
             headUp: true
             overTemp: true
@@ -2718,8 +2728,10 @@ components:
             ribbonOut: true
             underTemp: true
           formatsInBuffer: 1
+          friendlyName: friendlyName
           labelLengthDots: 5
           odometer: 5
+          speedIps: speedIps
           widthDots: 2
       properties:
         state:
@@ -2746,6 +2758,7 @@ components:
     StatusSnapshot:
       additionalProperties: false
       example:
+        darkness: darkness
         faults:
           headUp: true
           overTemp: true
@@ -2754,29 +2767,43 @@ components:
           ribbonOut: true
           underTemp: true
         formatsInBuffer: 1
+        friendlyName: friendlyName
         labelLengthDots: 5
         odometer: 5
+        speedIps: speedIps
         widthDots: 2
       properties:
+        darkness:
+          description: "print.tone setting, e.g. 20.0"
+          type: string
         faults:
           $ref: "#/components/schemas/Faults"
         formatsInBuffer:
           format: int64
           type: integer
+        friendlyName:
+          description: device.friendly_name override; empty means unset
+          type: string
         labelLengthDots:
           format: int64
           type: integer
         odometer:
           format: int64
           type: integer
+        speedIps:
+          description: "media.speed setting, inches/second"
+          type: string
         widthDots:
           format: int64
           type: integer
       required:
+      - darkness
       - faults
       - formatsInBuffer
+      - friendlyName
       - labelLengthDots
       - odometer
+      - speedIps
       - widthDots
     UnicodeInputBody:
       additionalProperties: false
