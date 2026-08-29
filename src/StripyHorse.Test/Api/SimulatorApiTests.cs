@@ -78,6 +78,18 @@ namespace StripyHorse.Test.Api
         }
 
         /// <summary>
+        /// Test DeleteJob
+        /// </summary>
+        [Fact]
+        public void DeleteJobTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //string printerId = null;
+            //long jobId = null;
+            //instance.DeleteJob(printerId, jobId);
+        }
+
+        /// <summary>
         /// Test DeletePrinter
         /// </summary>
         [Fact]

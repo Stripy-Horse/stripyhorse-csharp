@@ -6,6 +6,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 |--------|--------------|-------------|
 | [**ClearJobs**](SimulatorApi.md#clearjobs) | **DELETE** /v1/printers/{printerId}/jobs | Delete all captured jobs |
 | [**CreatePrinter**](SimulatorApi.md#createprinter) | **POST** /v1/printers | Create a virtual printer |
+| [**DeleteJob**](SimulatorApi.md#deletejob) | **DELETE** /v1/printers/{printerId}/jobs/{jobId} | Delete one captured job |
 | [**DeletePrinter**](SimulatorApi.md#deleteprinter) | **DELETE** /v1/printers/{printerId} | Delete a printer and its captured jobs |
 | [**GetJob**](SimulatorApi.md#getjob) | **GET** /v1/printers/{printerId}/jobs/{jobId} | Get one job including its raw ZPL |
 | [**GetJobLabel**](SimulatorApi.md#getjoblabel) | **GET** /v1/printers/{printerId}/jobs/{jobId}/labels/{index}.png | Get one rendered label as a PNG |
@@ -204,6 +205,101 @@ catch (ApiException e)
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Created |  -  |
+| **0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a id="deletejob"></a>
+# **DeleteJob**
+> void DeleteJob (string printerId, long jobId)
+
+Delete one captured job
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using StripyHorse.Api;
+using StripyHorse.Client;
+using StripyHorse.Model;
+
+namespace Example
+{
+    public class DeleteJobExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://api.stripyhorse.io";
+            // Configure API key authorization: headerKey
+            config.AddApiKey("X-Api-Key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // config.AddApiKeyPrefix("X-Api-Key", "Bearer");
+            // Configure Bearer token for authorization: bearerKey
+            config.AccessToken = "YOUR_BEARER_TOKEN";
+
+            var apiInstance = new SimulatorApi(config);
+            var printerId = "printerId_example";  // string | 
+            var jobId = 789L;  // long | 
+
+            try
+            {
+                // Delete one captured job
+                apiInstance.DeleteJob(printerId, jobId);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling SimulatorApi.DeleteJob: " + e.Message);
+                Debug.Print("Status Code: " + e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+#### Using the DeleteJobWithHttpInfo variant
+This returns an ApiResponse object which contains the response data, status code and headers.
+
+```csharp
+try
+{
+    // Delete one captured job
+    apiInstance.DeleteJobWithHttpInfo(printerId, jobId);
+}
+catch (ApiException e)
+{
+    Debug.Print("Exception when calling SimulatorApi.DeleteJobWithHttpInfo: " + e.Message);
+    Debug.Print("Status Code: " + e.ErrorCode);
+    Debug.Print(e.StackTrace);
+}
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **printerId** | **string** |  |  |
+| **jobId** | **long** |  |  |
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[headerKey](../README.md#headerKey), [bearerKey](../README.md#bearerKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | No Content |  -  |
 | **0** | Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

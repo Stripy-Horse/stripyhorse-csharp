@@ -806,6 +806,39 @@ paths:
           assert jobs.getJobs().size() == 1;
           assert "rendered".equals(jobs.getJobs().get(0).getStatus());
   /v1/printers/{printerId}/jobs/{jobId}:
+    delete:
+      operationId: deleteJob
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: jobId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Delete one captured job
+      tags:
+      - Simulator
     get:
       operationId: getJob
       parameters:
