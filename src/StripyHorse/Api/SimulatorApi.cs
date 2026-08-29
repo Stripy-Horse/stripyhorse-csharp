@@ -185,6 +185,9 @@ namespace StripyHorse.Api
         /// <summary>
         /// List your printers
         /// </summary>
+        /// <remarks>
+        /// Every printer on your account, whichever of its keys created them.
+        /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
         /// <returns>ListPrintersOutputBody</returns>
@@ -194,7 +197,7 @@ namespace StripyHorse.Api
         /// List your printers
         /// </summary>
         /// <remarks>
-        /// 
+        /// Every printer on your account, whichever of its keys created them.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -465,7 +468,7 @@ namespace StripyHorse.Api
         /// List your printers
         /// </summary>
         /// <remarks>
-        /// 
+        /// Every printer on your account, whichever of its keys created them.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -477,7 +480,7 @@ namespace StripyHorse.Api
         /// List your printers
         /// </summary>
         /// <remarks>
-        /// 
+        /// Every printer on your account, whichever of its keys created them.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -1903,7 +1906,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List your printers 
+        /// List your printers Every printer on your account, whichever of its keys created them.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -1915,7 +1918,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List your printers 
+        /// List your printers Every printer on your account, whichever of its keys created them.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -1977,7 +1980,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List your printers 
+        /// List your printers Every printer on your account, whichever of its keys created them.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>
@@ -1990,7 +1993,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// List your printers 
+        /// List your printers Every printer on your account, whichever of its keys created them.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="operationIndex">Index associated with the operation.</param>

@@ -415,6 +415,7 @@ paths:
       - Render
   /v1/printers:
     get:
+      description: "Every printer on your account, whichever of its keys created them."
       operationId: listPrinters
       responses:
         "200":
@@ -2205,6 +2206,7 @@ components:
             labelLengthDots: 5
             odometer: 5
             speedIps: speedIps
+            tearOff: tearOff
             widthDots: 2
           tcp:
             host: host
@@ -2235,6 +2237,7 @@ components:
             labelLengthDots: 5
             odometer: 5
             speedIps: speedIps
+            tearOff: tearOff
             widthDots: 2
           tcp:
             host: host
@@ -2454,6 +2457,7 @@ components:
           labelLengthDots: 5
           odometer: 5
           speedIps: speedIps
+          tearOff: tearOff
           widthDots: 2
         tcp:
           host: host
@@ -2773,6 +2777,7 @@ components:
           labelLengthDots: 5
           odometer: 5
           speedIps: speedIps
+          tearOff: tearOff
           widthDots: 2
       properties:
         state:
@@ -2812,6 +2817,7 @@ components:
         labelLengthDots: 5
         odometer: 5
         speedIps: speedIps
+        tearOff: tearOff
         widthDots: 2
       properties:
         darkness:
@@ -2834,6 +2840,9 @@ components:
         speedIps:
           description: "media.speed setting, inches/second"
           type: string
+        tearOff:
+          description: "ezpl.tear_off setting, dots"
+          type: string
         widthDots:
           format: int64
           type: integer
@@ -2845,6 +2854,7 @@ components:
       - labelLengthDots
       - odometer
       - speedIps
+      - tearOff
       - widthDots
     UnicodeInputBody:
       additionalProperties: false

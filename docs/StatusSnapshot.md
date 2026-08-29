@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **LabelLengthDots** | **long** |  | 
 **Odometer** | **long** |  | 
 **SpeedIps** | **string** | media.speed setting, inches/second | 
+**TearOff** | **string** | ezpl.tear_off setting, dots | 
 **WidthDots** | **long** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

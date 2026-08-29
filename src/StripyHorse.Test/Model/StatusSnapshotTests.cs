@@ -118,6 +118,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'TearOff'
+        /// </summary>
+        [Fact]
+        public void TearOffTest()
+        {
+            // TODO unit test for the property 'TearOff'
+        }
+
+        /// <summary>
         /// Test the property 'WidthDots'
         /// </summary>
         [Fact]

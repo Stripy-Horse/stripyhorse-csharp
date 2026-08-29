@@ -707,6 +707,8 @@ catch (ApiException e)
 
 List your printers
 
+Every printer on your account, whichever of its keys created them.
+
 ### Example
 ```csharp
 using System.Collections.Generic;
