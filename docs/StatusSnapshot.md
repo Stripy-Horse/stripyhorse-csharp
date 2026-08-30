@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **FriendlyName** | **string** | device.friendly_name override; empty means unset | 
 **LabelLengthDots** | **long** |  | 
 **Odometer** | **long** |  | 
+**Queue** | [**List&lt;HeldJob&gt;**](HeldJob.md) |  | 
 **SpeedIps** | **string** | media.speed setting, inches/second | 
 **TearOff** | **string** | ezpl.tear_off setting, dots | 
 **WidthDots** | **long** |  | 

@@ -19,6 +19,7 @@ docs/ErrorDetail.md
 docs/ErrorModel.md
 docs/Faults.md
 docs/Finding.md
+docs/HeldJob.md
 docs/HostStatus.md
 docs/HostStatusInputBody.md
 docs/HostStatusOutputBody.md
@@ -70,6 +71,7 @@ src/StripyHorse.Test/Model/ErrorDetailTests.cs
 src/StripyHorse.Test/Model/ErrorModelTests.cs
 src/StripyHorse.Test/Model/FaultsTests.cs
 src/StripyHorse.Test/Model/FindingTests.cs
+src/StripyHorse.Test/Model/HeldJobTests.cs
 src/StripyHorse.Test/Model/HostStatusInputBodyTests.cs
 src/StripyHorse.Test/Model/HostStatusOutputBodyTests.cs
 src/StripyHorse.Test/Model/HostStatusTests.cs
@@ -135,6 +137,7 @@ src/StripyHorse/Model/ErrorDetail.cs
 src/StripyHorse/Model/ErrorModel.cs
 src/StripyHorse/Model/Faults.cs
 src/StripyHorse/Model/Finding.cs
+src/StripyHorse/Model/HeldJob.cs
 src/StripyHorse/Model/HostStatus.cs
 src/StripyHorse/Model/HostStatusInputBody.cs
 src/StripyHorse/Model/HostStatusOutputBody.cs

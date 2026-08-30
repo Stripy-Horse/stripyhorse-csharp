@@ -45,10 +45,11 @@ namespace StripyHorse.Model
         /// <param name="friendlyName">device.friendly_name override; empty means unset (required).</param>
         /// <param name="labelLengthDots">labelLengthDots (required).</param>
         /// <param name="odometer">odometer (required).</param>
+        /// <param name="queue">queue (required).</param>
         /// <param name="speedIps">media.speed setting, inches/second (required).</param>
         /// <param name="tearOff">ezpl.tear_off setting, dots (required).</param>
         /// <param name="widthDots">widthDots (required).</param>
-        public StatusSnapshot(string darkness = default, Faults faults = default, long formatsInBuffer = default, string friendlyName = default, long labelLengthDots = default, long odometer = default, string speedIps = default, string tearOff = default, long widthDots = default)
+        public StatusSnapshot(string darkness = default, Faults faults = default, long formatsInBuffer = default, string friendlyName = default, long labelLengthDots = default, long odometer = default, List<HeldJob> queue = default, string speedIps = default, string tearOff = default, long widthDots = default)
         {
             // to ensure "darkness" is required (not null)
             if (darkness == null)
@@ -71,6 +72,12 @@ namespace StripyHorse.Model
             this.FriendlyName = friendlyName;
             this.LabelLengthDots = labelLengthDots;
             this.Odometer = odometer;
+            // to ensure "queue" is required (not null)
+            if (queue == null)
+            {
+                throw new ArgumentNullException("queue is a required property for StatusSnapshot and cannot be null");
+            }
+            this.Queue = queue;
             // to ensure "speedIps" is required (not null)
             if (speedIps == null)
             {
@@ -125,6 +132,12 @@ namespace StripyHorse.Model
         public long Odometer { get; set; }
 
         /// <summary>
+        /// Gets or Sets Queue
+        /// </summary>
+        [DataMember(Name = "queue", IsRequired = true, EmitDefaultValue = true)]
+        public List<HeldJob> Queue { get; set; }
+
+        /// <summary>
         /// media.speed setting, inches/second
         /// </summary>
         /// <value>media.speed setting, inches/second</value>
@@ -158,6 +171,7 @@ namespace StripyHorse.Model
             sb.Append("  FriendlyName: ").Append(FriendlyName).Append("\n");
             sb.Append("  LabelLengthDots: ").Append(LabelLengthDots).Append("\n");
             sb.Append("  Odometer: ").Append(Odometer).Append("\n");
+            sb.Append("  Queue: ").Append(Queue).Append("\n");
             sb.Append("  SpeedIps: ").Append(SpeedIps).Append("\n");
             sb.Append("  TearOff: ").Append(TearOff).Append("\n");
             sb.Append("  WidthDots: ").Append(WidthDots).Append("\n");

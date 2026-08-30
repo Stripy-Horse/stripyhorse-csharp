@@ -109,6 +109,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Queue'
+        /// </summary>
+        [Fact]
+        public void QueueTest()
+        {
+            // TODO unit test for the property 'Queue'
+        }
+
+        /// <summary>
         /// Test the property 'SpeedIps'
         /// </summary>
         [Fact]
