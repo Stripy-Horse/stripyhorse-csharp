@@ -177,6 +177,50 @@ paths:
       summary: "Convert many documents in one request, results streamed"
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          # One JSON object per converted page, streamed as each finishes (application/x-ndjson).
+          curl https://api.stripyhorse.io/v1/convert/batch \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" \
+            -F "preset=4x6" -F "files=@invoice.pdf" -F "files=@packing-slip.pdf" \
+            | jq -r 'select(.zpl) | .zpl' > labels.zpl
+      - lang: go
+        label: Go
+        source: |-
+          var files []*os.File
+          for _, name := range []string{"invoice.pdf", "packing-slip.pdf"} {
+              f, err := os.Open(name)
+              if err != nil {
+                  log.Fatal(err)
+              }
+              defer f.Close()
+              files = append(files, f)
+          }
+          resp, err := client.ConvertAPI.ConvertBatch(ctx).Files(files).Preset("4x6").Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          defer resp.Body.Close()
+          dec := json.NewDecoder(resp.Body) // one object per page, streamed as each finishes
+          for dec.More() {
+              var page struct {
+                  File  string
+                  Page  int
+                  Zpl   string
+                  Error string
+              }
+              if err := dec.Decode(&page); err != nil {
+                  log.Fatal(err)
+              }
+              if page.Error != "" {
+                  log.Printf("%s: %s", page.File, page.Error)
+                  continue
+              }
+              sendToPrinter(page.Zpl)
+          }
   /v1/convert/html:
     post:
       description: |-
@@ -296,6 +340,49 @@ paths:
       summary: Decompile ZPL into editable HTML
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/convert/zpl-html \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDShip to^FS^XZ","preset":"4x6"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewZplHTMLInputBody(legacyZPL)
+          body.SetPreset("4x6")
+          out, _, err := client.ConvertAPI.ConvertZplToHtml(ctx).ZplHTMLInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          os.WriteFile("label.html", []byte(out.GetHtml()), 0o644) // edit, then convertHtml sends it back
+      - lang: php
+        label: PHP
+        source: |-
+          $out = $convert->convertZplToHtml(new StripyHorse\Model\ZplHTMLInputBody([
+              'zpl' => $legacyZpl, 'preset' => '4x6',
+          ]));
+          file_put_contents('label.html', $out->getHtml()); // edit, then convertHtml sends it back
+      - lang: python
+        label: Python
+        source: |-
+          out = convert.convert_zpl_to_html(ZplHTMLInputBody(zpl=legacy_zpl, preset="4x6"))
+          with open("label.html", "w") as f:
+              f.write(out.html)  # edit, then convert_html sends it back
+      - lang: csharp
+        label: C#
+        source: |-
+          var outp = convert.ConvertZplToHtml(new ZplHTMLInputBody(
+              zpl: legacyZpl, preset: ZplHTMLInputBody.PresetEnum._4x6));
+          File.WriteAllText("label.html", outp.Html); // edit, then ConvertHtml sends it back
+      - lang: java
+        label: Java
+        source: |-
+          ZplHTMLOutputBody out = convert.convertZplToHtml(new ZplHTMLInputBody()
+              .zpl(legacyZpl).preset(ZplHTMLInputBody.PresetEnum._4X6));
+          Files.writeString(Path.of("label.html"), out.getHtml()); // edit, then convertHtml sends it back
   /v1/host-status/parse:
     post:
       description: "Parses the three-line ~HS answer a Zebra printer (or our virtual\
@@ -329,6 +416,60 @@ paths:
       summary: Decode a Zebra ~HS host status response
       tags:
       - Printers
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          printf '~HS' | nc -w 3 YOUR-PRINTER-IP 9100 | cat -v | jq -Rs '{response:.}' | \
+            curl https://api.stripyhorse.io/v1/host-status/parse \
+              -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" -d @-
+      - lang: go
+        label: Go
+        source: |-
+          // raw is the three-line answer the printer sent back for ~HS on port 9100.
+          body := stripyhorse.NewHostStatusInputBody(raw)
+          out, _, err := client.PrintersAPI.ParseHostStatus(ctx).HostStatusInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          status := out.GetStatus()
+          if status.GetPaperOut() || status.GetHeadUp() || status.GetPaused() {
+              log.Printf("printer needs a person: paper out %v, head up %v, paused %v",
+                  status.GetPaperOut(), status.GetHeadUp(), status.GetPaused())
+          }
+      - lang: php
+        label: PHP
+        source: |-
+          $printers = new StripyHorse\Api\PrintersApi(null, $config);
+          // $raw is the three-line answer the printer sent back for ~HS on port 9100.
+          $out = $printers->parseHostStatus(new StripyHorse\Model\HostStatusInputBody(['response' => $raw]));
+          $status = $out->getStatus();
+          if ($status->getPaperOut() || $status->getHeadUp() || $status->getPaused()) {
+              // hold the queue and page someone
+          }
+      - lang: python
+        label: Python
+        source: |-
+          # raw is the three-line answer the printer sent back for ~HS on port 9100.
+          out = PrintersApi(client).parse_host_status(HostStatusInputBody(response=raw))
+          if out.status.paper_out or out.status.head_up or out.status.paused:
+              hold_queue_and_page_someone()
+      - lang: csharp
+        label: C#
+        source: |-
+          // raw is the three-line answer the printer sent back for ~HS on port 9100.
+          var outp = new PrintersApi(config).ParseHostStatus(new HostStatusInputBody(response: raw));
+          if (outp.Status.PaperOut || outp.Status.HeadUp || outp.Status.Paused)
+              HoldQueueAndPageSomeone();
+      - lang: java
+        label: Java
+        source: |-
+          // raw is the three-line answer the printer sent back for ~HS on port 9100.
+          HostStatusOutputBody out = new PrintersApi(client).parseHostStatus(new HostStatusInputBody().response(raw));
+          HostStatus status = out.getStatus();
+          if (status.getPaperOut() || status.getHeadUp() || status.getPaused())
+              holdQueueAndPageSomeone();
   /v1/labels/compose:
     post:
       description: "Labels as JSON: place text, barcodes (code128/39, QR, DataMatrix),\
@@ -378,6 +519,79 @@ paths:
                 {"type": "box", "x": 20, "y": 20, "width": 770, "height": 400, "thickness": 3}
               ]
             }'
+      - lang: go
+        label: Go
+        source: |-
+          name := stripyhorse.NewElement("text")
+          name.SetX(50)
+          name.SetY(40)
+          name.SetText("{{name}}")
+          name.SetFontHeight(40)
+          track := stripyhorse.NewElement("barcode128")
+          track.SetX(50)
+          track.SetY(200)
+          track.SetData("{{track}}")
+          track.SetHeight(140)
+
+          body := stripyhorse.NewComposeInputBody([]stripyhorse.Element{*name, *track})
+          body.SetPreset("4x6")
+          body.SetVariables(map[string]string{"name": "Debbie Root", "track": "420546188580"})
+          out, _, err := client.ComposeAPI.ComposeLabel(ctx).ComposeInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          fmt.Println(out.GetZpl())
+      - lang: php
+        label: PHP
+        source: |-
+          $compose = new StripyHorse\Api\ComposeApi(null, $config);
+          $out = $compose->composeLabel(new StripyHorse\Model\ComposeInputBody([
+              'preset' => '4x6',
+              'variables' => ['name' => 'Debbie Root', 'track' => '420546188580'],
+              'elements' => [
+                  new StripyHorse\Model\Element(['type' => 'text', 'x' => 50, 'y' => 40, 'text' => '{{name}}', 'font_height' => 40]),
+                  new StripyHorse\Model\Element(['type' => 'barcode128', 'x' => 50, 'y' => 200, 'data' => '{{track}}', 'height' => 140]),
+              ],
+          ]));
+          echo $out->getZpl();
+      - lang: python
+        label: Python
+        source: |-
+          compose = ComposeApi(client)
+          out = compose.compose_label(ComposeInputBody(
+              preset="4x6",
+              variables={"name": "Debbie Root", "track": "420546188580"},
+              elements=[
+                  Element(type="text", x=50, y=40, text="{{name}}", font_height=40),
+                  Element(type="barcode128", x=50, y=200, data="{{track}}", height=140),
+              ]))
+          print(out.zpl)
+      - lang: csharp
+        label: C#
+        source: |-
+          var compose = new ComposeApi(config);
+          var outp = compose.ComposeLabel(new ComposeInputBody(
+              preset: ComposeInputBody.PresetEnum._4x6,
+              variables: new() { ["name"] = "Debbie Root", ["track"] = "420546188580" },
+              elements: new()
+              {
+                  new Element(type: Element.TypeEnum.Text, x: 50, y: 40, text: "{{name}}", fontHeight: 40),
+                  new Element(type: Element.TypeEnum.Barcode128, x: 50, y: 200, data: "{{track}}", height: 140),
+              }));
+          Console.WriteLine(outp.Zpl);
+      - lang: java
+        label: Java
+        source: |-
+          ComposeApi compose = new ComposeApi(client);
+          ComposeOutputBody out = compose.composeLabel(new ComposeInputBody()
+              .preset(ComposeInputBody.PresetEnum._4X6)
+              .putVariablesItem("name", "Debbie Root")
+              .putVariablesItem("track", "420546188580")
+              .addElementsItem(new Element().type(Element.TypeEnum.TEXT)
+                  .x(50L).y(40L).text("{{name}}").fontHeight(40L))
+              .addElementsItem(new Element().type(Element.TypeEnum.BARCODE128)
+                  .x(50L).y(200L).data("{{track}}").height(140L)));
+          System.out.println(out.getZpl());
   /v1/preflight:
     post:
       description: "Renders the ZPL and grades every barcode the way a verifier grades\
@@ -413,6 +627,66 @@ paths:
       summary: Grade a label's barcodes before they ship
       tags:
       - Render
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/preflight \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ","preset":"4x6"}'
+          # => grade, module width in dots, quiet zones, X-dimension vs spec, blur margin
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewPreflightInputBody("^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ")
+          body.SetPreset("4x6")
+          report, _, err := client.RenderAPI.PreflightLabel(ctx).PreflightInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          for _, label := range report.GetLabels() {
+              if label.GetGrade() == "fail" {
+                  log.Fatalf("a scanner will reject this label: %v", label.GetWarnings())
+              }
+          }
+      - lang: php
+        label: PHP
+        source: |-
+          $render = new StripyHorse\Api\RenderApi(null, $config);
+          $report = $render->preflightLabel(new StripyHorse\Model\PreflightInputBody([
+              'zpl' => '^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ', 'preset' => '4x6',
+          ]));
+          foreach ($report->getLabels() as $label) {
+              if ($label->getGrade() === 'fail') {
+                  throw new RuntimeException('a scanner will reject this label: ' . implode('; ', $label->getWarnings()));
+              }
+          }
+      - lang: python
+        label: Python
+        source: |-
+          report = render.preflight_label(PreflightInputBody(
+              zpl="^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ", preset="4x6"))
+          for label in report.labels:
+              assert label.grade != "fail", label.warnings
+      - lang: csharp
+        label: C#
+        source: |-
+          var report = render.PreflightLabel(new PreflightInputBody(
+              zpl: "^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ",
+              preset: PreflightInputBody.PresetEnum._4x6));
+          foreach (var label in report.Labels)
+              if (label.Grade == "fail")
+                  throw new Exception("a scanner will reject this label: " + string.Join("; ", label.Warnings));
+      - lang: java
+        label: Java
+        source: |-
+          PreflightOutputBody report = render.preflightLabel(new PreflightInputBody()
+              .zpl("^XA^FO100,200^BY3^BCN,150,Y^FD4205461212^FS^XZ")
+              .preset(PreflightInputBody.PresetEnum._4X6));
+          for (Report label : report.getLabels())
+              if ("fail".equals(label.getGrade()))
+                  throw new IllegalStateException("a scanner will reject this label: " + label.getWarnings());
   /v1/printers:
     get:
       description: "Every printer on your account, whichever of its keys created them."
@@ -436,6 +710,44 @@ paths:
       summary: List your printers
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/printers \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          list, _, err := client.SimulatorAPI.ListPrinters(ctx).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          for _, p := range list.GetPrinters() {
+              fmt.Printf("%s %s %s:%d\n", p.GetId(), p.GetName(), p.GetTcp().GetHost(), p.GetTcp().GetPort())
+          }
+      - lang: php
+        label: PHP
+        source: |-
+          foreach ($sim->listPrinters()->getPrinters() as $p) {
+              echo $p->getId(), ' ', $p->getName(), ' ', $p->getTcp()->getHost(), ':', $p->getTcp()->getPort(), PHP_EOL;
+          }
+      - lang: python
+        label: Python
+        source: |-
+          for p in sim.list_printers().printers:
+              print(p.id, p.name, f"{p.tcp.host}:{p.tcp.port}")
+      - lang: csharp
+        label: C#
+        source: |-
+          foreach (var p in sim.ListPrinters().Printers)
+              Console.WriteLine($"{p.Id} {p.Name} {p.Tcp.Host}:{p.Tcp.Port}");
+      - lang: java
+        label: Java
+        source: |-
+          for (PrinterBody p : sim.listPrinters().getPrinters())
+              System.out.println(p.getId() + " " + p.getName() + " " + p.getTcp().getHost() + ":" + p.getTcp().getPort());
     post:
       description: "Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent\
         \ printers. The ingest URL and webhook secret are only returned here."
@@ -542,6 +854,40 @@ paths:
       summary: Delete a printer and its captured jobs
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl -X DELETE https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          // Tear down the printer and its captured jobs at the end of the test run.
+          if _, err := client.SimulatorAPI.DeletePrinter(ctx, printer.GetId()).Execute(); err != nil {
+              log.Fatal(err)
+          }
+      - lang: php
+        label: PHP
+        source: |-
+          // Tear down the printer and its captured jobs at the end of the test run.
+          $sim->deletePrinter($printer->getId());
+      - lang: python
+        label: Python
+        source: |-
+          # Tear down the printer and its captured jobs at the end of the test run.
+          sim.delete_printer(printer.id)
+      - lang: csharp
+        label: C#
+        source: |-
+          // Tear down the printer and its captured jobs at the end of the test run.
+          sim.DeletePrinter(printer.Id);
+      - lang: java
+        label: Java
+        source: |-
+          // Tear down the printer and its captured jobs at the end of the test run.
+          sim.deletePrinter(printer.getId());
     get:
       operationId: getPrinter
       parameters:
@@ -571,6 +917,48 @@ paths:
       summary: Get a printer with live state
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          printer, _, err := client.SimulatorAPI.GetPrinter(ctx, "prt_cbJsPPG12v").Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          state := printer.GetState() // live: faults, held jobs, odometer, as ~HS would report
+          fmt.Printf("paper out: %v, held jobs: %d, printed: %d\n",
+              state.GetFaults().GetPaperOut(), len(state.GetQueue()), state.GetOdometer())
+      - lang: php
+        label: PHP
+        source: |-
+          $printer = $sim->getPrinter('prt_cbJsPPG12v');
+          $state = $printer->getState(); // live: faults, held jobs, odometer, as ~HS would report
+          printf("paper out: %s, held jobs: %d, printed: %d\n",
+              $state->getFaults()->getPaperOut() ? 'yes' : 'no', count($state->getQueue()), $state->getOdometer());
+      - lang: python
+        label: Python
+        source: |-
+          printer = sim.get_printer("prt_cbJsPPG12v")
+          state = printer.state  # live: faults, held jobs, odometer, as ~HS would report
+          print(state.faults.paper_out, len(state.queue), state.odometer)
+      - lang: csharp
+        label: C#
+        source: |-
+          var printer = sim.GetPrinter("prt_cbJsPPG12v");
+          var state = printer.State; // live: faults, held jobs, odometer, as ~HS would report
+          Console.WriteLine($"paper out: {state.Faults.PaperOut}, held jobs: {state.Queue.Count}, printed: {state.Odometer}");
+      - lang: java
+        label: Java
+        source: |-
+          PrinterBody printer = sim.getPrinter("prt_cbJsPPG12v");
+          StatusSnapshot state = printer.getState(); // live: faults, held jobs, odometer, as ~HS would report
+          System.out.println(state.getFaults().getPaperOut() + " " + state.getQueue().size() + " " + state.getOdometer());
     patch:
       operationId: updatePrinter
       parameters:
@@ -606,6 +994,46 @@ paths:
       summary: Rename a printer or set its webhook URL
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl -X PATCH https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"name":"line-2","webhookUrl":"https://hooks.example.com/zpl"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewUpdatePrinterInputBody()
+          body.SetName("line-2")
+          body.SetWebhookUrl("https://hooks.example.com/zpl") // every captured job is POSTed here, signed
+          printer, _, err := client.SimulatorAPI.UpdatePrinter(ctx, "prt_cbJsPPG12v").UpdatePrinterInputBody(*body).Execute()
+      - lang: php
+        label: PHP
+        source: |-
+          $printer = $sim->updatePrinter('prt_cbJsPPG12v', new StripyHorse\Model\UpdatePrinterInputBody([
+              'name' => 'line-2',
+              'webhook_url' => 'https://hooks.example.com/zpl', // every captured job is POSTed here, signed
+          ]));
+      - lang: python
+        label: Python
+        source: |-
+          printer = sim.update_printer("prt_cbJsPPG12v", UpdatePrinterInputBody(
+              name="line-2",
+              webhook_url="https://hooks.example.com/zpl"))  # every captured job is POSTed here, signed
+      - lang: csharp
+        label: C#
+        source: |-
+          var printer = sim.UpdatePrinter("prt_cbJsPPG12v", new UpdatePrinterInputBody(
+              name: "line-2",
+              webhookUrl: "https://hooks.example.com/zpl")); // every captured job is POSTed here, signed
+      - lang: java
+        label: Java
+        source: |-
+          PrinterBody printer = sim.updatePrinter("prt_cbJsPPG12v", new UpdatePrinterInputBody()
+              .name("line-2")
+              .webhookUrl("https://hooks.example.com/zpl")); // every captured job is POSTed here, signed
   /v1/printers/{printerId}/faults:
     post:
       description: Blocking faults hold incoming jobs in the receive buffer; clearing
@@ -710,6 +1138,40 @@ paths:
       summary: Delete all captured jobs
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl -X DELETE https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v/jobs \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          // Empty the inbox between test cases so each one asserts on its own prints.
+          if _, err := client.SimulatorAPI.ClearJobs(ctx, printer.GetId()).Execute(); err != nil {
+              log.Fatal(err)
+          }
+      - lang: php
+        label: PHP
+        source: |-
+          // Empty the inbox between test cases so each one asserts on its own prints.
+          $sim->clearJobs($printer->getId());
+      - lang: python
+        label: Python
+        source: |-
+          # Empty the inbox between test cases so each one asserts on its own prints.
+          sim.clear_jobs(printer.id)
+      - lang: csharp
+        label: C#
+        source: |-
+          // Empty the inbox between test cases so each one asserts on its own prints.
+          sim.ClearJobs(printer.Id);
+      - lang: java
+        label: Java
+        source: |-
+          // Empty the inbox between test cases so each one asserts on its own prints.
+          sim.clearJobs(printer.getId());
     get:
       description: For CI assertions and inbox views. Cursor-paged via before.
       operationId: listJobs
@@ -839,6 +1301,31 @@ paths:
       summary: Delete one captured job
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl -X DELETE https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v/jobs/42 \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          if _, err := client.SimulatorAPI.DeleteJob(ctx, printer.GetId(), job.GetId()).Execute(); err != nil {
+              log.Fatal(err)
+          }
+      - lang: php
+        label: PHP
+        source: "$sim->deleteJob($printer->getId(), $job->getId());"
+      - lang: python
+        label: Python
+        source: "sim.delete_job(printer.id, job.id)"
+      - lang: csharp
+        label: C#
+        source: "sim.DeleteJob(printer.Id, job.Id);"
+      - lang: java
+        label: Java
+        source: "sim.deleteJob(printer.getId(), job.getId());"
     get:
       operationId: getJob
       parameters:
@@ -876,6 +1363,50 @@ paths:
       summary: Get one job including its raw ZPL
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v/jobs/42 \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          job, _, err := client.SimulatorAPI.GetJob(ctx, printer.GetId(), jobs.GetJobs()[0].GetId()).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          if !strings.Contains(job.GetZpl(), "^BCN") {
+              log.Fatal("the label went out without a Code 128 barcode")
+          }
+          png, _ := base64.StdEncoding.DecodeString(job.GetLabels()[0]) // rendered, for a golden-image diff
+          os.WriteFile("printed.png", png, 0o644)
+      - lang: php
+        label: PHP
+        source: |-
+          $job = $sim->getJob($printer->getId(), $jobs->getJobs()[0]->getId());
+          assert(str_contains($job->getZpl(), '^BCN'), 'the label went out without a Code 128 barcode');
+          file_put_contents('printed.png', base64_decode($job->getLabels()[0])); // rendered, for a golden-image diff
+      - lang: python
+        label: Python
+        source: |-
+          job = sim.get_job(printer.id, jobs.jobs[0].id)
+          assert "^BCN" in job.zpl, "the label went out without a Code 128 barcode"
+          with open("printed.png", "wb") as f:
+              f.write(base64.b64decode(job.labels[0]))  # rendered, for a golden-image diff
+      - lang: csharp
+        label: C#
+        source: |-
+          var job = sim.GetJob(printer.Id, jobs.Jobs[0].Id);
+          Debug.Assert(job.Zpl.Contains("^BCN"), "the label went out without a Code 128 barcode");
+          File.WriteAllBytes("printed.png", Convert.FromBase64String(job.Labels[0])); // rendered, for a golden-image diff
+      - lang: java
+        label: Java
+        source: |-
+          JobOutputBody job = sim.getJob(printer.getId(), jobs.getJobs().get(0).getId());
+          assert job.getZpl().contains("^BCN") : "the label went out without a Code 128 barcode";
+          Files.write(Path.of("printed.png"), Base64.getDecoder().decode(job.getLabels().get(0))); // rendered, for a golden-image diff
   /v1/printers/{printerId}/jobs/{jobId}/labels/{index}.png:
     get:
       operationId: getJobLabel
@@ -929,6 +1460,35 @@ paths:
       summary: Get one rendered label as a PNG
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v/jobs/42/labels/0.png \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -o label.png
+      - lang: go
+        label: Go
+        source: |-
+          // The first label of the job as a PNG, without fetching the whole job.
+          png, _, err := client.SimulatorAPI.GetJobLabel(ctx, printer.GetId(), job.GetId(), 0).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          os.WriteFile("label.png", []byte(png), 0o644)
+      - lang: php
+        label: PHP
+        source: |-
+          // The first label of the job as a PNG, without fetching the whole job.
+          $file = $sim->getJobLabel($printer->getId(), $job->getId(), 0);
+          copy($file->getRealPath(), 'label.png');
+      - lang: python
+        label: Python
+        source: |-
+          # The first label of the job as a PNG, without fetching the whole job.
+          png = sim.get_job_label(printer.id, job.id, 0)
+          with open("label.png", "wb") as f:
+              f.write(png)
   /v1/printers/{printerId}/reset:
     post:
       operationId: resetPrinter
@@ -959,6 +1519,47 @@ paths:
       summary: Clear all faults and flush held jobs
       tags:
       - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          # Clears every fault and flushes the held jobs, as the front panel would.
+          curl -X POST https://api.stripyhorse.io/v1/printers/prt_cbJsPPG12v/reset \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY"
+      - lang: go
+        label: Go
+        source: |-
+          // Clears every fault and flushes the held jobs, as the front panel would.
+          state, _, err := client.SimulatorAPI.ResetPrinter(ctx, printer.GetId()).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          fmt.Println("still held:", len(state.GetState().GetQueue())) // 0
+      - lang: php
+        label: PHP
+        source: |-
+          // Clears every fault and flushes the held jobs, as the front panel would.
+          $state = $sim->resetPrinter($printer->getId());
+          assert(count($state->getState()->getQueue()) === 0);
+      - lang: python
+        label: Python
+        source: |-
+          # Clears every fault and flushes the held jobs, as the front panel would.
+          state = sim.reset_printer(printer.id)
+          assert len(state.state.queue) == 0
+      - lang: csharp
+        label: C#
+        source: |-
+          // Clears every fault and flushes the held jobs, as the front panel would.
+          var state = sim.ResetPrinter(printer.Id);
+          Debug.Assert(state.State.Queue.Count == 0);
+      - lang: java
+        label: Java
+        source: |-
+          // Clears every fault and flushes the held jobs, as the front panel would.
+          StateOutputBody state = sim.resetPrinter(printer.getId());
+          assert state.getState().getQueue().isEmpty();
   /v1/render:
     post:
       description: Renders every label in the ZPL stream. For a raw PNG of a single
@@ -1144,6 +1745,59 @@ paths:
       summary: Stamp an image onto ZPL labels
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/stamp \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d "{\"zpl\": \"^XA...^XZ\", \"image\": \"$(base64 -w0 logo.png)\", \"x\": 600, \"y\": 1000, \"widthDots\": 160}"
+      - lang: go
+        label: Go
+        source: |-
+          logo, _ := os.ReadFile("logo.png")
+          body := stripyhorse.NewStampInputBody(base64.StdEncoding.EncodeToString(logo), zpl)
+          body.SetX(600)
+          body.SetY(1000)
+          body.SetWidthDots(160)
+          out, _, err := client.ConvertAPI.StampZpl(ctx).StampInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          fmt.Println(out.GetZpl())
+      - lang: php
+        label: PHP
+        source: |-
+          $out = $convert->stampZpl(new StripyHorse\Model\StampInputBody([
+              'zpl' => $zpl,
+              'image' => base64_encode(file_get_contents('logo.png')),
+              'x' => 600, 'y' => 1000, 'width_dots' => 160,
+          ]));
+          echo $out->getZpl();
+      - lang: python
+        label: Python
+        source: |-
+          with open("logo.png", "rb") as f:
+              logo = base64.b64encode(f.read()).decode()
+          out = convert.stamp_zpl(StampInputBody(zpl=zpl, image=logo, x=600, y=1000, width_dots=160))
+          print(out.zpl)
+      - lang: csharp
+        label: C#
+        source: |-
+          var outp = convert.StampZpl(new StampInputBody(
+              zpl: zpl,
+              image: Convert.ToBase64String(File.ReadAllBytes("logo.png")),
+              x: 600, y: 1000, widthDots: 160));
+          Console.WriteLine(outp.Zpl);
+      - lang: java
+        label: Java
+        source: |-
+          StampOutputBody out = convert.stampZpl(new StampInputBody()
+              .zpl(zpl)
+              .image(Base64.getEncoder().encodeToString(Files.readAllBytes(Path.of("logo.png"))))
+              .x(600L).y(1000L).widthDots(160L));
+          System.out.println(out.getZpl());
   /v1/unicode:
     post:
       description: "Text fields containing characters the printer's fonts can't render\
@@ -1178,6 +1832,49 @@ paths:
       summary: Make Unicode ZPL printable on any Zebra
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/unicode \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewUnicodeInputBody("^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ")
+          out, _, err := client.ConvertAPI.RasterizeUnicode(ctx).UnicodeInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          if len(out.GetSkipped()) > 0 {
+              log.Printf("left as-is: %v", out.GetSkipped())
+          }
+          sendToPrinter(out.GetZpl()) // the text fields are now ^GFA bitmaps any Zebra prints
+      - lang: php
+        label: PHP
+        source: |-
+          $out = $convert->rasterizeUnicode(new StripyHorse\Model\UnicodeInputBody([
+              'zpl' => '^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ',
+          ]));
+          sendToPrinter($out->getZpl()); // the text fields are now ^GFA bitmaps any Zebra prints
+      - lang: python
+        label: Python
+        source: |-
+          out = convert.rasterize_unicode(UnicodeInputBody(zpl="^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ"))
+          send_to_printer(out.zpl)  # the text fields are now ^GFA bitmaps any Zebra prints
+      - lang: csharp
+        label: C#
+        source: |-
+          var outp = convert.RasterizeUnicode(new UnicodeInputBody(zpl: "^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ"));
+          SendToPrinter(outp.Zpl); // the text fields are now ^GFA bitmaps any Zebra prints
+      - lang: java
+        label: Java
+        source: |-
+          UnicodeOutputBody out = convert.rasterizeUnicode(new UnicodeInputBody()
+              .zpl("^XA^FO50,50^A0N,40,40^FD宅配便^FS^XZ"));
+          sendToPrinter(out.getZpl()); // the text fields are now ^GFA bitmaps any Zebra prints
   /v1/void:
     post:
       description: "Overlays a large diagonal VOID - DO NOT MAIL warning (and an optional\
@@ -1210,6 +1907,49 @@ paths:
       summary: Stamp ZPL as void / do-not-ship
       tags:
       - Convert
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/void \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"zpl":"^XA^FO50,50^A0N,45,45^FDLabel^FS^XZ","preset":"4x6","stamp":"VOID: bfaerber"}'
+      - lang: go
+        label: Go
+        source: |-
+          body := stripyhorse.NewVoidInputBody(zpl)
+          body.SetPreset("4x6")
+          body.SetStamp("VOID: bfaerber")
+          out, _, err := client.ConvertAPI.VoidZpl(ctx).VoidInputBody(*body).Execute()
+          if err != nil {
+              log.Fatal(err)
+          }
+          sendToPrinter(out.GetZpl()) // prints with VOID - DO NOT MAIL across every label
+      - lang: php
+        label: PHP
+        source: |-
+          $out = $convert->voidZpl(new StripyHorse\Model\VoidInputBody([
+              'zpl' => $zpl, 'preset' => '4x6', 'stamp' => 'VOID: bfaerber',
+          ]));
+          sendToPrinter($out->getZpl()); // prints with VOID - DO NOT MAIL across every label
+      - lang: python
+        label: Python
+        source: |-
+          out = convert.void_zpl(VoidInputBody(zpl=zpl, preset="4x6", stamp="VOID: bfaerber"))
+          send_to_printer(out.zpl)  # prints with VOID - DO NOT MAIL across every label
+      - lang: csharp
+        label: C#
+        source: |-
+          var outp = convert.VoidZpl(new VoidInputBody(
+              zpl: zpl, preset: VoidInputBody.PresetEnum._4x6, stamp: "VOID: bfaerber"));
+          SendToPrinter(outp.Zpl); // prints with VOID - DO NOT MAIL across every label
+      - lang: java
+        label: Java
+        source: |-
+          VoidOutputBody out = convert.voidZpl(new VoidInputBody()
+              .zpl(zpl).preset(VoidInputBody.PresetEnum._4X6).stamp("VOID: bfaerber"));
+          sendToPrinter(out.getZpl()); // prints with VOID - DO NOT MAIL across every label
 components:
   schemas:
     Barcode:
