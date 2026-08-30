@@ -749,8 +749,9 @@ paths:
           for (PrinterBody p : sim.listPrinters().getPrinters())
               System.out.println(p.getId() + " " + p.getName() + " " + p.getTcp().getHost() + ":" + p.getTcp().getPort());
     post:
-      description: "Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent\
-        \ printers. The ingest URL and webhook secret are only returned here."
+      description: "Free tier: one ephemeral printer, expiring after 4h with no jobs.\
+        \ Paid tiers: persistent printers. The ingest URL and webhook secret are only\
+        \ returned here."
       operationId: createPrinter
       requestBody:
         content:
@@ -2239,6 +2240,7 @@ components:
     CreatePrinterInputBody:
       additionalProperties: false
       example:
+        accessMode: ""
         anonymize: true
         dpmm: 0
         heightMm: 0.6027456183070403
@@ -2248,6 +2250,15 @@ components:
         webhookUrl: webhookUrl
         widthMm: 0.14658129805029452
       properties:
+        accessMode:
+          description: "Who may print to the TCP port; default open. Use token from\
+            \ CI, where the source address is different every run."
+          enum:
+          - ""
+          - open
+          - token
+          - ip
+          type: string
         anonymize:
           description: Mask PII and strip graphics from every captured frame
           type: boolean
@@ -2977,7 +2988,8 @@ components:
       additionalProperties: false
       example:
         printers:
-        - anonymize: true
+        - accessMode: accessMode
+          anonymize: true
           createdAt: 2000-01-23T04:56:07.000+00:00
           dpmm: 0
           expiresAt: 2000-01-23T04:56:07.000+00:00
@@ -3015,7 +3027,8 @@ components:
           webhookSecret: webhookSecret
           webhookUrl: webhookUrl
           widthMm: 3.616076749251911
-        - anonymize: true
+        - accessMode: accessMode
+          anonymize: true
           createdAt: 2000-01-23T04:56:07.000+00:00
           dpmm: 0
           expiresAt: 2000-01-23T04:56:07.000+00:00
@@ -3242,6 +3255,7 @@ components:
     PrinterBody:
       additionalProperties: false
       example:
+        accessMode: accessMode
         anonymize: true
         createdAt: 2000-01-23T04:56:07.000+00:00
         dpmm: 0
@@ -3281,6 +3295,11 @@ components:
         webhookUrl: webhookUrl
         widthMm: 3.616076749251911
       properties:
+        accessMode:
+          description: "Who may print to the TCP port: open (anyone), token (the stream\
+            \ must open with ~SH plus the ingest token), ip (only addresses the org\
+            \ has claimed)"
+          type: string
         anonymize:
           description: "When true, PII is masked and graphics stripped from every\
             \ captured frame"
@@ -3323,6 +3342,7 @@ components:
           format: double
           type: number
       required:
+      - accessMode
       - anonymize
       - createdAt
       - dpmm
@@ -3727,10 +3747,17 @@ components:
     UpdatePrinterInputBody:
       additionalProperties: false
       example:
+        accessMode: open
         anonymize: true
         name: name
         webhookUrl: webhookUrl
       properties:
+        accessMode:
+          enum:
+          - open
+          - token
+          - ip
+          type: string
         anonymize:
           type: boolean
         name:

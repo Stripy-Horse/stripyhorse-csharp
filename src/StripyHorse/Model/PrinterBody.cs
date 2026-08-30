@@ -64,6 +64,7 @@ namespace StripyHorse.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="PrinterBody" /> class.
         /// </summary>
+        /// <param name="accessMode">Who may print to the TCP port: open (anyone), token (the stream must open with ~SH plus the ingest token), ip (only addresses the org has claimed) (required).</param>
         /// <param name="anonymize">When true, PII is masked and graphics stripped from every captured frame (required).</param>
         /// <param name="createdAt">createdAt (required).</param>
         /// <param name="dpmm">dpmm (required).</param>
@@ -78,8 +79,14 @@ namespace StripyHorse.Model
         /// <param name="webhookSecret">HMAC-SHA256 key for X-Stripy-Horse-Signature. Only returned on creation..</param>
         /// <param name="webhookUrl">webhookUrl.</param>
         /// <param name="widthMm">widthMm (required).</param>
-        public PrinterBody(bool anonymize = default, DateTime createdAt = default, long dpmm = default, DateTime expiresAt = default, double heightMm = default, string id = default, string ingestUrl = default, ModeEnum mode = default, string name = default, StatusSnapshot state = default, PrinterBodyTCPStruct tcp = default, string webhookSecret = default, string webhookUrl = default, double widthMm = default)
+        public PrinterBody(string accessMode = default, bool anonymize = default, DateTime createdAt = default, long dpmm = default, DateTime expiresAt = default, double heightMm = default, string id = default, string ingestUrl = default, ModeEnum mode = default, string name = default, StatusSnapshot state = default, PrinterBodyTCPStruct tcp = default, string webhookSecret = default, string webhookUrl = default, double widthMm = default)
         {
+            // to ensure "accessMode" is required (not null)
+            if (accessMode == null)
+            {
+                throw new ArgumentNullException("accessMode is a required property for PrinterBody and cannot be null");
+            }
+            this.AccessMode = accessMode;
             this.Anonymize = anonymize;
             this.CreatedAt = createdAt;
             this.Dpmm = dpmm;
@@ -110,6 +117,13 @@ namespace StripyHorse.Model
             this.WebhookSecret = webhookSecret;
             this.WebhookUrl = webhookUrl;
         }
+
+        /// <summary>
+        /// Who may print to the TCP port: open (anyone), token (the stream must open with ~SH plus the ingest token), ip (only addresses the org has claimed)
+        /// </summary>
+        /// <value>Who may print to the TCP port: open (anyone), token (the stream must open with ~SH plus the ingest token), ip (only addresses the org has claimed)</value>
+        [DataMember(Name = "accessMode", IsRequired = true, EmitDefaultValue = true)]
+        public string AccessMode { get; set; }
 
         /// <summary>
         /// When true, PII is masked and graphics stripped from every captured frame
@@ -200,6 +214,7 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class PrinterBody {\n");
+            sb.Append("  AccessMode: ").Append(AccessMode).Append("\n");
             sb.Append("  Anonymize: ").Append(Anonymize).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Dpmm: ").Append(Dpmm).Append("\n");

@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AccessMode** | **string** | Who may print to the TCP port; default open. Use token from CI, where the source address is different every run. | [optional] 
 **Anonymize** | **bool** | Mask PII and strip graphics from every captured frame | [optional] 
 **Dpmm** | **long** | Print density in dots/mm (152/203/300/600 dpi); default 8 | [optional] 
 **HeightMm** | **double** |  | [optional] 

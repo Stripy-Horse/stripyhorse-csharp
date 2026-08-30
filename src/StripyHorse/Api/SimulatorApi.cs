@@ -50,7 +50,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -62,7 +62,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -330,7 +330,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -343,7 +343,7 @@ namespace StripyHorse.Api
         /// Create a virtual printer
         /// </summary>
         /// <remarks>
-        /// Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </remarks>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -901,7 +901,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Create a virtual printer Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -914,7 +914,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Create a virtual printer Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -985,7 +985,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Create a virtual printer Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>
@@ -999,7 +999,7 @@ namespace StripyHorse.Api
         }
 
         /// <summary>
-        /// Create a virtual printer Free tier: one ephemeral printer (24h idle TTL). Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
+        /// Create a virtual printer Free tier: one ephemeral printer, expiring after 4h with no jobs. Paid tiers: persistent printers. The ingest URL and webhook secret are only returned here.
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="createPrinterInputBody"></param>

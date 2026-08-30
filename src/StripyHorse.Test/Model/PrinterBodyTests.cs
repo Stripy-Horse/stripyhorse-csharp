@@ -55,6 +55,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'AccessMode'
+        /// </summary>
+        [Fact]
+        public void AccessModeTest()
+        {
+            // TODO unit test for the property 'AccessMode'
+        }
+
+        /// <summary>
         /// Test the property 'Anonymize'
         /// </summary>
         [Fact]

@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AccessMode** | **string** |  | [optional] 
 **Anonymize** | **bool** |  | [optional] 
 **Name** | **string** |  | [optional] 
 **WebhookUrl** | **string** |  | [optional] 

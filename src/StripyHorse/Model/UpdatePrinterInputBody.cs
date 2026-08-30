@@ -32,13 +32,46 @@ namespace StripyHorse.Model
     public partial class UpdatePrinterInputBody : IValidatableObject
     {
         /// <summary>
+        /// Defines AccessMode
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum AccessModeEnum
+        {
+            /// <summary>
+            /// Enum Open for value: open
+            /// </summary>
+            [EnumMember(Value = "open")]
+            Open = 1,
+
+            /// <summary>
+            /// Enum Token for value: token
+            /// </summary>
+            [EnumMember(Value = "token")]
+            Token = 2,
+
+            /// <summary>
+            /// Enum Ip for value: ip
+            /// </summary>
+            [EnumMember(Value = "ip")]
+            Ip = 3
+        }
+
+
+        /// <summary>
+        /// Gets or Sets AccessMode
+        /// </summary>
+        [DataMember(Name = "accessMode", EmitDefaultValue = false)]
+        public AccessModeEnum? AccessMode { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="UpdatePrinterInputBody" /> class.
         /// </summary>
+        /// <param name="accessMode">accessMode.</param>
         /// <param name="anonymize">anonymize.</param>
         /// <param name="name">name.</param>
         /// <param name="webhookUrl">webhookUrl.</param>
-        public UpdatePrinterInputBody(bool anonymize = default, string name = default, string webhookUrl = default)
+        public UpdatePrinterInputBody(AccessModeEnum? accessMode = default, bool anonymize = default, string name = default, string webhookUrl = default)
         {
+            this.AccessMode = accessMode;
             this.Anonymize = anonymize;
             this.Name = name;
             this.WebhookUrl = webhookUrl;
@@ -70,6 +103,7 @@ namespace StripyHorse.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class UpdatePrinterInputBody {\n");
+            sb.Append("  AccessMode: ").Append(AccessMode).Append("\n");
             sb.Append("  Anonymize: ").Append(Anonymize).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  WebhookUrl: ").Append(WebhookUrl).Append("\n");
