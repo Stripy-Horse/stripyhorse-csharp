@@ -226,6 +226,31 @@ namespace StripyHorse.Api
         /// <returns>ApiResponse of ListPrintersOutputBody</returns>
         ApiResponse<ListPrintersOutputBody> ListPrintersWithHttpInfo(int operationIndex = 0);
         /// <summary>
+        /// Fit a fresh roll and ribbon
+        /// </summary>
+        /// <remarks>
+        /// A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>StateOutputBody</returns>
+        StateOutputBody LoadPrinterMedia(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0);
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon
+        /// </summary>
+        /// <remarks>
+        /// A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of StateOutputBody</returns>
+        ApiResponse<StateOutputBody> LoadPrinterMediaWithHttpInfo(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0);
+        /// <summary>
         /// Clear all faults and flush held jobs
         /// </summary>
         /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
@@ -536,6 +561,33 @@ namespace StripyHorse.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (ListPrintersOutputBody)</returns>
         System.Threading.Tasks.Task<ApiResponse<ListPrintersOutputBody>> ListPrintersWithHttpInfoAsync(int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Fit a fresh roll and ribbon
+        /// </summary>
+        /// <remarks>
+        /// A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of StateOutputBody</returns>
+        System.Threading.Tasks.Task<StateOutputBody> LoadPrinterMediaAsync(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon
+        /// </summary>
+        /// <remarks>
+        /// A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </remarks>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (StateOutputBody)</returns>
+        System.Threading.Tasks.Task<ApiResponse<StateOutputBody>> LoadPrinterMediaWithHttpInfoAsync(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default);
         /// <summary>
         /// Clear all faults and flush held jobs
         /// </summary>
@@ -2267,6 +2319,195 @@ namespace StripyHorse.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("ListPrinters", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>StateOutputBody</returns>
+        public StateOutputBody LoadPrinterMedia(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0)
+        {
+            StripyHorse.Client.ApiResponse<StateOutputBody> localVarResponse = LoadPrinterMediaWithHttpInfo(printerId, mediaInputBody);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <returns>ApiResponse of StateOutputBody</returns>
+        public StripyHorse.Client.ApiResponse<StateOutputBody> LoadPrinterMediaWithHttpInfo(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0)
+        {
+            // verify the required parameter 'printerId' is set
+            if (printerId == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'printerId' when calling SimulatorApi->LoadPrinterMedia");
+            }
+
+            // verify the required parameter 'mediaInputBody' is set
+            if (mediaInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'mediaInputBody' when calling SimulatorApi->LoadPrinterMedia");
+            }
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarMultipartFormData = localVarContentType == "multipart/form-data";
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.PathParameters.Add("printerId", StripyHorse.Client.ClientUtils.ParameterToString(printerId)); // path parameter
+            localVarRequestOptions.Data = mediaInputBody;
+
+            localVarRequestOptions.Operation = "SimulatorApi.LoadPrinterMedia";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<StateOutputBody>("/v1/printers/{printerId}/media", localVarRequestOptions, this.Configuration);
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("LoadPrinterMedia", localVarResponse);
+                if (_exception != null)
+                {
+                    throw _exception;
+                }
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of StateOutputBody</returns>
+        public async System.Threading.Tasks.Task<StateOutputBody> LoadPrinterMediaAsync(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            StripyHorse.Client.ApiResponse<StateOutputBody> localVarResponse = await LoadPrinterMediaWithHttpInfoAsync(printerId, mediaInputBody, operationIndex, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Fit a fresh roll and ribbon A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+        /// </summary>
+        /// <exception cref="StripyHorse.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="printerId"></param>
+        /// <param name="mediaInputBody"></param>
+        /// <param name="operationIndex">Index associated with the operation.</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (StateOutputBody)</returns>
+        public async System.Threading.Tasks.Task<StripyHorse.Client.ApiResponse<StateOutputBody>> LoadPrinterMediaWithHttpInfoAsync(string printerId, MediaInputBody mediaInputBody, int operationIndex = 0, System.Threading.CancellationToken cancellationToken = default)
+        {
+            // verify the required parameter 'printerId' is set
+            if (printerId == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'printerId' when calling SimulatorApi->LoadPrinterMedia");
+            }
+
+            // verify the required parameter 'mediaInputBody' is set
+            if (mediaInputBody == null)
+            {
+                throw new StripyHorse.Client.ApiException(400, "Missing required parameter 'mediaInputBody' when calling SimulatorApi->LoadPrinterMedia");
+            }
+
+
+            StripyHorse.Client.RequestOptions localVarRequestOptions = new StripyHorse.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json",
+                "application/problem+json"
+            };
+
+            var localVarContentType = StripyHorse.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+            }
+
+            var localVarAccept = StripyHorse.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null)
+            {
+                localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+            }
+
+            localVarRequestOptions.PathParameters.Add("printerId", StripyHorse.Client.ClientUtils.ParameterToString(printerId)); // path parameter
+            localVarRequestOptions.Data = mediaInputBody;
+
+            localVarRequestOptions.Operation = "SimulatorApi.LoadPrinterMedia";
+            localVarRequestOptions.OperationIndex = operationIndex;
+
+            // authentication (headerKey) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("X-Api-Key")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("X-Api-Key", this.Configuration.GetApiKeyWithPrefix("X-Api-Key"));
+            }
+            // authentication (bearerKey) required
+            // bearer authentication required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+
+            // make the HTTP request
+            var localVarResponse = await this.AsynchronousClient.PostAsync<StateOutputBody>("/v1/printers/{printerId}/media", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("LoadPrinterMedia", localVarResponse);
                 if (_exception != null)
                 {
                     throw _exception;

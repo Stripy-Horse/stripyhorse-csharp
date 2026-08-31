@@ -165,6 +165,19 @@ namespace StripyHorse.Test.Api
         }
 
         /// <summary>
+        /// Test LoadPrinterMedia
+        /// </summary>
+        [Fact]
+        public void LoadPrinterMediaTest()
+        {
+            // TODO uncomment below to test the method and replace null with proper value
+            //string printerId = null;
+            //MediaInputBody mediaInputBody = null;
+            //var response = instance.LoadPrinterMedia(printerId, mediaInputBody);
+            //Assert.IsType<StateOutputBody>(response);
+        }
+
+        /// <summary>
         /// Test ResetPrinter
         /// </summary>
         [Fact]

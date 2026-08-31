@@ -1490,6 +1490,81 @@ paths:
           png = sim.get_job_label(printer.id, job.id, 0)
           with open("label.png", "wb") as f:
               f.write(png)
+  /v1/printers/{printerId}/media:
+    post:
+      description: "A loaded roll runs down as labels print and raises paper out when\
+        \ it is spent, which holds everything sent after it. Zero is an endless roll,\
+        \ which is the default and never runs out."
+      operationId: loadPrinterMedia
+      parameters:
+      - explode: false
+        in: path
+        name: printerId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MediaInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StateOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+      - bearerKey: []
+      - headerKey: []
+      summary: Fit a fresh roll and ribbon
+      tags:
+      - Simulator
+      x-codeSamples:
+      - lang: bash
+        label: curl
+        source: |-
+          STRIPY_HORSE_API_KEY=""
+          curl https://api.stripyhorse.io/v1/printers/$PRINTER_ID/media \
+            -H "X-Api-Key: $STRIPY_HORSE_API_KEY" -H "Content-Type: application/json" \
+            -d '{"labels":500,"ribbonMetres":74}'
+      - lang: go
+        label: Go
+        source: |-
+          // A 500-label roll: the 501st job is held with paper out.
+          media := stripyhorse.NewLoadPrinterMediaRequest()
+          media.SetLabels(500)
+          media.SetRibbonMetres(74)
+          client.SimulatorAPI.LoadPrinterMedia(ctx, printer.GetId()).LoadPrinterMediaRequest(*media).Execute()
+      - lang: php
+        label: PHP
+        source: |-
+          // A 500-label roll: the 501st job is held with paper out.
+          $sim->loadPrinterMedia($printerId, ['labels' => 500, 'ribbon_metres' => 74]);
+      - lang: python
+        label: Python
+        source: |-
+          # A 500-label roll: the 501st job is held with paper out.
+          sim.load_printer_media(printer.id, LoadPrinterMediaRequest(labels=500, ribbon_metres=74))
+      - lang: csharp
+        label: C#
+        source: |-
+          // A 500-label roll: the 501st job is held with paper out.
+          sim.LoadPrinterMedia(printer.Id, new LoadPrinterMediaRequest(labels: 500, ribbonMetres: 74));
+      - lang: java
+        label: Java
+        source: |-
+          // A 500-label roll: the 501st job is held with paper out.
+          sim.loadPrinterMedia(printer.getId(), new LoadPrinterMediaRequest().labels(500).ribbonMetres(74.0));
   /v1/printers/{printerId}/reset:
     post:
       operationId: resetPrinter
@@ -3025,6 +3100,7 @@ components:
               receivedAt: 2000-01-23T04:56:07.000+00:00
               source: source
             speedIps: speedIps
+            supplies: ""
             tearOff: tearOff
             widthDots: 7
           tcp:
@@ -3064,6 +3140,7 @@ components:
               receivedAt: 2000-01-23T04:56:07.000+00:00
               source: source
             speedIps: speedIps
+            supplies: ""
             tearOff: tearOff
             widthDots: 7
           tcp:
@@ -3081,6 +3158,25 @@ components:
           default: null
       required:
       - printers
+    MediaInputBody:
+      additionalProperties: false
+      example:
+        labels: 80082
+        ribbonMetres: 6027.456183070403
+      properties:
+        labels:
+          description: Labels on the roll; 0 for an endless roll
+          format: int64
+          maximum: 1000000
+          minimum: 0
+          type: integer
+        ribbonMetres:
+          description: "Ribbon on the spool in metres; 0 for endless, which is also\
+            \ what direct thermal looks like"
+          format: double
+          maximum: 10000
+          minimum: 0
+          type: number
     PreflightInputBody:
       additionalProperties: false
       example:
@@ -3292,6 +3388,7 @@ components:
             receivedAt: 2000-01-23T04:56:07.000+00:00
             source: source
           speedIps: speedIps
+          supplies: ""
           tearOff: tearOff
           widthDots: 7
         tcp:
@@ -3625,6 +3722,7 @@ components:
             receivedAt: 2000-01-23T04:56:07.000+00:00
             source: source
           speedIps: speedIps
+          supplies: ""
           tearOff: tearOff
           widthDots: 7
       properties:
@@ -3672,6 +3770,7 @@ components:
           receivedAt: 2000-01-23T04:56:07.000+00:00
           source: source
         speedIps: speedIps
+        supplies: ""
         tearOff: tearOff
         widthDots: 7
       properties:
@@ -3701,6 +3800,10 @@ components:
         speedIps:
           description: "media.speed setting, inches/second"
           type: string
+        supplies:
+          allOf:
+          - $ref: "#/components/schemas/Supplies"
+          description: What is left on the roll; zero loaded means endless
         tearOff:
           description: "ezpl.tear_off setting, dots"
           type: string
@@ -3716,8 +3819,30 @@ components:
       - odometer
       - queue
       - speedIps
+      - supplies
       - tearOff
       - widthDots
+    Supplies:
+      additionalProperties: false
+      properties:
+        labelsLeft:
+          description: Labels left on the roll
+          format: int64
+          type: integer
+        labelsLoaded:
+          description: Labels the roll held when it was fitted; 0 means an endless
+            roll
+          format: int64
+          type: integer
+        ribbonMmLeft:
+          description: Millimetres of ribbon left
+          format: int64
+          type: integer
+        ribbonMmLoaded:
+          description: "Millimetres of ribbon fitted; 0 means endless, which is also\
+            \ what direct thermal looks like"
+          format: int64
+          type: integer
     UnicodeInputBody:
       additionalProperties: false
       example:

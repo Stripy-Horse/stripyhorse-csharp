@@ -13,6 +13,7 @@ All URIs are relative to *https://api.stripyhorse.io*
 | [**GetPrinter**](SimulatorApi.md#getprinter) | **GET** /v1/printers/{printerId} | Get a printer with live state |
 | [**ListJobs**](SimulatorApi.md#listjobs) | **GET** /v1/printers/{printerId}/jobs | List captured jobs, newest first |
 | [**ListPrinters**](SimulatorApi.md#listprinters) | **GET** /v1/printers | List your printers |
+| [**LoadPrinterMedia**](SimulatorApi.md#loadprintermedia) | **POST** /v1/printers/{printerId}/media | Fit a fresh roll and ribbon |
 | [**ResetPrinter**](SimulatorApi.md#resetprinter) | **POST** /v1/printers/{printerId}/reset | Clear all faults and flush held jobs |
 | [**SetPrinterFaults**](SimulatorApi.md#setprinterfaults) | **POST** /v1/printers/{printerId}/faults | Inject or clear fault conditions |
 | [**UpdatePrinter**](SimulatorApi.md#updateprinter) | **PATCH** /v1/printers/{printerId} | Rename a printer or set its webhook URL |
@@ -880,6 +881,107 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json, application/problem+json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **0** | Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a id="loadprintermedia"></a>
+# **LoadPrinterMedia**
+> StateOutputBody LoadPrinterMedia (string printerId, MediaInputBody mediaInputBody)
+
+Fit a fresh roll and ribbon
+
+A loaded roll runs down as labels print and raises paper out when it is spent, which holds everything sent after it. Zero is an endless roll, which is the default and never runs out.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using StripyHorse.Api;
+using StripyHorse.Client;
+using StripyHorse.Model;
+
+namespace Example
+{
+    public class LoadPrinterMediaExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "https://api.stripyhorse.io";
+            // Configure API key authorization: headerKey
+            config.AddApiKey("X-Api-Key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // config.AddApiKeyPrefix("X-Api-Key", "Bearer");
+            // Configure Bearer token for authorization: bearerKey
+            config.AccessToken = "YOUR_BEARER_TOKEN";
+
+            var apiInstance = new SimulatorApi(config);
+            var printerId = "printerId_example";  // string | 
+            var mediaInputBody = new MediaInputBody(); // MediaInputBody | 
+
+            try
+            {
+                // Fit a fresh roll and ribbon
+                StateOutputBody result = apiInstance.LoadPrinterMedia(printerId, mediaInputBody);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling SimulatorApi.LoadPrinterMedia: " + e.Message);
+                Debug.Print("Status Code: " + e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+#### Using the LoadPrinterMediaWithHttpInfo variant
+This returns an ApiResponse object which contains the response data, status code and headers.
+
+```csharp
+try
+{
+    // Fit a fresh roll and ribbon
+    ApiResponse<StateOutputBody> response = apiInstance.LoadPrinterMediaWithHttpInfo(printerId, mediaInputBody);
+    Debug.Write("Status Code: " + response.StatusCode);
+    Debug.Write("Response Headers: " + response.Headers);
+    Debug.Write("Response Body: " + response.Data);
+}
+catch (ApiException e)
+{
+    Debug.Print("Exception when calling SimulatorApi.LoadPrinterMediaWithHttpInfo: " + e.Message);
+    Debug.Print("Status Code: " + e.ErrorCode);
+    Debug.Print(e.StackTrace);
+}
+```
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **printerId** | **string** |  |  |
+| **mediaInputBody** | [**MediaInputBody**](MediaInputBody.md) |  |  |
+
+### Return type
+
+[**StateOutputBody**](StateOutputBody.md)
+
+### Authorization
+
+[headerKey](../README.md#headerKey), [bearerKey](../README.md#bearerKey)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json, application/problem+json
 
 

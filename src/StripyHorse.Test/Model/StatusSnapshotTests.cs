@@ -127,6 +127,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Supplies'
+        /// </summary>
+        [Fact]
+        public void SuppliesTest()
+        {
+            // TODO unit test for the property 'Supplies'
+        }
+
+        /// <summary>
         /// Test the property 'TearOff'
         /// </summary>
         [Fact]

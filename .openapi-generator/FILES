@@ -29,6 +29,7 @@ docs/JobOutputBody.md
 docs/JobSummary.md
 docs/ListJobsOutputBody.md
 docs/ListPrintersOutputBody.md
+docs/MediaInputBody.md
 docs/PreflightInputBody.md
 docs/PreflightOutputBody.md
 docs/PrinterBody.md
@@ -45,6 +46,7 @@ docs/StampOutputBody.md
 docs/StateOutputBody.md
 docs/StatusField.md
 docs/StatusSnapshot.md
+docs/Supplies.md
 docs/UnicodeInputBody.md
 docs/UnicodeOutputBody.md
 docs/UpdatePrinterInputBody.md
@@ -81,6 +83,7 @@ src/StripyHorse.Test/Model/JobOutputBodyTests.cs
 src/StripyHorse.Test/Model/JobSummaryTests.cs
 src/StripyHorse.Test/Model/ListJobsOutputBodyTests.cs
 src/StripyHorse.Test/Model/ListPrintersOutputBodyTests.cs
+src/StripyHorse.Test/Model/MediaInputBodyTests.cs
 src/StripyHorse.Test/Model/PreflightInputBodyTests.cs
 src/StripyHorse.Test/Model/PreflightOutputBodyTests.cs
 src/StripyHorse.Test/Model/PrinterBodyTCPStructTests.cs
@@ -94,6 +97,7 @@ src/StripyHorse.Test/Model/StampOutputBodyTests.cs
 src/StripyHorse.Test/Model/StateOutputBodyTests.cs
 src/StripyHorse.Test/Model/StatusFieldTests.cs
 src/StripyHorse.Test/Model/StatusSnapshotTests.cs
+src/StripyHorse.Test/Model/SuppliesTests.cs
 src/StripyHorse.Test/Model/UnicodeInputBodyTests.cs
 src/StripyHorse.Test/Model/UnicodeOutputBodyTests.cs
 src/StripyHorse.Test/Model/UpdatePrinterInputBodyTests.cs
@@ -147,6 +151,7 @@ src/StripyHorse/Model/JobOutputBody.cs
 src/StripyHorse/Model/JobSummary.cs
 src/StripyHorse/Model/ListJobsOutputBody.cs
 src/StripyHorse/Model/ListPrintersOutputBody.cs
+src/StripyHorse/Model/MediaInputBody.cs
 src/StripyHorse/Model/PreflightInputBody.cs
 src/StripyHorse/Model/PreflightOutputBody.cs
 src/StripyHorse/Model/PrinterBody.cs
@@ -160,6 +165,7 @@ src/StripyHorse/Model/StampOutputBody.cs
 src/StripyHorse/Model/StateOutputBody.cs
 src/StripyHorse/Model/StatusField.cs
 src/StripyHorse/Model/StatusSnapshot.cs
+src/StripyHorse/Model/Supplies.cs
 src/StripyHorse/Model/UnicodeInputBody.cs
 src/StripyHorse/Model/UnicodeOutputBody.cs
 src/StripyHorse/Model/UpdatePrinterInputBody.cs

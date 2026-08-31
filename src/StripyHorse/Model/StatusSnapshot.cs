@@ -47,9 +47,10 @@ namespace StripyHorse.Model
         /// <param name="odometer">odometer (required).</param>
         /// <param name="queue">queue (required).</param>
         /// <param name="speedIps">media.speed setting, inches/second (required).</param>
+        /// <param name="supplies">What is left on the roll; zero loaded means endless (required).</param>
         /// <param name="tearOff">ezpl.tear_off setting, dots (required).</param>
         /// <param name="widthDots">widthDots (required).</param>
-        public StatusSnapshot(string darkness = default, Faults faults = default, long formatsInBuffer = default, string friendlyName = default, long labelLengthDots = default, long odometer = default, List<HeldJob> queue = default, string speedIps = default, string tearOff = default, long widthDots = default)
+        public StatusSnapshot(string darkness = default, Faults faults = default, long formatsInBuffer = default, string friendlyName = default, long labelLengthDots = default, long odometer = default, List<HeldJob> queue = default, string speedIps = default, Supplies supplies = default, string tearOff = default, long widthDots = default)
         {
             // to ensure "darkness" is required (not null)
             if (darkness == null)
@@ -84,6 +85,12 @@ namespace StripyHorse.Model
                 throw new ArgumentNullException("speedIps is a required property for StatusSnapshot and cannot be null");
             }
             this.SpeedIps = speedIps;
+            // to ensure "supplies" is required (not null)
+            if (supplies == null)
+            {
+                throw new ArgumentNullException("supplies is a required property for StatusSnapshot and cannot be null");
+            }
+            this.Supplies = supplies;
             // to ensure "tearOff" is required (not null)
             if (tearOff == null)
             {
@@ -145,6 +152,13 @@ namespace StripyHorse.Model
         public string SpeedIps { get; set; }
 
         /// <summary>
+        /// What is left on the roll; zero loaded means endless
+        /// </summary>
+        /// <value>What is left on the roll; zero loaded means endless</value>
+        [DataMember(Name = "supplies", IsRequired = true, EmitDefaultValue = true)]
+        public Supplies Supplies { get; set; }
+
+        /// <summary>
         /// ezpl.tear_off setting, dots
         /// </summary>
         /// <value>ezpl.tear_off setting, dots</value>
@@ -173,6 +187,7 @@ namespace StripyHorse.Model
             sb.Append("  Odometer: ").Append(Odometer).Append("\n");
             sb.Append("  Queue: ").Append(Queue).Append("\n");
             sb.Append("  SpeedIps: ").Append(SpeedIps).Append("\n");
+            sb.Append("  Supplies: ").Append(Supplies).Append("\n");
             sb.Append("  TearOff: ").Append(TearOff).Append("\n");
             sb.Append("  WidthDots: ").Append(WidthDots).Append("\n");
             sb.Append("}\n");

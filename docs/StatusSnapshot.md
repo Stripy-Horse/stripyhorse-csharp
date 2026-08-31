@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **Odometer** | **long** |  | 
 **Queue** | [**List&lt;HeldJob&gt;**](HeldJob.md) |  | 
 **SpeedIps** | **string** | media.speed setting, inches/second | 
+**Supplies** | [**Supplies**](Supplies.md) | What is left on the roll; zero loaded means endless | 
 **TearOff** | **string** | ezpl.tear_off setting, dots | 
 **WidthDots** | **long** |  | 
 
