@@ -2247,6 +2247,7 @@ components:
         mode: ""
         name: name
         preset: 4x6
+        sharedPort: true
         webhookUrl: webhookUrl
         widthMm: 0.14658129805029452
       properties:
@@ -2307,6 +2308,11 @@ components:
           - netstamp
           - a6
           type: string
+        sharedPort:
+          description: "Put this printer on the shared router port instead of spending\
+            \ one of the plan's dedicated ports. It is then reached by naming it in\
+            \ the stream, a ZPL comment carrying the ingest token, which suits CI."
+          type: boolean
         webhookUrl:
           type: string
         widthMm:

@@ -118,6 +118,15 @@ namespace StripyHorse.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'SharedPort'
+        /// </summary>
+        [Fact]
+        public void SharedPortTest()
+        {
+            // TODO unit test for the property 'SharedPort'
+        }
+
+        /// <summary>
         /// Test the property 'WebhookUrl'
         /// </summary>
         [Fact]

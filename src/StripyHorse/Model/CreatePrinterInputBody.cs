@@ -279,9 +279,10 @@ namespace StripyHorse.Model
         /// <param name="mode">mode.</param>
         /// <param name="name">name (required).</param>
         /// <param name="preset">Named label size in inches; alternative to widthMm/heightMm.</param>
+        /// <param name="sharedPort">Put this printer on the shared router port instead of spending one of the plan&#39;s dedicated ports. It is then reached by naming it in the stream, a ZPL comment carrying the ingest token, which suits CI..</param>
         /// <param name="webhookUrl">webhookUrl.</param>
         /// <param name="widthMm">widthMm.</param>
-        public CreatePrinterInputBody(AccessModeEnum? accessMode = default, bool anonymize = default, DpmmEnum? dpmm = default, double heightMm = default, ModeEnum? mode = default, string name = default, PresetEnum? preset = default, string webhookUrl = default, double widthMm = default)
+        public CreatePrinterInputBody(AccessModeEnum? accessMode = default, bool anonymize = default, DpmmEnum? dpmm = default, double heightMm = default, ModeEnum? mode = default, string name = default, PresetEnum? preset = default, bool sharedPort = default, string webhookUrl = default, double widthMm = default)
         {
             // to ensure "name" is required (not null)
             if (name == null)
@@ -295,6 +296,7 @@ namespace StripyHorse.Model
             this.HeightMm = heightMm;
             this.Mode = mode;
             this.Preset = preset;
+            this.SharedPort = sharedPort;
             this.WebhookUrl = webhookUrl;
             this.WidthMm = widthMm;
         }
@@ -317,6 +319,13 @@ namespace StripyHorse.Model
         /// </summary>
         [DataMember(Name = "name", IsRequired = true, EmitDefaultValue = true)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Put this printer on the shared router port instead of spending one of the plan&#39;s dedicated ports. It is then reached by naming it in the stream, a ZPL comment carrying the ingest token, which suits CI.
+        /// </summary>
+        /// <value>Put this printer on the shared router port instead of spending one of the plan&#39;s dedicated ports. It is then reached by naming it in the stream, a ZPL comment carrying the ingest token, which suits CI.</value>
+        [DataMember(Name = "sharedPort", EmitDefaultValue = true)]
+        public bool SharedPort { get; set; }
 
         /// <summary>
         /// Gets or Sets WebhookUrl
@@ -345,6 +354,7 @@ namespace StripyHorse.Model
             sb.Append("  Mode: ").Append(Mode).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Preset: ").Append(Preset).Append("\n");
+            sb.Append("  SharedPort: ").Append(SharedPort).Append("\n");
             sb.Append("  WebhookUrl: ").Append(WebhookUrl).Append("\n");
             sb.Append("  WidthMm: ").Append(WidthMm).Append("\n");
             sb.Append("}\n");
