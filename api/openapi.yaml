@@ -1,8 +1,14 @@
 openapi: 3.1.0
 info:
+  contact:
+    email: ben@stripyhorse.io
+    name: Stripy Horse
+    url: https://stripyhorse.io
   description: "Zebra/ZPL developer tools: render ZPL to PNG, convert PDFs and images\
     \ to print-ready ZPL, and drive hosted virtual Zebra printers for testing. Authenticate\
     \ with an API key via `Authorization: Bearer sh_live_…` or `X-Api-Key`."
+  license:
+    name: MIT
   title: Stripy Horse API
   version: 1.0.0
 servers:

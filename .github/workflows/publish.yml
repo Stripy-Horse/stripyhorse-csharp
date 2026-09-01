@@ -1,0 +1,39 @@
+name: Publish to NuGet
+
+# Releases are cut by the main repo: bumping sdk/VERSION there makes its
+# sdk-sync workflow regenerate this repo and push the v<VERSION> tag, and
+# that tag push runs this.
+#
+# Needs one repository secret, NUGET_API_KEY: a nuget.org key scoped to
+# the StripyHorse package id. --skip-duplicate keeps a re-run of an
+# already-published version green instead of failing the release.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pack
+        run: dotnet pack src/StripyHorse/StripyHorse.csproj -c Release -o out
+      - name: Push
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "NUGET_API_KEY is not set; nothing published." >&2
+            exit 1
+          fi
+          dotnet nuget push "out/*.nupkg" \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key "$NUGET_API_KEY" --skip-duplicate

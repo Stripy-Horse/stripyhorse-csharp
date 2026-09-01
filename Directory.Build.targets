@@ -1,0 +1,16 @@
+<!-- The generated csproj covers most of the NuGet listing, but not the
+     project link, the README the gallery renders, or the release notes,
+     and it is regenerated from the spec so it cannot be hand-edited.
+     MSBuild imports this file after the project, so what it sets wins.
+     Imported by the test project too, which is never packed. -->
+<Project>
+  <PropertyGroup>
+    <PackageProjectUrl>https://stripyhorse.io</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>https://github.com/Stripy-Horse/stripyhorse-csharp/releases</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/Stripy-Horse/stripyhorse-csharp</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+</Project>
