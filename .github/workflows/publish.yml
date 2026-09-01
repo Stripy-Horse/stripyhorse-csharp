@@ -7,6 +7,11 @@ name: Publish to NuGet
 # Needs one repository secret, NUGET_API_KEY: a nuget.org key scoped to
 # the StripyHorse package id. --skip-duplicate keeps a re-run of an
 # already-published version green instead of failing the release.
+#
+# With no key set the job skips and says so in the run summary rather
+# than failing. A key that has not been created yet is a step Ben has not
+# taken, not a broken release, and a red X on every tag until he takes it
+# is how you learn to ignore the one that matters.
 
 on:
   push:
@@ -31,8 +36,10 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           if [ -z "$NUGET_API_KEY" ]; then
-            echo "NUGET_API_KEY is not set; nothing published." >&2
-            exit 1
+            echo "### Nothing published" >> "$GITHUB_STEP_SUMMARY"
+            echo "\`NUGET_API_KEY\` is not set on this repository, so \`$GITHUB_REF_NAME\` was built but not pushed to nuget.org." >> "$GITHUB_STEP_SUMMARY"
+            echo "NUGET_API_KEY is not set; built but not published." >&2
+            exit 0
           fi
           dotnet nuget push "out/*.nupkg" \
             --source https://api.nuget.org/v3/index.json \

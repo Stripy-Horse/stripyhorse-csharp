@@ -12,7 +12,7 @@
     <Description>Official C# client for the Stripy Horse API - Zebra/ZPL developer tools</Description>
     <Copyright>Copyright 2026 Ben Faerber</Copyright>
     <RootNamespace>StripyHorse</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\StripyHorse.xml</DocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Stripy-Horse/stripyhorse-csharp.git</RepositoryUrl>
